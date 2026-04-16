@@ -1,0 +1,9 @@
+<h1>Bonjour <strong id="adminName"></strong></h1>
+<script>
+
+          const admin = localStorage.getItem('admin') ? JSON.parse(localStorage.getItem('admin')) : null;
+
+        // Afficher les informations de l'admin
+        document.getElementById('adminName').textContent = admin.nom;
+        
+</script>
