@@ -1,25 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const pool = require('../config/database');
+const { verifyAdminToken, getCurrentAdmin } = require('../controllers/authController');
+const { getDashboardStats } = require('../controllers/adminController');
 
-// Route protégée - vérifier token
-router.get('/me', (req, res) => {
-    const token = req.headers.authorization;
-    
-    if (!token) {
-        return res.status(401).json({ 
-            success: false, 
-            message: 'Token manquant' 
-        });
-    }
-    
-    res.json({ 
-        success: true, 
-        admin: { 
-            id: 1, 
-            nom: 'Salma Chairi', 
-            email: 'salma@ecotripswomen.com' 
-        }
-    });
-});
+// Retourne l'admin connecté après vérification du JWT
+router.get('/me', verifyAdminToken, getCurrentAdmin);
+
+// New Dashboard Stats route
+router.get('/dashboard-stats', verifyAdminToken, getDashboardStats);
+
+
 
 module.exports = router;
