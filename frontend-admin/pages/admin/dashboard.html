@@ -1,0 +1,495 @@
+    <title>EcoTrips Women | Admin Dashboard</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'forest-green': '#166534',
+                        'rose-pink': '#DE94A4',
+                        'soft-rose': '#FCE7F3',
+                        'warm-beige': '#F8F5F2',
+                        'sidebar-bg': '#B65C7A',
+                    },
+                    fontFamily: {
+                        'playfair': ['Playfair Display', 'serif'],
+                        'jakarta': ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'xl-20': '20px',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <style>
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #E91E63; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #166534; }
+    </style>
+</head>
+<body class="font-jakarta bg-warm-beige text-gray-800 flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-72 bg-sidebar-bg text-white p-10 fixed h-screen flex flex-col z-50">
+        <div class="font-playfair text-3xl font-bold mb-12 text-warm-beige tracking-tight">
+            EcoTrips<span class="text-rose-pink">Women</span>
+        </div>
+        <nav>
+            <ul class="space-y-2">
+                <li><a href="#" class="flex items-center p-4 text-white bg-rose-pink rounded-xl transition-all duration-300">
+                    <i class="fas fa-th-large mr-4 w-5 text-center"></i> Dashboard
+                </a></li>
+                <li><a href="#" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                    <i class="fas fa-map-marked-alt mr-4 w-5 text-center"></i> Excursions
+                </a></li>
+                <li><a href="#" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                    <i class="fas fa-calendar-check mr-4 w-5 text-center"></i> Réservations
+                </a></li>
+                <li><a href="#" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                    <i class="fas fa-users mr-4 w-5 text-center"></i> Clientes
+                </a></li>
+                <li><a href="#" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                    <i class="fas fa-envelope mr-4 w-5 text-center"></i> Messages
+                </a></li>
+                <li><a href="#" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                    <i class="fas fa-chart-line mr-4 w-5 text-center"></i> Analyses
+                </a></li>
+                <li><a href="galerie/index.html" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                    <i class="fas fa-images mr-4 w-5 text-center"></i>  Galerie
+                </a></li>
+                <li class="mt-auto pt-8"><a href="#" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                    <i class="fas fa-cog mr-4 w-5 text-center"></i> Paramètres
+                </a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="flex-1 ml-72 p-10">
+        <header class="flex justify-between items-center mb-12">
+            <div>
+                <h1 class="font-playfair text-4xl font-bold text-gray-900 tracking-tight">Bonjour <span class="text-rose-pink">Salma</span>,</h1>
+                <p class="text-gray-500 mt-1 font-medium">Voici les statistiques d'aujourd'hui pour <span class="text-forest-green italic font-semibold">EcoTrips Women</span>.</p>
+            </div>
+            
+            <div class="flex items-center gap-6">
+
+                <!-- Notifications (static en cours)-->
+                <div class="relative w-12 h-12 bg-white flex items-center justify-center rounded-xl border border-gray-100 shadow-sm cursor-pointer hover:bg-rose-50 transition-colors group">
+                    <i class="fas fa-bell text-gray-400 group-hover:text-rose-pink transition-colors text-lg"></i>
+                    <div class="absolute top-3 right-3 w-2.5 h-2.5 bg-rose-pink rounded-full border-2 border-white animate-pulse"></div>
+                </div>
+
+                <!-- Profile (sa)-->
+                <div class="flex items-center gap-4 pl-4 border-l border-gray-200 cursor-pointer group">
+                    <div class="text-right">
+                        <div class="font-bold text-gray-900 group-hover:text-rose-pink transition-colors" id="adminHeaderName">Salma Chair</div>
+                        <div class="text-[11px] font-bold text-forest-green/60 uppercase tracking-widest">Administratrice</div>
+                    </div>
+                    <div class="relative">
+                        <img src="https://ui-avatars.com/api/?name=Salma+Chair&background=E91E63&color=fff" 
+                             alt="Salma" class="w-12 h-12 rounded-xl border-2 border-white shadow-md group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white"></div>
+                    </div>
+                </div>
+
+                <!--Logout button-->
+                <div class="pl-4 border-l border-gray-200">
+                    <button onclick="Dashboard.logout()" 
+                            title="Se déconnecter"
+                            class="w-12 h-12 bg-white flex items-center justify-center rounded-xl border border-gray-100 shadow-sm cursor-pointer hover:bg-rose-50 hover:border-rose-100 group transition-all duration-300">
+                        <i class="fas fa-sign-out-alt text-gray-400 group-hover:text-rose-pink transition-colors text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 mb-12">
+            <!--Revenue -->
+            <div class="bg-white p-8 rounded-[24px] shadow-sm hover:shadow-xl hover:shadow-rose-500/5 hover:-translate-y-1 transition-all duration-500 border border-gray-50 group">
+                <div class="w-14 h-14 rounded-2xl bg-rose-50 text-rose-pink flex items-center justify-center text-2xl mb-6 group-hover:bg-rose-pink group-hover:text-white transition-colors duration-500">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="text-3xl font-bold mb-1 text-gray-900 tracking-tight" id="revenue">0 DH</div>
+                <div class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-3">Revenus</div>
+                
+            </div>
+
+            <!--Reservations -->
+            <div class="bg-white p-8 rounded-[24px] shadow-sm hover:shadow-xl hover:shadow-emerald-500/5 hover:-translate-y-1 transition-all duration-500 border border-gray-50 group">
+                <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-forest-green flex items-center justify-center text-2xl mb-6 group-hover:bg-forest-green group-hover:text-white transition-colors duration-500">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="text-3xl font-bold mb-1 text-gray-900 tracking-tight" id="reservations">0</div>
+                <div class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-3">Réservations</div>
+                
+            </div>
+
+            <!-- Clientes -->
+            <div class="bg-white p-8 rounded-[24px] shadow-sm hover:shadow-xl hover:shadow-rose-500/5 hover:-translate-y-1 transition-all duration-500 border border-gray-50 group">
+                <div class="w-14 h-14 rounded-2xl bg-pink-50 text-rose-pink flex items-center justify-center text-2xl mb-6 group-hover:bg-rose-pink group-hover:text-white transition-colors duration-500">
+                    <i class="fas fa-user-friends"></i>
+                </div>
+                <div class="text-3xl font-bold mb-1 text-gray-900 tracking-tight" id="newClients">0</div>
+                <div class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-3">Clientes</div>
+                
+            </div>
+
+            <!--Rating (en cours --static)-->
+            <div class="bg-white p-8 rounded-[24px] shadow-sm hover:shadow-xl hover:shadow-amber-500/5 hover:-translate-y-1 transition-all duration-500 border border-gray-50 group">
+                <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-amber-500 group-hover:text-white transition-colors duration-500">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="text-3xl font-bold mb-1 text-gray-900 tracking-tight" id="rating">0/5</div>
+                <div class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-3">Satisfaction</div>
+                
+            </div>
+        </div>
+
+        <!-- les diagrammes  -->
+        <div class="space-y-8 mb-12">
+            <!-- Row 1: Evolution + Status -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Evolution (2/3) -->
+                <div class="lg:col-span-2 bg-white p-8 rounded-2xl shadow-sm border border-gray-50">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="font-playfair text-xl font-semibold">Évolution des réservations</h2>
+                        <select id="filterEvolution" onchange="fetchDashboardData()" 
+                                class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-rose-pink outline-none">
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026" selected>2026</option>
+                            <option value="all">Toutes les années</option>
+                        </select>
+                    </div>
+                    <div class="h-[350px]">
+                        <canvas id="evolutionChart"></canvas>
+                    </div>
+                </div>
+                <!-- Status (1/3) -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-50">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="font-playfair text-xl font-semibold">Répartition par statut</h2>
+                        <select id="filterStatus" onchange="fetchDashboardData()" 
+                                class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-rose-pink outline-none text-xs">
+                            <option value="30">30 jours</option>
+                            <option value="90" selected>3 mois</option>
+                            <option value="180">6 mois</option>
+                        </select>
+                    </div>
+                    <div class="h-[350px]">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Type + Popular -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Type -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-50">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="font-playfair text-xl font-semibold">Répartition par type d'excursion</h2>
+                        <select id="filterType" onchange="fetchDashboardData()" 
+                                class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-rose-pink outline-none">
+                            <option value="30">30 jours</option>
+                            <option value="90">3 mois</option>
+                            <option value="year">Cette année</option>
+                        </select>
+                    </div>
+                    <div class="h-[280px]">
+                        <canvas id="typeChart"></canvas>
+                    </div>
+                </div>
+                <!-- Popular -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-50">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="font-playfair text-xl font-semibold">Top 5 excursions</h2>
+                        <select id="filterPopular" onchange="fetchDashboardData()" 
+                                class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-rose-pink outline-none">
+                            <option value="30">30 jours</option>
+                            <option value="90">3 mois</option>
+                            <option value="year">Cette année</option>
+                        </select>
+                    </div>
+                    <div class="h-[280px]">
+                        <canvas id="popularChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- les dernières réservations -->
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-50">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="font-playfair text-2xl font-semibold">Dernières réservations</h2>
+                <button class="bg-forest-green hover:bg-[#0c401e] text-white px-6 py-2.5 rounded-xl font-semibold transition-colors flex items-center gap-2">
+                    Voir tout <i class="fas fa-arrow-right text-xs"></i>
+                </button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="text-gray-400 text-sm uppercase tracking-wider border-b border-gray-50">
+                            <th class="pb-4 font-semibold">Numéro</th>
+                            <th class="pb-4 font-semibold">Cliente</th>
+                            <th class="pb-4 font-semibold">Excursion</th>
+                            <th class="pb-4 font-semibold">Date</th>
+                            <th class="pb-4 font-semibold text-right">Montant</th>
+                            <th class="pb-4 font-semibold text-center">Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reservationsTable" class="divide-y divide-gray-50">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+
+        const Dashboard = {
+            charts: {},
+            token: localStorage.getItem('token'),
+            config: {
+                apiUrl: 'http://localhost:5000/api/admin/dashboard-stats',
+                months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                colors: {
+                    rose: '#E91E63',
+                    forest: '#166534',
+                    types: {
+                        'Désert': '#166534',
+                        'Montagne': '#4ADE80',
+                        'Culturel': '#10B981',
+                        'Détente': '#E91E63',
+                        'Aventure': '#F472B6',
+                        'Nature': '#7C3AED'
+                    }
+                }
+            },
+
+            async init() {
+                if (!this.token) return this.logout();
+                await this.refresh();
+                this.setupProfile();
+            },
+
+            logout() {
+                localStorage.clear();
+                window.location.href = '../login.html';
+            },
+
+            async fetch(params = {}) {
+                const query = new URLSearchParams(params).toString();
+                const response = await fetch(`${this.config.apiUrl}?${query}`, {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                });
+                if (response.status === 401 || response.status === 403) this.logout();
+                return response.json();
+            },
+
+            async refresh() {
+                try {
+                    const data = await this.fetch({
+                        evolutionYear: document.getElementById('filterEvolution')?.value || '2026',
+                        periodStatus: document.getElementById('filterStatus')?.value || '30',
+                        periodType: document.getElementById('filterType')?.value || '30',
+                        periodPopular: document.getElementById('filterPopular')?.value || '30'
+                    });
+
+                    if (data.success) {
+                        this.updateKPIs(data.stats.kpi);
+                        this.renderCharts(data.stats);
+                        this.updateTable(data.stats.recent);
+                    }
+                } catch (e) { console.error('Dashboard Error:', e); }
+            },
+
+            updateKPIs(kpi = {}) {
+                const fmt = (v) => new Intl.NumberFormat('fr-FR').format(v || 0);
+                document.getElementById('revenue').textContent = `${fmt(kpi.revenue)} DH`;
+                document.getElementById('reservations').textContent = kpi.active || 0;
+                document.getElementById('newClients').textContent = kpi.newClients || 0;
+                document.getElementById('rating').textContent = `${kpi.rating || 0}/5`;
+            },
+
+            renderCharts(stats) {
+                this.renderEvolution(stats.evolution || []);
+                this.renderStatus(stats.statusDistribution || []);
+                this.renderTypes(stats.categories || []);
+                this.renderPopular(stats.popular || []);
+            },
+
+            renderEvolution(data) {
+                const yr = document.getElementById('filterEvolution').value;
+                const datasets = [];
+
+                if (yr === 'all') {
+                    const years = [...new Set(data.map(d => d.year))].sort();
+                    years.forEach((y, i) => {
+                        const vals = new Array(12).fill(0);
+                        data.filter(d => d.year === y).forEach(d => vals[d.month_num - 1] = d.count);
+                        datasets.push({ label: y, data: vals, borderColor: i % 2 ? this.config.colors.forest : this.config.colors.rose, tension: 0.4 });
+                    });
+                } else {
+                    const vals = new Array(12).fill(0);
+                    data.forEach(d => vals[d.month_num - 1] = d.count);
+                    datasets.push({ 
+                        data: vals, 
+                        borderColor: this.config.colors.rose, 
+                        backgroundColor: 'rgba(233, 30, 99, 0.1)', 
+                        fill: true, 
+                        tension: 0.4,
+                        borderWidth: 4
+                    });
+                }
+
+                this.updateChart('evolution', 'line', this.config.months, datasets);
+            },
+
+            renderStatus(data) {
+                const map = { 'Confirmée': 0, 'En attente': 0, 'Annulée': 0 };
+                data.forEach(d => {
+                    const l = d.statut.toLowerCase();
+                    if (l.includes('conf')) map['Confirmée'] += +d.count;
+                    else if (l.includes('atten')) map['En attente'] += +d.count;
+                    else if (l.includes('annu')) map['Annulée'] += +d.count;
+                });
+                this.updateChart('status', 'doughnut', Object.keys(map), [{
+                    data: Object.values(map),
+                    backgroundColor: [this.config.colors.forest, '#FCD34D', '#EF4444'],
+                    borderWidth: 0
+                }], { cutout: '75%' });
+            },
+
+            renderTypes(data) {
+                const labels = data.map(d => d.categorie);
+                this.updateChart('type', 'bar', labels, [{
+                    label: 'Réservations',
+                    data: data.map(d => d.count),
+                    backgroundColor: labels.map(l => this.config.colors.types[l] || '#CBD5E1'),
+                    borderRadius: 20,
+                    barThickness: 35,
+                    borderWidth: 0
+                }], {
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#fff',
+                            titleColor: '#1f2937',
+                            bodyColor: '#4b5563',
+                            borderColor: '#f3f4f6',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: true,
+                            bodyFont: { family: 'Plus Jakarta Sans' }
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true, 
+                            grid: { color: '#f3f4f6', drawBorder: false },
+                            ticks: { font: { family: 'Plus Jakarta Sans', size: 11 } }
+                        },
+                        x: { 
+                            grid: { display: false },
+                            ticks: { font: { family: 'Plus Jakarta Sans', size: 11, weight: '500' } }
+                        }
+                    }
+                });
+            },
+
+            renderPopular(data) {
+                this.updateChart('popular', 'bar', data.map(d => d.titre.length > 20 ? d.titre.slice(0, 20) + '...' : d.titre), [{
+                    label: 'Ventes',
+                    data: data.map(d => d.count),
+                    backgroundColor: this.config.colors.forest,
+                    borderRadius: 10,
+                    barThickness: 25,
+                }], { 
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { beginAtZero: true, grid: { display: false } },
+                        y: { grid: { display: false } }
+                    }
+                });
+            },
+
+            updateChart(id, type, labels, datasets, extra = {}) {
+                const canvas = document.getElementById(`${id}Chart`);
+                if (!canvas) {
+                    console.error(`Canvas with id ${id}Chart not found`);
+                    return;
+                }
+                
+                if (this.charts[id]) this.charts[id].destroy();
+                
+                try {
+                    this.charts[id] = new Chart(canvas, {
+                        type,
+                        data: { labels, datasets },
+                        options: { 
+                            responsive: true, 
+                            maintainAspectRatio: false, 
+                            plugins: { 
+                                legend: { 
+                                    display: type === 'doughnut' || datasets.length > 1, 
+                                    position: 'bottom' 
+                                } 
+                            },
+                            ...extra 
+                        }
+                    });
+                } catch (err) {
+                    console.error(`Error creating chart ${id}:`, err);
+                }
+            },
+
+            updateTable(recent = []) {
+                const colors = { 'Confirmée': 'emerald', 'En attente': 'amber', 'Annulée': 'rose' };
+                document.getElementById('reservationsTable').innerHTML = recent.map(res => `
+                    <tr class="hover:bg-gray-50/50">
+                        <td class="py-4 text-sm text-gray-500">#RES-26-${res.id}</td>
+                        <td class="py-4 font-semibold">${res.cliente_prenom} ${res.cliente_nom}</td>
+                        <td class="py-4 text-gray-600">${res.excursion_titre}</td>
+                        <td class="py-4 text-gray-500">${new Date(res.created_at).toLocaleDateString('fr-FR')}</td>
+                        <td class="py-4 text-right font-bold">${res.prix} DH</td>
+                        <td class="py-4 text-center">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-${colors[res.statut] || 'gray'}-50 text-${colors[res.statut] || 'gray'}-600 uppercase">
+                                ${res.statut}
+                            </span>
+                        </td>
+                    </tr>
+                `).join('');
+            },
+
+            setupProfile() {
+                const admin = JSON.parse(localStorage.getItem('admin') || '{}');
+                if (admin.nom) {
+                    const fullName = `${admin.prenom || ''} ${admin.nom}`.trim() || 'Salma Chair';
+                    document.getElementById('adminHeaderName').textContent = fullName;
+                    // For the sidebar or other places
+                    const sidebarName = document.querySelector('.group span');
+                    if (sidebarName) sidebarName.textContent = admin.prenom || admin.nom;
+                }
+            }
+        };
+
+        // UI Event listeners
+        window.fetchDashboardData = () => Dashboard.refresh();
+        document.addEventListener('DOMContentLoaded', () => Dashboard.init());
+    </script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!-- frontend-public/paiement.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Paiement - Ecotripswomen</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .card-element {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 20px 0;
+        }
+        button {
+            background: #E91E63;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>💳 Paiement sécurisé</h2>
+        <p>Montant à payer : <strong id="montant"></strong> MAD</p>
+        
+        <div id="card-element" class="card-element"></div>
+        <div id="card-errors" style="color: red; margin-bottom: 10px;"></div>
+        
+        <button id="submit-btn">Payer</button>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        const stripe = Stripe('pk_test_51TPQzFC5gy99OR3BgCwycyEznMbnMsd9QcgYTw87ZuL2KiaMOVOuHmN3S18M8one6hbtQjbjGYujeFbc1OttU5QS00GPWztu7f');
+        const token = localStorage.getItem('clientToken');
+        const reservationId = new URLSearchParams(window.location.search).get('id');
+        
+        let elements = stripe.elements();
+        let card = elements.create('card');
+        card.mount('#card-element');
+        
+        // Afficher le montant
+        fetch(`http://localhost:5000/api/reservations/${reservationId}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('montant').textContent = data.reservation.montant_total;
+            }
+        });
+        
+        document.getElementById('submit-btn').addEventListener('click', async () => {
+            const btn = document.getElementById('submit-btn');
+            btn.disabled = true;
+            btn.textContent = 'Traitement...';
+            
+            try {
+                // 1. Créer l'intention de paiement
+                const intentRes = await fetch('http://localhost:5000/api/paiement/create-intent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ reservation_id: reservationId })
+                });
+                
+                const intent = await intentRes.json();
+                
+                // 2. Confirmer le paiement avec Stripe
+                const { error, paymentIntent } = await stripe.confirmCardPayment(intent.clientSecret, {
+                    payment_method: { card: card }
+                });
+                
+                if (error) {
+                    document.getElementById('message').textContent = error.message;
+                    document.getElementById('message').className = 'message error';
+                } else {
+                    document.getElementById('message').textContent = '✅ Paiement réussi ! Redirection...';
+                    document.getElementById('message').className = 'message success';
+                    console.log('Paiement réussi pour la réservation ID:', reservationId);
+                    setTimeout(() => {
+                        window.location.href = `../web_site.html?id=${reservationId}`;
+                    }, 1000);
+                }
+            } catch (err) {
+                document.getElementById('message').textContent = 'Erreur de connexion';
+                document.getElementById('message').className = 'message error';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Payer';
+            }
+        });
+    </script>
+</body>
+</html>
