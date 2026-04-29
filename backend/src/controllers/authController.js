@@ -22,9 +22,9 @@ const adminLogin = async (req, res) => {
         );
 
         if (result.rows.length === 0) {
-            return res.status(401).json({
-                success: false,
-                message: 'Email ou mot de passe incorrect'
+            return res.status(401).json({ 
+                success: false, 
+                message: 'Email ou mot de passe incorrect' 
             });
         }
 

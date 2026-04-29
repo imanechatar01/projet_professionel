@@ -1,0 +1,193 @@
+<!-- frontend-public/reservation.html -->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réserver - Ecotripswomen</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #E91E63 0%, #c2185b 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .form-content { padding: 30px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 500; color: #333; }
+        input, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #E91E63;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #E91E63 0%, #c2185b 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .message { padding: 12px; border-radius: 12px; margin-bottom: 20px; display: none; }
+        .message.success { background: #d4edda; color: #155724; display: block; }
+        .message.error { background: #f8d7da; color: #721c24; display: block; }
+        .message.warning { background: #fff3cd; color: #856404; display: block; }
+        .user-info {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌸 Ecotripswomen</h1>
+            <p>Réservez votre prochaine aventure</p>
+        </div>
+
+        <div class="form-content">
+            <div id="message" class="message"></div>
+
+            <!-- Infos utilisateur connecté -->
+            <div id="userInfo" class="user-info" style="display: none;">
+                <strong>👤 Client connecté :</strong> <span id="clientNom"></span>
+            </div>
+
+            <form id="reservationForm">
+                <div class="form-group">
+                    <label>Nombre de personnes *</label>
+                    <input type="number" id="nb_personnes" min="1" value="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Montant total (MAD) *</label>
+                    <input type="number" id="montant_total" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Demande spéciale (optionnel)</label>
+                    <textarea id="demande_speciale" rows="3" placeholder="Allergies, régime alimentaire, etc..."></textarea>
+                </div>
+
+                <button type="submit" id="submitBtn">Confirmer la réservation</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('clientToken');
+        const client = JSON.parse(localStorage.getItem('client') || '{}');
+
+        // Vérifier si le client est connecté
+        if (!token) {
+            document.getElementById('message').className = 'message warning';
+            document.getElementById('message').innerHTML = '⚠️ Vous devez être connecté pour réserver. <a href="login.html">Se connecter</a>';
+            document.getElementById('reservationForm').style.display = 'none';
+        } else {
+            document.getElementById('userInfo').style.display = 'block';
+            document.getElementById('clientNom').textContent = client.nom || client.email;
+        }
+
+        const form = document.getElementById('reservationForm');
+        const messageDiv = document.getElementById('message');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            messageDiv.className = 'message';
+            messageDiv.innerHTML = '';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Envoi en cours...';
+
+            const reservationData = {
+                nb_personnes: parseInt(document.getElementById('nb_personnes').value),
+                montant_total: parseFloat(document.getElementById('montant_total').value),
+                demande_speciale: document.getElementById('demande_speciale').value.trim()
+            };
+
+            // Validation
+            if (reservationData.nb_personnes < 1) {
+                showMessage('Le nombre de personnes doit être au moins 1', 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Confirmer la réservation';
+                return;
+            }
+
+            if (isNaN(reservationData.montant_total) || reservationData.montant_total <= 0) {
+                showMessage('Veuillez entrer un montant valide', 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Confirmer la réservation';
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5000/api/reservations', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(reservationData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showMessage(`✅ Réservation confirmée ! `, 'success');
+                    setTimeout(() => {
+                        window.location.href = 'catalogue.html';
+                    }, 1200);
+                } else {
+                    showMessage(result.message || 'Erreur lors de la réservation', 'error');
+                    
+                    if (result.message.includes('connecter')) {
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 2000);
+                    }
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                showMessage('Erreur de connexion au serveur', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Confirmer la réservation';
+            }
+        });
+
+        function showMessage(msg, type) {
+            messageDiv.className = `message ${type}`;
+            messageDiv.innerHTML = msg;
+            messageDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

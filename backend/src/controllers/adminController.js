@@ -1,4 +1,7 @@
+const crypto = require('crypto');
+const bcrypt = require('bcrypt');
 const pool = require('../config/database');
+const Reservation = require('../models/reservation');
 
 exports.getDashboardStats = async (req, res) => {
     try {
@@ -16,11 +19,11 @@ exports.getDashboardStats = async (req, res) => {
 
         // Static KPIs
         const revenueResult = await pool.query(
-            "SELECT COALESCE(SUM(montant_total), 0) as total FROM reservations WHERE statut = 'Confirmée'"
+            "SELECT COALESCE(SUM(montant_total), 0) as total FROM reservations WHERE statut IN ('Confirmée', 'confirmee', 'confirme', 'Confirmé', 'confirmée')"
         ).catch(e => ({ rows: [{ total: 0 }] }));
 
         const activeReservations = await pool.query(
-            "SELECT COUNT(*) FROM reservations WHERE statut != 'Annulée'"
+            "SELECT COUNT(*) FROM reservations WHERE statut NOT IN ('Annulée', 'annulee', 'annule', 'Annulee', 'annulée')"
         ).catch(e => ({ rows: [{ count: 0 }] }));
 
         const newClients = await pool.query(
@@ -122,3 +125,132 @@ exports.getDashboardStats = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+const getAdminClients = async (req, res) => {
+    const query = (req.query.query || '').trim();
+    const params = [];
+    let sql = `
+        SELECT id, nom, prenom, email, telephone, created_at
+        FROM clientes
+    `;
+
+    if (query) {
+        params.push(`%${query}%`);
+        sql += ` WHERE nom ILIKE $1 OR prenom ILIKE $1 OR email ILIKE $1 OR telephone ILIKE $1`;
+    }
+
+    sql += ` ORDER BY created_at DESC LIMIT 20`;
+
+    try {
+        const result = await pool.query(sql, params);
+        res.json({ success: true, clients: result.rows });
+    } catch (error) {
+        console.error('Erreur récupération clients admin:', error);
+        res.status(500).json({ success: false, message: 'Erreur serveur' });
+    }
+};
+
+const createAdminClient = async (req, res) => {
+    const { nom, prenom, email, telephone, password } = req.body;
+
+    if (!nom || !email) {
+        return res.status(400).json({ success: false, message: 'Nom et email requis' });
+    }
+
+    try {
+        const existing = await pool.query('SELECT id FROM clientes WHERE email = $1', [email]);
+        if (existing.rows.length > 0) {
+            return res.status(400).json({ success: false, message: 'Cet email est déjà utilisé' });
+        }
+
+        const temporaryPassword = password || crypto.randomBytes(4).toString('hex');
+        const hashedPassword = await bcrypt.hash(temporaryPassword, 10);
+
+        const result = await pool.query(
+            `INSERT INTO clientes (nom, prenom, email, telephone, password_hash)
+             VALUES ($1, $2, $3, $4, $5)
+             RETURNING id, nom, prenom, email, telephone, created_at`,
+            [nom, prenom || null, email, telephone || null, hashedPassword]
+        );
+
+        res.status(201).json({
+            success: true,
+            client: result.rows[0],
+            temporaryPassword: password ? null : temporaryPassword
+        });
+    } catch (error) {
+        console.error('Erreur création client admin:', error);
+        res.status(500).json({ success: false, message: 'Erreur serveur' });
+    }
+};
+
+const getAdminExcursions = async (req, res) => {
+    const query = (req.query.query || '').trim();
+    const params = [];
+    let sql = `SELECT * FROM excursions`;
+
+    if (query) {
+        params.push(`%${query}%`);
+        sql += ` WHERE titre ILIKE $1`;
+    }
+
+    sql += ` ORDER BY id DESC LIMIT 50`;
+
+    try {
+        const result = await pool.query(sql, params);
+        res.json({ success: true, excursions: result.rows });
+    } catch (error) {
+        console.error('Erreur récupération excursions admin:', error);
+        res.status(500).json({ success: false, message: 'Erreur serveur' });
+    }
+};
+
+const createAdminReservation = async (req, res) => {
+    const { client_id, excursion_id, nb_personnes, montant_total, demande_speciale } = req.body;
+
+    if (!client_id || !excursion_id || !nb_personnes || !montant_total) {
+        return res.status(400).json({
+            success: false,
+            message: 'client_id, excursion_id, nb_personnes et montant_total sont requis'
+        });
+    }
+
+    try {
+        const reservation = await Reservation.createReservation({
+            client_id,
+            excursion_id,
+            nb_personnes,
+            montant_total,
+            demande_speciale: demande_speciale || null,
+            statut: 'Confirmée' // Forcer le statut à Confirmée pour les créations admin
+        });
+
+        res.status(201).json({ success: true, reservation });
+    } catch (error) {
+        console.error('Erreur création réservation admin:', error);
+        res.status(500).json({ success: false, message: 'Erreur serveur' });
+    }
+};
+
+const deleteAdminReservation = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const deleted = await Reservation.delete(id);
+
+        if (!deleted) {
+            return res.status(404).json({ success: false, message: 'Réservation non trouvée' });
+        }
+
+        res.json({ success: true, message: 'Réservation supprimée' });
+    } catch (error) {
+        console.error('Erreur suppression réservation admin:', error);
+        res.status(500).json({ success: false, message: 'Erreur serveur' });
+    }
+};
+
+module.exports.getAdminClients = getAdminClients;
+module.exports.createAdminClient = createAdminClient;
+module.exports.getAdminExcursions = getAdminExcursions;
+module.exports.createAdminReservation = createAdminReservation;
+module.exports.deleteAdminReservation = deleteAdminReservation;
