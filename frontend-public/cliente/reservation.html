@@ -162,8 +162,9 @@
 
                 if (result.success) {
                     showMessage(`✅ Réservation confirmée ! `, 'success');
-                    window.location.href = result.reservation.redirectUrl;
-                  
+                    setTimeout(() => {
+                        window.location.href = 'catalogue.html';
+                    }, 1200);
                 } else {
                     showMessage(result.message || 'Erreur lors de la réservation', 'error');
                     
