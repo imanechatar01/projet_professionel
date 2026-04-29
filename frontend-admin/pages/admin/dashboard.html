@@ -1,5 +1,8 @@
     <title>EcoTrips Women | Admin Dashboard</title>
     
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' http://localhost:5000;">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -52,10 +55,10 @@
                 <li><a href="#" class="flex items-center p-4 text-white bg-rose-pink rounded-xl transition-all duration-300">
                     <i class="fas fa-th-large mr-4 w-5 text-center"></i> Dashboard
                 </a></li>
-                <li><a href="#" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                <li><a href="excursions/index.html" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
                     <i class="fas fa-map-marked-alt mr-4 w-5 text-center"></i> Excursions
                 </a></li>
-                <li><a href="#" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                <li><a href="reservations/index.html" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
                     <i class="fas fa-calendar-check mr-4 w-5 text-center"></i> Réservations
                 </a></li>
                 <li><a href="#" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
@@ -280,9 +283,17 @@
             },
 
             async init() {
-                if (!this.token) return this.logout();
-                await this.refresh();
+                console.log("Dashboard - Initialisation...");
+                // On affiche le profil même sans données
                 this.setupProfile();
+                
+                try {
+                    // On tente de rafraîchir les données
+                    await this.refresh();
+                    console.log("Dashboard - Données chargées avec succès.");
+                } catch (err) {
+                    console.error("Dashboard - Erreur lors du chargement des données:", err);
+                }
             },
 
             logout() {
@@ -292,11 +303,19 @@
 
             async fetch(params = {}) {
                 const query = new URLSearchParams(params).toString();
-                const response = await fetch(`${this.config.apiUrl}?${query}`, {
-                    headers: { 'Authorization': `Bearer ${this.token}` }
-                });
-                if (response.status === 401 || response.status === 403) this.logout();
-                return response.json();
+                try {
+                    const response = await fetch(`${this.config.apiUrl}?${query}`, {
+                        headers: { 
+                            'Authorization': `Bearer ${this.token || ''}`
+                        }
+                    });
+                    
+                    // Supression de la redirection automatique (logout) pour test
+                    return await response.json();
+                } catch (err) {
+                    console.error("Erreur de fetch Dashboard:", err);
+                    return { success: false, message: "Erreur réseau" };
+                }
             },
 
             async refresh() {

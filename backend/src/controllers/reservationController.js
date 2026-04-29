@@ -1,5 +1,33 @@
 const Reservation = require('../models/reservation');
 
+const normalizeStatus = (value) => (value || '')
+    .toString()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[_-]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+
+const canonicalStatus = (value) => {
+    const normalized = normalizeStatus(value);
+
+    if (normalized === 'en attente' || normalized === 'enattente') return 'En attente';
+    if (normalized === 'confirmee' || normalized === 'confirme') return 'Confirmée';
+    if (normalized === 'annulee' || normalized === 'annule') return 'Annulée';
+    if (normalized === 'terminee' || normalized === 'termine') return 'Terminée';
+
+    // Fallback pour les correspondances exactes (utile si déjà formaté)
+    const exactMatches = {
+        'En attente': 'En attente',
+        'Confirmée': 'Confirmée',
+        'Annulée': 'Annulée',
+        'Terminée': 'Terminée'
+    };
+    
+    return exactMatches[value] || value;
+};
+
 // ============================================
 // 1. CRÉER UNE RÉSERVATION (client connecté)
 // ============================================
@@ -8,6 +36,7 @@ const createReservation = async (req, res) => {
     const client_id = req.clientId;
     
     const {
+        excursion_id,
         nb_personnes,
         montant_total,
         demande_speciale,
@@ -48,10 +77,10 @@ const createReservation = async (req, res) => {
     try {
         const reservation = await Reservation.createReservation({
             client_id,
+            excursion_id: excursion_id || null,
             nb_personnes,
             montant_total,
             demande_speciale: demande_speciale || null,
-            //excursion_id: excursion_id || null
         });
 
         res.status(201).json({
@@ -59,13 +88,12 @@ const createReservation = async (req, res) => {
             message: 'Réservation effectuée avec succès',
             reservation: {
                 id: reservation.id,
-               
+                
                 date: reservation.date_reservation,
                 statut: reservation.statut,
                 nb_personnes: reservation.nb_personnes,
                 montant_total: reservation.montant_total,
-                demande_speciale: reservation.demande_speciale,
-                 redirectUrl: `paiement.html?id=${reservation.id}`
+                demande_speciale: reservation.demande_speciale
             }
             
         });
@@ -79,9 +107,7 @@ const createReservation = async (req, res) => {
     }
 };
 
-// ============================================
-// 2. RÉCUPÉRER MES RÉSERVATIONS (client connecté)
-// ============================================
+
 const getMyReservations = async (req, res) => {
     const client_id = req.clientId;
 
@@ -103,9 +129,6 @@ const getMyReservations = async (req, res) => {
     }
 };
 
-// ============================================
-// 3. RÉCUPÉRER UNE RÉSERVATION PAR ID (admin ou client propriétaire)
-// ============================================
 const getReservationById = async (req, res) => {
     const { id } = req.params;
     const client_id = req.clientId;
@@ -143,9 +166,6 @@ const getReservationById = async (req, res) => {
     }
 };
 
-// ============================================
-// 4. RÉCUPÉRER TOUTES LES RÉSERVATIONS (admin uniquement)
-// ============================================
 const getAllReservations = async (req, res) => {
     try {
         const reservations = await Reservation.findAll();
@@ -165,14 +185,11 @@ const getAllReservations = async (req, res) => {
     }
 };
 
-// ============================================
-// 5. METTRE À JOUR LE STATUT D'UNE RÉSERVATION (admin uniquement)
-// ============================================
 const updateReservationStatus = async (req, res) => {
     const { id } = req.params;
-    const { statut } = req.body;
+    const statut = canonicalStatus(req.body.statut);
 
-    const validStatuts = ['en_attente', 'confirmee', 'annulee', 'terminee'];
+    const validStatuts = ['En attente', 'Confirmée', 'Annulée', 'Terminée'];
     
     if (!statut) {
         return res.status(400).json({
@@ -189,15 +206,18 @@ const updateReservationStatus = async (req, res) => {
     }
 
     try {
+        console.log(`Tentative de mise à jour réservation ${id} vers statut: ${statut}`);
         const reservation = await Reservation.updateStatus(id, statut);
         
         if (!reservation) {
+            console.error(`Réservation ${id} non trouvée dans la base`);
             return res.status(404).json({
                 success: false,
                 message: 'Réservation non trouvée'
             });
         }
 
+        console.log(`Mise à jour réussie pour réservation ${id}`);
         res.json({
             success: true,
             message: `Statut mis à jour : ${statut}`,
@@ -205,10 +225,10 @@ const updateReservationStatus = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Erreur mise à jour statut:', error);
+        console.error('ERREUR CRITIQUE mise à jour statut:', error);
         res.status(500).json({
             success: false,
-            message: 'Erreur serveur'
+            message: 'Erreur serveur : ' + error.message
         });
     }
 };
