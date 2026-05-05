@@ -184,6 +184,65 @@ const createAdminClient = async (req, res) => {
     }
 };
 
+const updateAdminClient = async (req, res) => {
+    const { id } = req.params;
+    const { nom, prenom, email, telephone, password } = req.body;
+
+    if (!nom || !email) {
+        return res.status(400).json({ success: false, message: 'Nom et email requis' });
+    }
+
+    try {
+        const existing = await pool.query('SELECT id FROM clientes WHERE email = $1 AND id != $2', [email, id]);
+        if (existing.rows.length > 0) {
+            return res.status(400).json({ success: false, message: 'Cet email est déjà utilisé par une autre cliente' });
+        }
+
+        let query = `UPDATE clientes SET nom = $1, prenom = $2, email = $3, telephone = $4`;
+        const params = [nom, prenom || null, email, telephone || null];
+
+        if (password && password.trim() !== "") {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            params.push(hashedPassword);
+            query += `, password_hash = $${params.length}`;
+        }
+
+        params.push(id);
+        query += ` WHERE id = $${params.length} RETURNING id, nom, prenom, email, telephone, created_at`;
+
+        const result = await pool.query(query, params);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Cliente non trouvée' });
+        }
+
+        res.json({ success: true, client: result.rows[0] });
+    } catch (error) {
+        console.error('Erreur mis a jour client admin:', error);
+        res.status(500).json({ success: false, message: 'Erreur serveur' });
+    }
+};
+
+const deleteAdminClient = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const result = await pool.query('DELETE FROM clientes WHERE id = $1 RETURNING id', [id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Cliente non trouvée' });
+        }
+
+        res.json({ success: true, message: 'Cliente supprimée' });
+    } catch (error) {
+        console.error('Erreur suppression client admin:', error);
+        //une erreur 23503 si elle a des réservations
+        if (error.code === '23503') {
+            return res.status(400).json({ success: false, message: 'Impossible de supprimer cette cliente car elle a des réservations associées.' });
+        }
+        res.status(500).json({ success: false, message: 'Erreur serveur' });
+    }
+};
+
 const getAdminExcursions = async (req, res) => {
     const query = (req.query.query || '').trim();
     const params = [];
@@ -222,7 +281,7 @@ const createAdminReservation = async (req, res) => {
             nb_personnes,
             montant_total,
             demande_speciale: demande_speciale || null,
-            statut: 'Confirmée' // Forcer le statut à Confirmée pour les créations admin
+            statut: 'Confirmée' //statut confirmé car chaque reservation crée par l'admin doit etre automatiquement confirmée
         });
 
         res.status(201).json({ success: true, reservation });
@@ -251,6 +310,8 @@ const deleteAdminReservation = async (req, res) => {
 
 module.exports.getAdminClients = getAdminClients;
 module.exports.createAdminClient = createAdminClient;
+module.exports.updateAdminClient = updateAdminClient;
+module.exports.deleteAdminClient = deleteAdminClient;
 module.exports.getAdminExcursions = getAdminExcursions;
 module.exports.createAdminReservation = createAdminReservation;
 module.exports.deleteAdminReservation = deleteAdminReservation;

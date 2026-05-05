@@ -15,7 +15,7 @@ const adminLogin = async (req, res) => {
     }
 
     try {
-        // 1. Vérifier si l'admin existe dans la base de données
+        // si l'admin existe dans la base de données
         const result = await pool.query(
             'SELECT * FROM admins WHERE email = $1',
             [email]
@@ -30,16 +30,11 @@ const adminLogin = async (req, res) => {
 
         const admin = result.rows[0];
 
-        // 2. Vérifier le mot de passe (comparer avec le hash)
+        //vérifier le mot de passe (comparer avec le hash)
         let passwordValid = false;
         
-        // Si le mot de passe est en clair dans la BDD (temporaire)
-        if (admin.password_hash === 'admin123_temporaire' && password === 'admin123') {
-            passwordValid = true;
-        } else {
-            // Normalement on compare avec bcrypt
-            passwordValid = await bcrypt.compare(password, admin.password_hash);
-        }
+        passwordValid = await bcrypt.compare(password, admin.password_hash);
+        
 
         if (!passwordValid) {
             return res.status(401).json({ 
@@ -48,7 +43,7 @@ const adminLogin = async (req, res) => {
             });
         }
 
-        // 3. Générer le token JWT
+        //générer le token JWT dans une durée de 24h
         const token = jwt.sign(
             { 
                 id: admin.id, 
@@ -60,7 +55,7 @@ const adminLogin = async (req, res) => {
             { expiresIn: '24h' }
         );
 
-        // 4. Retourner la réponse
+        //retourner la réponse
         res.json({
             success: true,
             token: token,
