@@ -10,6 +10,10 @@ node_modules/
 *.log
 npm-debug.log*
 
+# Uploads
+backend/uploads/*
+!backend/uploads/.gitkeep
+
 # Fichiers OS
 .DS_Store
 Thumbs.db
