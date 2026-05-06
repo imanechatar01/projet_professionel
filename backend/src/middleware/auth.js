@@ -1,21 +1,38 @@
 const jwt = require('jsonwebtoken');
 
-module.exports = (req, res, next) => {
-    let token = req.headers.authorization;
-
-    if (!token) {
-        return res.status(401).json({ message: "Accès refusé" });
+// Vérifier token client (pour les réservations)
+const verifyClientToken = async (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({
+            success: false,
+            message: 'Token manquant. Veuillez vous connecter.'
+        });
     }
 
-    if (token.startsWith('Bearer ')) {
-        token = token.split(' ')[1];
-    }
+    const token = authHeader.split(' ')[1];
 
     try {
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = verified;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        
+        if (decoded.role !== 'client') {
+            return res.status(403).json({
+                success: false,
+                message: 'Accès réservé aux clients'
+            });
+        }
+
+        // Ajouter l'ID du client à la requête
+        req.clientId = decoded.id;
         next();
-    } catch {
-        res.status(401).json({ message: "Token invalide" });
+        
+    } catch (error) {
+        return res.status(401).json({
+            success: false,
+            message: 'Token invalide ou expiré. Veuillez vous reconnecter.'
+        });
     }
 };
+
+module.exports = { verifyClientToken };
