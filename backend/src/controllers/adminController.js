@@ -264,6 +264,154 @@ const getAdminExcursions = async (req, res) => {
     }
 };
 
+const createAdminExcursion = async (req, res) => {
+    try {
+        const { titre, description, destination, prix, duree, ville_depart, lieu, type, image_url, programme, date_debut, date_fin, places_total } = req.body;
+        
+        if (!titre || !prix) {
+            return res.status(400).json({ success: false, message: 'Le titre et le prix sont obligatoires' });
+        }
+
+        const imageUrl = req.file ? `/uploads/${req.file.filename}` : (image_url || null);
+        
+        const result = await pool.query(
+            `INSERT INTO excursions (titre, description, destination, prix, duree, lieu, type, image_url, programme, date_debut, date_fin, places_total, places_restantes)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+             RETURNING *`,
+            [
+                titre,
+                description,
+                destination || '', 
+                prix,
+                duree || req.body["durée"] || '',
+                lieu || ville_depart || '', // Map ville_depart from form to 'lieu' column
+                type || 'autre',
+                imageUrl,
+                programme || '',
+                date_debut || null,
+                date_fin || null,
+                places_total || 0,
+                places_total || 0
+            ]
+        );
+        res.status(201).json({ success: true, excursion: result.rows[0] });
+    } catch (error) {
+        console.error('Erreur création excursion:', error);
+        res.status(500).json({ success: false, message: 'Erreur lors de la création du voyage : ' + error.message });
+    }
+};
+
+const updateAdminExcursion = async (req, res) => {
+    const { id } = req.params;
+    try {
+        let imageUrl = req.body.image_url;
+        if (req.file) {
+            imageUrl = `/uploads/${req.file.filename}`;
+        }
+
+        const { titre, description, destination, prix, duree, ville_depart, lieu, type, programme, date_debut, date_fin, places_total } = req.body;
+        const finalDuree = duree || req.body["durée"];
+
+        const result = await pool.query(
+            `UPDATE excursions 
+             SET titre = $1, description = $2, destination = $3, prix = $4, duree = $5, lieu = $6, type = $7, image_url = $8, programme = $9, date_debut = $10, date_fin = $11, places_total = $12
+             WHERE id = $13
+             RETURNING *`,
+            [
+                titre,
+                description,
+                destination || '',
+                prix,
+                finalDuree || '',
+                lieu || ville_depart || '', // Map ville_depart from form to 'lieu' column
+                type || 'autre',
+                imageUrl,
+                programme || '',
+                date_debut || null,
+                date_fin || null,
+                places_total || 0,
+                id
+            ]
+        );
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Voyage non trouvé' });
+        }
+        res.json({ success: true, excursion: result.rows[0] });
+    } catch (error) {
+        console.error('Erreur mise à jour excursion détaillée:', error);
+        res.status(500).json({ success: false, message: 'Erreur serveur: ' + error.message });
+    }
+};
+
+const deleteAdminExcursion = async (req, res) => {
+    const { id } = req.params;
+    try {
+        // Vérifier si des réservations existent pour cette excursion
+        const check = await pool.query('SELECT count(*) FROM reservations WHERE excursion_id = $1', [id]);
+        if (parseInt(check.rows[0].count) > 0) {
+            return res.status(400).json({ 
+                success: false,
+                hasReservations: true,
+                message: 'Impossible de supprimer ce voyage car il possède des réservations actives.' 
+            });
+        }
+
+        const result = await pool.query('DELETE FROM excursions WHERE id = $1 RETURNING id', [id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Voyage non trouvé' });
+        }
+        res.json({ success: true, message: 'Voyage supprimé' });
+    } catch (error) {
+        console.error('Erreur suppression excursion:', error);
+        res.status(500).json({ success: false, message: 'Erreur serveur lors de la suppression' });
+    }
+};
+
+const deleteAdminExcursionRecursive = async (req, res) => {
+    const { id } = req.params;
+    const { message } = req.body;
+    
+    let dbClient;
+    try {
+        dbClient = await pool.connect();
+        await dbClient.query('BEGIN');
+
+        // 1. Récupérer les emails des clients concernés
+        const clientsResult = await dbClient.query(`
+            SELECT DISTINCT c.email, c.nom, c.prenom 
+            FROM clientes c
+            JOIN reservations r ON c.id = r.cliente_id
+            WHERE r.excursion_id = $1
+        `, [id]);
+
+        // 2. Simuler l'envoi d'email (Journalisation)
+        console.log(`--- SIMULATION ENVOI EMAILS (Annulation Excursion ID: ${id}) ---`);
+        clientsResult.rows.forEach(c => {
+            console.log(`À: ${c.email} | Message: ${message}`);
+        });
+        console.log('--- FIN SIMULATION ---');
+
+        // 3. Supprimer les réservations (récursif)
+        await dbClient.query('DELETE FROM reservations WHERE excursion_id = $1', [id]);
+
+        // 4. Supprimer l'excursion
+        const result = await dbClient.query('DELETE FROM excursions WHERE id = $1 RETURNING id', [id]);
+
+        if (result.rows.length === 0) {
+            throw new Error('Excursion non trouvée');
+        }
+
+        await dbClient.query('COMMIT');
+        res.json({ success: true, message: 'Emails envoyés et voyage supprimé récursivement' });
+    } catch (error) {
+        if (dbClient) await dbClient.query('ROLLBACK');
+        console.error('Erreur suppression récursive:', error);
+        res.status(500).json({ success: false, message: error.message });
+    } finally {
+        if (dbClient) dbClient.release();
+    }
+};
+
 const createAdminReservation = async (req, res) => {
     const { client_id, excursion_id, nb_personnes, montant_total, demande_speciale } = req.body;
 
@@ -313,5 +461,9 @@ module.exports.createAdminClient = createAdminClient;
 module.exports.updateAdminClient = updateAdminClient;
 module.exports.deleteAdminClient = deleteAdminClient;
 module.exports.getAdminExcursions = getAdminExcursions;
+module.exports.createAdminExcursion = createAdminExcursion;
+module.exports.updateAdminExcursion = updateAdminExcursion;
+module.exports.deleteAdminExcursion = deleteAdminExcursion;
+module.exports.deleteAdminExcursionRecursive = deleteAdminExcursionRecursive;
 module.exports.createAdminReservation = createAdminReservation;
 module.exports.deleteAdminReservation = deleteAdminReservation;
