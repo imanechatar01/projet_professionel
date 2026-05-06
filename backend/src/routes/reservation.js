@@ -2,16 +2,18 @@
 
 const express = require('express');
 const router = express.Router();
+
 const {
     createReservation,
     getMyReservations,
     getAllReservations,
     updateReservationStatus
 } = require('../controllers/reservationController');
+
 const { verifyClientToken } = require('../middleware/auth');
 const { verifyAdminToken } = require('../controllers/authController');
 
-// Routes client (protégées par token)
+// Routes client (protégées)
 router.post('/', verifyClientToken, createReservation);
 router.get('/me', verifyClientToken, getMyReservations);
 

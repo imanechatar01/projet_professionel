@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Galerie · Ecotripswomen Admin</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap');
+
+        :root {
+            --primary: #E91E63;
+            --primary-light: #ff8fbb;
+            --bg-body: #f7f9fa;
+            --bg-card: #ffffff;
+            --text-dark: #1a1a2e;
+            --text-gray: #6b7280;
+            --border: #eef2f6;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            color: var(--text-dark);
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        /* Formulaire */
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-gray);
+            margin-bottom: 0.5rem;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        .btn {
+            background: linear-gradient(135deg, var(--primary) 0%, #c2185b 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            width: 100%;
+            transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.9; }
+
+        /* Galerie Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            background: var(--bg-card);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .gallery-info {
+            padding: 1rem;
+        }
+
+        .gallery-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .gallery-desc {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            margin-bottom: 1rem;
+        }
+
+        .delete-btn {
+            background: #fff0f0;
+            color: var(--danger);
+            border: 1px solid #ffd0d0;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+        .alert.error { background: #fee2e2; color: #b91c1c; display: block; }
+        .alert.success { background: #d1fae5; color: #047857; display: block; }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <a href="../dashboard.html" class="back-link">← Retour au Dashboard</a>
+            <h1>Gestion de la Galerie</h1>
+        </div>
+    </header>
+
+    <div id="messageBox"></div>
+
+    <div class="container">
+        <!-- Formulaire d'ajout -->
+        <aside class="card">
+            <h2>Ajouter une photo</h2>
+            <form id="uploadForm">
+                <div class="form-group">
+                    <label for="titre">Titre</label>
+                    <input type="text" id="titre" class="form-control" required placeholder="Ex: Randonnée dans l'Atlas">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" class="form-control" rows="3" placeholder="Une expérience inoubliable..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="image">Image (JPG, PNG - Max 2MB)</label>
+                    <input type="file" id="image" class="form-control" accept="image/jpeg, image/png" required>
+                </div>
+                <div class="form-group">
+                    <label for="categorie">Catégorie / Excursion</label>
+                    <select id="categorie" class="form-control" required>
+                        <option value="principale">Page Principale de l'Agence</option>
+                        <option value="excursion_sahara">Excursion Sahara</option>
+                        <option value="excursion_atlas">Excursion Haut-Atlas</option>
+                        <option value="excursion_dakhla">Excursion Dakhla</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn" id="submitBtn">Mettre en ligne</button>
+            </form>
+        </aside>
+
+        <!-- Affichage de la galerie -->
+        <section class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <h2 style="margin: 0;">Photos en ligne</h2>
+                <div style="display: flex; gap: 1rem;">
+                    <select id="filterCategorie" class="form-control" style="width: auto; padding: 0.5rem;">
+                        <option value="toutes">Toutes les galeries</option>
+                        <option value="principale">Page Principale</option>
+                        <option value="excursion_sahara">Excursion Sahara</option>
+                        <option value="excursion_atlas">Excursion Haut-Atlas</option>
+                        <option value="excursion_dakhla">Excursion Dakhla</option>
+                    </select>
+                    <input type="text" id="searchInput" class="form-control" style="width: 250px; padding: 0.5rem;" placeholder="Rechercher par titre...">
+                </div>
+            </div>
+            <div class="gallery-grid" id="galleryContainer">
+                <p style="color:var(--text-gray); grid-column: 1/-1;">Chargement des images...</p>
+            </div>
+            <div id="paginationControls" style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem;">
+                <button class="btn" id="prevBtn" style="width: auto; padding: 0.5rem 1rem;">Précédent</button>
+                <span id="pageInfo" style="align-self: center; font-weight: 500;">Page 1</span>
+                <button class="btn" id="nextBtn" style="width: auto; padding: 0.5rem 1rem;">Suivant</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Le script externe est importé ici -->
+    <script src="index.js"></script>
+</body>
+</html>
