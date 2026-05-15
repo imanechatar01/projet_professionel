@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Ecotrips Women | Voyages féminins au Maroc</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/design-system.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/pages/home.css">
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a class="logo" href="web_site.html">
+        <div class="logo-mark">EW</div>
+        <div>
+          <div class="logo-text">ecotrips_women</div>
+          <div class="logo-sub">She Can Travel</div>
+        </div>
+      </a>
+
+      <div class="nav-links">
+        <a href="web_site.html" class="nav-active">Accueil</a>
+        <a href="catalogue.html">Voyages</a>
+        <a href="#galerie">Galerie</a>
+        <a href="#contact">Contact</a>
+        <a href="login.html" class="nav-cta">Réserver</a>
+      </div>
+
+      <button class="menu-btn" onclick="toggleMobileMenu()" aria-label="Ouvrir le menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="web_site.html" onclick="closeMobileMenu()">Accueil</a>
+    <a href="catalogue.html" onclick="closeMobileMenu()">Voyages</a>
+    <a href="#galerie" onclick="closeMobileMenu()">Galerie</a>
+    <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+    <a href="login.html" onclick="closeMobileMenu()">Espace client</a>
+    <button class="mob-cta" onclick="window.location.href='catalogue.html'">
+      Voir les voyages
+    </button>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-pattern"></div>
+
+    <div class="hero-content">
+      <div>
+        <div class="hero-badge">Voyages 100% féminins au Maroc</div>
+
+        <h1 class="hero-title">
+          Explore le Maroc<br>
+          <em>entre femmes</em>
+        </h1>
+
+        <p class="hero-desc">
+          Rejoins une communauté de femmes aventurières qui découvrent les plus beaux trésors du Maroc :
+          rafting, randonnée, plongée, zipline et expériences authentiques dans un cadre féminin, sécurisé
+          et bien organisé.
+        </p>
+
+        <div class="hero-btns">
+          <a href="catalogue.html" class="btn btn-pink">Voir les voyages</a>
+          <a href="#home-about" class="btn btn-outline-pink">Notre histoire</a>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="hero-2col">
+          <div class="hero-card">
+            <div class="hero-card-num">26 400+</div>
+            <div class="hero-card-label">Abonnées Instagram</div>
+          </div>
+
+          <div class="hero-card">
+            <div class="hero-card-num">100%</div>
+            <div class="hero-card-label">Voyages féminins</div>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;">
+            <div>
+              <div style="font-family:var(--font-h);font-size:1.15rem;font-weight:700;color:var(--dark);">
+                Cathédrale Imsfrane + Rafting
+              </div>
+              <div style="font-size:0.8rem;color:#7a4a5a;margin-top:0.2rem;font-weight:500;">
+                Prochain départ · 12–13 Juin
+              </div>
+            </div>
+
+            <div style="background:var(--fuchsia-lt);color:var(--fuchsia);padding:0.3rem 0.7rem;border-radius:var(--r-pill);font-size:0.75rem;font-weight:700;">
+              Places limitées
+            </div>
+          </div>
+
+          <div style="margin-top:1rem;background:rgba(194,24,91,0.12);border-radius:6px;height:5px;">
+            <div style="width:75%;height:100%;background:linear-gradient(90deg,var(--fuchsia),#F07060);border-radius:6px;"></div>
+          </div>
+
+          <div style="font-size:0.73rem;color:#7a4a5a;margin-top:0.35rem;font-weight:600;">
+            Réservations en cours
+          </div>
+        </div>
+
+        <div class="hero-2col">
+          <div class="hero-card">
+            <div class="hero-card-num">6+</div>
+            <div class="hero-card-label">Destinations actives</div>
+          </div>
+
+          <div class="hero-card">
+            <div class="hero-card-num">24h</div>
+            <div class="hero-card-label">Réponse WhatsApp</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- FEATURES -->
+  <section class="features-bar">
+    <div class="features-inner">
+      <div class="feature-item">
+        <div class="feature-icon">01</div>
+        <div>
+          <div class="feature-title">Voyages entre femmes</div>
+          <div class="feature-desc">Une ambiance confortable, bienveillante et pensée pour les voyageuses.</div>
+        </div>
+      </div>
+
+      <div class="feature-item">
+        <div class="feature-icon">02</div>
+        <div>
+          <div class="feature-title">Organisation complète</div>
+          <div class="feature-desc">Transport, programme, accompagnement et détails pratiques préparés à l’avance.</div>
+        </div>
+      </div>
+
+      <div class="feature-item">
+        <div class="feature-icon">03</div>
+        <div>
+          <div class="feature-title">Aventures au Maroc</div>
+          <div class="feature-desc">Nature, montagne, mer, cascades et expériences locales authentiques.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="home-about">
+    <div class="section-inner">
+      <div class="about-layout">
+        <div class="about-image-wrap">
+          <img
+            class="about-image"
+            src="https://images.unsplash.com/photo-1548018560-c7196548e84d?w=1200&q=80"
+            alt="Voyage au Maroc"
+          >
+
+          <div class="about-badge">
+            <div class="about-badge-number">2026</div>
+            <div class="about-badge-text">Aventures féminines</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="eyebrow" style="justify-content:flex-start;">À propos</div>
+
+          <h2 class="section-title" style="text-align:left;">
+            Une communauté pour voyager <em>avec confiance</em>
+          </h2>
+
+          <p class="section-sub" style="margin:0 0 2rem;text-align:left;">
+            Ecotrips Women organise des sorties et voyages féminins au Maroc pour permettre aux femmes
+            de découvrir de nouvelles destinations, partager des moments forts et vivre des expériences
+            accessibles, encadrées et mémorables.
+          </p>
+
+          <div class="check-list">
+            <div class="check-item">
+              <span class="check-mark">✓</span>
+              Voyages organisés et encadrés
+            </div>
+
+            <div class="check-item">
+              <span class="check-mark">✓</span>
+              Groupes féminins et ambiance respectueuse
+            </div>
+
+            <div class="check-item">
+              <span class="check-mark">✓</span>
+              Destinations nature, aventure et découverte
+            </div>
+
+            <div class="check-item">
+              <span class="check-mark">✓</span>
+              Contact rapide via WhatsApp
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VOYAGES PREVIEW -->
+  <section class="section" style="background:var(--off-white);">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="eyebrow">Nos expériences</div>
+        <h2 class="section-title">Choisis ton prochain <em>voyage</em></h2>
+        <p class="section-sub">
+          Découvre nos excursions et circuits disponibles, puis réserve directement depuis ton espace client.
+        </p>
+      </div>
+
+      <div class="trips-grid">
+        <a href="catalogue.html" class="trip-card" style="text-decoration:none;">
+          <div class="trip-img">
+            <img src="https://images.unsplash.com/photo-1553522911-7a8568c65ae7?w=900&q=80" alt="Rafting au Maroc">
+            <div class="trip-price">À partir de 190 dhs</div>
+            <div class="trip-tags">
+              <span class="tag">Rafting</span>
+              <span class="tag">Aventure</span>
+            </div>
+          </div>
+          <div class="trip-body">
+            <div class="trip-title">Rafting et nature</div>
+            <div class="trip-meta">
+              <div class="trip-meta-item">Expériences sportives et sensations fortes</div>
+            </div>
+            <span class="btn btn-pink btn-full" style="font-size:0.85rem;padding:0.65rem;">Voir les voyages</span>
+          </div>
+        </a>
+
+        <a href="catalogue.html" class="trip-card" style="text-decoration:none;">
+          <div class="trip-img">
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80" alt="Randonnée au Maroc">
+            <div class="trip-price">Excursions 1 jour</div>
+            <div class="trip-tags">
+              <span class="tag">Randonnée</span>
+              <span class="tag">Cascade</span>
+            </div>
+          </div>
+          <div class="trip-body">
+            <div class="trip-title">Randonnée et cascades</div>
+            <div class="trip-meta">
+              <div class="trip-meta-item">Akchour, Chefchaouen et destinations nature</div>
+            </div>
+            <span class="btn btn-pink btn-full" style="font-size:0.85rem;padding:0.65rem;">Voir les voyages</span>
+          </div>
+        </a>
+
+        <a href="catalogue.html" class="trip-card" style="text-decoration:none;">
+          <div class="trip-img">
+            <img src="https://images.unsplash.com/photo-1542401886-65d6c61db217?w=900&q=80" alt="Plongée au Maroc">
+            <div class="trip-price">Sorties mer</div>
+            <div class="trip-tags">
+              <span class="tag">Plongée</span>
+              <span class="tag">Mer</span>
+            </div>
+          </div>
+          <div class="trip-body">
+            <div class="trip-title">Plongée et détente</div>
+            <div class="trip-meta">
+              <div class="trip-meta-item">Découverte des fonds marins et journées au bord de l’eau</div>
+            </div>
+            <span class="btn btn-pink btn-full" style="font-size:0.85rem;padding:0.65rem;">Voir les voyages</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="section" id="galerie">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="eyebrow">Galerie</div>
+        <h2 class="section-title">Moments de <em>voyage</em></h2>
+        <p class="section-sub">
+          Quelques aperçus de l’esprit Ecotrips Women : nature, aventure, partage et découverte.
+        </p>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-item" onclick="openLightbox(this)">
+          <img src="https://images.unsplash.com/photo-1548018560-c7196548e84d?w=900&q=80" alt="Voyage au Maroc">
+          <div class="gallery-overlay"><span class="gallery-zoom">+</span></div>
+        </div>
+
+        <div class="gallery-item" onclick="openLightbox(this)">
+          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80" alt="Montagne et nature">
+          <div class="gallery-overlay"><span class="gallery-zoom">+</span></div>
+        </div>
+
+        <div class="gallery-item" onclick="openLightbox(this)">
+          <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=900&q=80" alt="Route et aventure">
+          <div class="gallery-overlay"><span class="gallery-zoom">+</span></div>
+        </div>
+
+        <div class="gallery-item" onclick="openLightbox(this)">
+          <img src="https://images.unsplash.com/photo-1542621334-a254cf47733d?w=900&q=80" alt="Marrakech et désert">
+          <div class="gallery-overlay"><span class="gallery-zoom">+</span></div>
+        </div>
+
+        <div class="gallery-item" onclick="openLightbox(this)">
+          <img src="https://images.unsplash.com/photo-1542401886-65d6c61db217?w=900&q=80" alt="Mer et plongée">
+          <div class="gallery-overlay"><span class="gallery-zoom">+</span></div>
+        </div>
+
+        <div class="gallery-item" onclick="openLightbox(this)">
+          <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=900&q=80" alt="Cascade et nature">
+          <div class="gallery-overlay"><span class="gallery-zoom">+</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" type="button">×</button>
+    <img id="lightbox-img" src="" alt="">
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="eyebrow">Avis</div>
+        <h2 class="section-title">Elles ont voyagé <em>avec nous</em></h2>
+        <p class="section-sub">
+          Des retours simples et sincères de participantes qui ont vécu l’expérience.
+        </p>
+      </div>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">
+            “Organisation très claire, ambiance agréable et voyage bien encadré. J’ai beaucoup aimé l’expérience.”
+          </p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">FZ</div>
+            <div>
+              <div class="testimonial-name">Fatima Zahra</div>
+              <div class="testimonial-loc">Tanger</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">
+            “J’ai découvert de nouveaux endroits et rencontré des filles très gentilles. Une très belle énergie.”
+          </p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">ME</div>
+            <div>
+              <div class="testimonial-name">Meriem</div>
+              <div class="testimonial-loc">Tétouan</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">
+            “Le programme était bien préparé et la communication rapide. Je recommande pour voyager en groupe.”
+          </p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">SA</div>
+            <div>
+              <div class="testimonial-name">Sara</div>
+              <div class="testimonial-loc">Rabat</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTAGRAM -->
+  <section class="insta-strip">
+    <h3>Rejoins-nous sur Instagram</h3>
+    <p>Suis nos prochaines sorties, stories, photos et annonces de départs.</p>
+    <a href="https://www.instagram.com/ecotrips_women/" target="_blank" class="insta-btn">
+      @ecotrips_women
+    </a>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact-layout">
+    <div>
+      <div class="eyebrow" style="justify-content:flex-start;">Contact</div>
+
+      <h2 class="section-title" style="text-align:left;">
+        Parlons de ton prochain <em>voyage</em>
+      </h2>
+
+      <p class="section-sub" style="margin:0 0 2rem;text-align:left;">
+        Une question sur les destinations, les dates ou la réservation ? Contacte-nous directement.
+      </p>
+
+      <div class="contact-info-item">
+        <div class="contact-icon">MAIL</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-val">salmachair248@gmail.com</div>
+        </div>
+      </div>
+
+      <div class="contact-info-item">
+        <div class="contact-icon">TEL</div>
+        <div>
+          <div class="contact-label">WhatsApp / Téléphone</div>
+          <div class="contact-val">+212 600 368 626</div>
+        </div>
+      </div>
+
+      <div class="contact-info-item">
+        <div class="contact-icon">MAP</div>
+        <div>
+          <div class="contact-label">Départs depuis</div>
+          <div class="contact-val">Tanger · Tétouan · Rabat · Sala El Jadida</div>
+        </div>
+      </div>
+
+      <div class="contact-info-item">
+        <div class="contact-icon">IG</div>
+        <div>
+          <div class="contact-label">Instagram</div>
+          <div class="contact-val">
+            <a href="https://www.instagram.com/ecotrips_women/" target="_blank" style="color:var(--fuchsia);font-weight:600;text-decoration:none;">
+              @ecotrips_women
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <a href="https://wa.me/212600368626" target="_blank" class="btn btn-pink">
+        Ouvrir WhatsApp
+      </a>
+    </div>
+
+    <div style="background:white;border-radius:var(--r);padding:2.5rem;box-shadow:var(--shadow-card);border:1px solid rgba(194,24,91,0.07);">
+      <form onsubmit="event.preventDefault(); showToast('Message préparé. Contacte-nous aussi sur WhatsApp pour une réponse rapide.');">
+        <div class="form-group">
+          <label for="contact-name">Nom</label>
+          <input type="text" id="contact-name" placeholder="Ton nom">
+        </div>
+
+        <div class="form-group">
+          <label for="contact-email">Email</label>
+          <input type="email" id="contact-email" placeholder="ton@email.com">
+        </div>
+
+        <div class="form-group">
+          <label for="contact-message">Message</label>
+          <textarea id="contact-message" rows="5" placeholder="Ta question..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-pink btn-full">
+          Envoyer le message
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo">ecotrips<span>_women</span></div>
+          <p class="footer-desc">
+            Voyages 100% féminins au Maroc. Rejoins notre communauté de femmes aventurières.
+          </p>
+
+          <div class="footer-social">
+            <a class="social-btn" href="https://www.instagram.com/ecotrips_women/" target="_blank">IG</a>
+            <a class="social-btn" href="https://wa.me/212600368626" target="_blank">WA</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Voyages</div>
+          <ul class="footer-links">
+            <li><a href="catalogue.html">Tous les voyages</a></li>
+            <li><a href="catalogue.html">Rafting</a></li>
+            <li><a href="catalogue.html">Randonnée</a></li>
+            <li><a href="catalogue.html">Plongée</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Liens</div>
+          <ul class="footer-links">
+            <li><a href="web_site.html">Accueil</a></li>
+            <li><a href="#home-about">À propos</a></li>
+            <li><a href="#galerie">Galerie</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="login.html">Espace client</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Contact</div>
+          <ul class="footer-links">
+            <li><a href="mailto:salmachair248@gmail.com">salmachair248@gmail.com</a></li>
+            <li><a href="https://wa.me/212600368626" target="_blank">+212 600 368 626</a></li>
+            <li><a href="https://www.instagram.com/ecotrips_women/" target="_blank">@ecotrips_women</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-bottom-text">© 2026 ecotrips_women — She Can Travel.</div>
+        <div class="footer-bottom-text">Voyages féminins au Maroc</div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    ↑
+  </button>
+
+  <div class="toast" id="toast"></div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/ui.js"></script>
+</body>
+</html>
