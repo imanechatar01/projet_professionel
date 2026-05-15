@@ -64,7 +64,7 @@
                 <li><a href="clientes/index.html" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
                     <i class="fas fa-users mr-4 w-5 text-center"></i> Clientes
                 </a></li>
-                <li><a href="#" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                <li><a href="messages/index.html" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
                     <i class="fas fa-envelope mr-4 w-5 text-center"></i> Messages
                 </a></li>
                 <li><a href="#" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
@@ -329,8 +329,26 @@
 
                     if (data.success) {
                         this.updateKPIs(data.stats.kpi);
+                        if(data.stats.kpi) {
+                            console.log("Dashboard - KPIs reçus:", data.stats.kpi);
+                        } else {
+                            console.warn("Dashboard - Aucune KPI reçue.");
+                        }
                         this.renderCharts(data.stats);
+                        if(data.stats.length > 0) {
+                            console.log("Dashboard - Statistiques reçues:", data.stats);
+                        }                        else {
+                            console.warn("Dashboard - Aucune statistique reçue.");
+                        }
                         this.updateTable(data.stats.recent);
+                        if(data.stats.recent.length > 0) {
+                            console.log("Dashboard - Dernières réservations:", data.stats.recent);
+                        }
+                        else {
+                            console.warn("Dashboard - Aucune réservation récente trouvée.");
+                        }
+                    }else {
+                        console.error("Dashboard - API Error:", data.message);
                     }
                 } catch (e) { console.error('Dashboard Error:', e); }
             },
@@ -481,6 +499,7 @@
                 document.getElementById('reservationsTable').innerHTML = recent.map(res => `
                     <tr class="hover:bg-gray-50/50">
                         <td class="py-4 text-sm text-gray-500">#RES-26-${res.id}</td>
+                        
                         <td class="py-4 font-semibold">${res.cliente_prenom} ${res.cliente_nom}</td>
                         <td class="py-4 text-gray-600">${res.excursion_titre}</td>
                         <td class="py-4 text-gray-500">${new Date(res.created_at).toLocaleDateString('fr-FR')}</td>

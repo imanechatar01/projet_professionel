@@ -36,7 +36,7 @@ const createReservation = async (req, res) => {
     const client_id = req.clientId;
     
     const {
-        excursion_id,
+        excursion_id =1,
         nb_personnes,
         montant_total,
         demande_speciale,
