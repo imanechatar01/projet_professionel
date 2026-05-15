@@ -85,8 +85,9 @@ function displayUser() {
 async function resolveSelectedTrip() {
   const saved = sessionStorage.getItem(window.APP_CONFIG.STORAGE_KEYS.SELECTED_TRIP);
   const excursionId = getQueryParam("excursion_id");
+  console.log("Excursion ID dans l'URL:", excursionId);
 
-  if (saved) {
+  /*if (saved) {
     try {
       const parsed = JSON.parse(saved);
 
@@ -97,7 +98,7 @@ async function resolveSelectedTrip() {
       console.warn("Erreur selectedTrip:", error.message);
     }
   }
-
+*/
   if (excursionId && window.ApiClient) {
     try {
       const data = await window.ApiClient.getExcursionById(excursionId);

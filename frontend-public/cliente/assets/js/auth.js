@@ -86,7 +86,7 @@
           showSuccess("Connexion réussie ! Redirection...");
 
           setTimeout(function () {
-            window.location.href = config().ROUTES.RESERVATION;
+            window.location.href = config().ROUTES.CATALOGUE;
           }, 1200);
         } else {
           showError(data.message || "Email ou mot de passe incorrect");

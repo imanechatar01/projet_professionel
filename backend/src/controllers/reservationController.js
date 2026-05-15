@@ -34,9 +34,11 @@ const canonicalStatus = (value) => {
 const createReservation = async (req, res) => {
     // L'ID du client vient du token (ajouté par le middleware verifyClientToken)
     const client_id = req.clientId;
-    
+    console.log('Client ID pour la réservation:', client_id);
+    console.log('Données reçues pour la création de réservation:', req.body);
+    console.log('Excursion ID pour la réservation:', req.body.excursion_id);
     const {
-        excursion_id =1,
+        excursion_id ,
         nb_personnes,
         montant_total,
         demande_speciale,

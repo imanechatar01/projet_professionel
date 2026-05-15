@@ -12,6 +12,8 @@ class Reservation {
 
     // Créer une réservation
     static async createReservation(data) {
+        console.log('Données reçues pour la création de réservation:', data);
+        console.log('Client ID pour la réservation:', data.client_id);
         const {
             client_id,
             excursion_id,
@@ -20,7 +22,7 @@ class Reservation {
             demande_speciale,
             statut = 'En attente'
         } = data;
-
+        console.log(excursion_id);
 
         const result = await pool.query(
             `INSERT INTO reservations 
@@ -29,7 +31,7 @@ class Reservation {
              RETURNING *`,
             [client_id, excursion_id || null, nb_personnes, montant_total, demande_speciale || null,statut]
 
-            [client_id, excursion_id || null, nb_personnes, montant_total, demande_speciale || null, statut]
+            
         );
         
         return result.rows[0];
@@ -57,7 +59,7 @@ class Reservation {
             `SELECT r.*, e.titre as excursion_titre, e.prix as excursion_prix, r.created_at as excursion_date, c.nom as client_nom, c.email as client_email, c.prenom as client_prenom
              FROM reservations r
              LEFT JOIN clientes c ON r.client_id = c.id
-             LEFT JOIN clientes c ON r.client_id = c.id
+             
              LEFT JOIN excursions e ON r.excursion_id = e.id
              WHERE r.id = $1`,
             [id]
