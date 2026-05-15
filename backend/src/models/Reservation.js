@@ -21,16 +21,17 @@ class Reservation {
             statut = 'En attente'
         } = data;
 
-        const numero_reservation = this.generateNumber();
+        console.log(excursion_id);
 
         const result = await pool.query(
             `INSERT INTO reservations 
-             (cliente_id, excursion_id, nb_personnes, montant_total, demande_speciale, numero_reservation, statut) 
-             VALUES ($1, $2, $3, $4, $5, $6, $7)
+             (client_id, excursion_id, nb_personnes, montant_total, demande_speciale, statut) 
+             VALUES ($1, $2, $3, $4, $5, $6)
              RETURNING *`,
-            [client_id, excursion_id || null, nb_personnes, montant_total, demande_speciale || null, numero_reservation, statut]
-        );
+            [client_id, excursion_id || null, nb_personnes, montant_total, demande_speciale || null,statut]
 
+        );
+        
         return result.rows[0];
     }
 
@@ -39,9 +40,9 @@ class Reservation {
         const result = await pool.query(
             `SELECT r.*, e.titre as excursion_titre, e.prix as excursion_prix, r.created_at as excursion_date, c.nom as client_nom, c.prenom as client_prenom, c.email as client_email
              FROM reservations r
-             LEFT JOIN clientes c ON r.cliente_id = c.id
+             LEFT JOIN clientes c ON r.client_id = c.id
              LEFT JOIN excursions e ON r.excursion_id = e.id
-             WHERE r.cliente_id = $1 
+             WHERE r.client_id = $1 
              ORDER BY r.created_at DESC`,
             [clientId]
         );
@@ -53,7 +54,7 @@ class Reservation {
         const result = await pool.query(
             `SELECT r.*, e.titre as excursion_titre, e.prix as excursion_prix, r.created_at as excursion_date, c.nom as client_nom, c.email as client_email, c.prenom as client_prenom
              FROM reservations r
-             LEFT JOIN clientes c ON r.cliente_id = c.id
+             LEFT JOIN clientes c ON r.client_id = c.id
              LEFT JOIN excursions e ON r.excursion_id = e.id
              WHERE r.id = $1`,
             [id]
@@ -66,7 +67,7 @@ class Reservation {
         const result = await pool.query(
             `SELECT r.*, e.titre as excursion_titre, e.prix as excursion_prix, r.created_at as excursion_date, c.nom as client_nom, c.email as client_email, c.prenom as client_prenom
              FROM reservations r
-             LEFT JOIN clientes c ON r.cliente_id = c.id
+             LEFT JOIN clientes c ON r.client_id = c.id
              LEFT JOIN excursions e ON r.excursion_id = e.id
              ORDER BY r.created_at DESC`
         );

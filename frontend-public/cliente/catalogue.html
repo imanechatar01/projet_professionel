@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Catalogue Voyages | Ecotrips Women</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/design-system.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/pages/catalogue.css">
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a class="logo" href="web_site.html">
+        <div class="logo-mark">EW</div>
+        <div>
+          <div class="logo-text">ecotrips_women</div>
+          <div class="logo-sub">She Can Travel</div>
+        </div>
+      </a>
+
+      <div class="nav-links">
+        <a href="web_site.html">Accueil</a>
+        <a href="catalogue.html" class="nav-active">Voyages</a>
+        <a href="web_site.html#galerie">Galerie</a>
+        <a href="web_site.html#contact">Contact</a>
+        <a href="login.html" class="nav-cta">Réserver</a>
+      </div>
+
+      <button class="menu-btn" onclick="toggleMobileMenu()" aria-label="Ouvrir le menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="web_site.html" onclick="closeMobileMenu()">Accueil</a>
+    <a href="catalogue.html" onclick="closeMobileMenu()">Voyages</a>
+    <a href="web_site.html#galerie" onclick="closeMobileMenu()">Galerie</a>
+    <a href="web_site.html#contact" onclick="closeMobileMenu()">Contact</a>
+    <a href="login.html" onclick="closeMobileMenu()">Espace Client</a>
+    <button class="mob-cta" onclick="window.location.href='login.html'">Réserver maintenant</button>
+  </div>
+
+  <!-- VUE LISTE -->
+  <main id="view-list">
+    <section class="page-header">
+      <div class="page-header-inner">
+        <div class="breadcrumb">
+          <a href="web_site.html" style="text-decoration:none;color:inherit;">Accueil</a>
+          <span style="opacity:0.4;margin:0 0.25rem;">/</span>
+          <span>Voyages</span>
+        </div>
+
+        <h1>Tous nos <em>Voyages</em></h1>
+        <p>Des aventures féminines uniques à travers le Maroc — rafting, randonnée, plongée, et bien plus.</p>
+      </div>
+    </section>
+
+    <section class="filters-bar">
+      <div class="filters-inner">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Rechercher une destination..."
+          id="catalogue-search"
+          oninput="filterTrips()"
+        >
+
+        <select class="filter-select" id="filter-region" onchange="filterTrips()">
+          <option value="">Toutes les régions</option>
+          <option>Nord Maroc</option>
+          <option>Centre Maroc</option>
+          <option>Sud Maroc</option>
+        </select>
+
+        <select class="filter-select" id="filter-type" onchange="filterTrips()">
+          <option value="">Tous les styles</option>
+          <option>Aventure</option>
+          <option>Nature</option>
+          <option>Plongée</option>
+          <option>Culturel</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:4rem;">
+      <div class="section-inner">
+        <div class="trips-grid" id="trips-container"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- VUE DÉTAIL -->
+  <main id="view-detail">
+    <section class="detail-hero">
+      <img id="detail-img" src="" alt="">
+      <div class="detail-hero-overlay"></div>
+
+      <div class="detail-hero-content">
+        <a class="back-btn" onclick="showList()">Retour au catalogue</a>
+
+        <div id="detail-tags" style="display:flex;gap:0.5rem;margin-bottom:0.75rem;"></div>
+
+        <h1 id="detail-title"></h1>
+        <p id="detail-subtitle" style="opacity:0.85;font-size:1rem;"></p>
+      </div>
+    </section>
+
+    <section class="detail-layout">
+      <div>
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab('overview')">Aperçu</button>
+          <button class="tab-btn" onclick="switchTab('itinerary')">Programme</button>
+          <button class="tab-btn" onclick="switchTab('reviews')">Avis</button>
+        </div>
+
+        <div id="tab-overview" class="tab-content active">
+          <h3 style="font-family:var(--font-h);font-size:1.5rem;font-weight:600;margin-bottom:1rem;">
+            À propos de ce voyage
+          </h3>
+
+          <p id="detail-desc" style="color:var(--gray);line-height:1.85;margin-bottom:1.5rem;"></p>
+
+          <div
+            id="detail-includes-grid"
+            style="display:grid;grid-template-columns:1fr 1fr;gap:0.85rem;margin-top:1.5rem;"
+          ></div>
+        </div>
+
+        <div id="tab-itinerary" class="tab-content">
+          <div id="detail-itinerary" style="display:flex;flex-direction:column;gap:1.5rem;"></div>
+        </div>
+
+        <div id="tab-reviews" class="tab-content">
+          <div id="detail-reviews" style="display:flex;flex-direction:column;gap:1.5rem;"></div>
+        </div>
+      </div>
+
+      <aside class="detail-sidebar">
+        <div class="detail-price">
+          <span id="detail-price"></span>
+          <span>/ personne</span>
+        </div>
+
+        <div
+          id="detail-location-meta"
+          style="color:var(--gray);font-size:0.82rem;margin-top:0.3rem;font-weight:500;"
+        ></div>
+
+        <div class="detail-info-grid">
+          <div class="detail-info-item">
+            <div class="detail-info-label">Dates</div>
+            <div class="detail-info-value" id="detail-dates"></div>
+          </div>
+
+          <div class="detail-info-item">
+            <div class="detail-info-label">Groupe</div>
+            <div class="detail-info-value">Femmes uniquement</div>
+          </div>
+
+          <div class="detail-info-item">
+            <div class="detail-info-label">Places</div>
+            <div class="detail-info-value" style="color:var(--fuchsia);">Places limitées</div>
+          </div>
+
+          <div class="detail-info-item">
+            <div class="detail-info-label">Niveau</div>
+            <div class="detail-info-value">Tous niveaux</div>
+          </div>
+        </div>
+
+        <ul id="detail-includes" class="includes-list"></ul>
+
+        <a
+          href="reservation.html"
+          class="btn btn-pink btn-full"
+          style="padding:1rem;margin-top:0.5rem;display:block;text-align:center;"
+        >
+          Réserver maintenant
+        </a>
+
+        <a
+          href="https://wa.me/212600368626"
+          target="_blank"
+          class="btn btn-outline-dark btn-full"
+          style="margin-top:0.75rem;font-size:0.85rem;display:block;text-align:center;"
+        >
+          WhatsApp : +212 600 368 626
+        </a>
+      </aside>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo">ecotrips<span>_women</span></div>
+          <p class="footer-desc">
+            Voyages 100% féminins au Maroc. Rejoins notre communauté de femmes aventurières.
+          </p>
+
+          <div class="footer-social">
+            <a class="social-btn" href="https://www.instagram.com/ecotrips_women/" target="_blank">IG</a>
+            <a class="social-btn" href="https://wa.me/212600368626" target="_blank">WA</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Voyages</div>
+          <ul class="footer-links">
+            <li><a href="catalogue.html">Tous les voyages</a></li>
+            <li><a href="catalogue.html">Rafting</a></li>
+            <li><a href="catalogue.html">Randonnée</a></li>
+            <li><a href="catalogue.html">Plongée</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Liens</div>
+          <ul class="footer-links">
+            <li><a href="web_site.html">Accueil</a></li>
+            <li><a href="web_site.html#home-about">À propos</a></li>
+            <li><a href="web_site.html#contact">Contact</a></li>
+            <li><a href="login.html">Espace client</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Contact</div>
+          <ul class="footer-links">
+            <li><a href="mailto:salmachair248@gmail.com">salmachair248@gmail.com</a></li>
+            <li><a href="https://wa.me/212600368626" target="_blank">+212 600 368 626</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-bottom-text">© 2026 ecotrips_women — She Can Travel.</div>
+        <div class="footer-bottom-text">Fait pour les femmes voyageuses du Maroc</div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    ↑
+  </button>
+
+  <div class="toast" id="toast"></div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/catalogue.js"></script>
+</body>
+</html>
