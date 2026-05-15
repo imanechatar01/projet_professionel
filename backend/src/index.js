@@ -10,14 +10,9 @@ const rawCorsOrigins = process.env.CORS_ORIGINS || process.env.ALLOWED_ORIGINS |
 const allowedOrigins = rawCorsOrigins.split(',').map(s => s.trim());
 
 app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
-        return callback(new Error('CORS policy: origin not allowed'));
-    },
-    credentials: true,
+    origin: true,
+    credentials: true
 }));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -33,12 +28,14 @@ const clientRoutes = require('./routes/client');
 const reservationRoutes = require('./routes/reservation');
 const adminRoutes = require('./routes/admin');
 const galerieRoutes = require('./routes/galerie');
+const excursionRoutes = require('./routes/excursions');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/client', clientRoutes);
 app.use('/api/reservations', reservationRoutes);
 app.use('/api/galerie', galerieRoutes);
+app.use('/api/excursions', excursionRoutes);
 
 app.listen(PORT, () => {
     console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);

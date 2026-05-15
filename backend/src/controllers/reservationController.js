@@ -75,9 +75,23 @@ const createReservation = async (req, res) => {
     }
 
     try {
+        // Valider que l'excursion existe si un ID est fourni
+        let validExcursionId = null;
+        if (excursion_id) {
+            const pool = require('../config/database');
+            const excursionCheck = await pool.query(
+                'SELECT id FROM excursions WHERE id = $1',
+                [excursion_id]
+            );
+            if (excursionCheck.rows.length > 0) {
+                validExcursionId = excursion_id;
+            }
+            // Si l'excursion n'existe pas, on continue avec null (pas de blocage)
+        }
+
         const reservation = await Reservation.createReservation({
             client_id,
-            excursion_id: excursion_id || null,
+            excursion_id: validExcursionId,
             nb_personnes,
             montant_total,
             demande_speciale: demande_speciale || null,
