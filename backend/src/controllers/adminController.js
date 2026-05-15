@@ -99,7 +99,7 @@ exports.getDashboardStats = async (req, res) => {
         const recentReservations = await pool.query(`
             SELECT r.id, c.nom as cliente_nom, c.prenom as cliente_prenom, e.titre as excursion_titre, 
             r.created_at, e.prix, r.statut FROM reservations r
-            JOIN clientes c ON r.cliente_id = c.id
+            JOIN clientes c ON r.client_id = c.id
             JOIN excursions e ON r.excursion_id = e.id
             ORDER BY r.created_at DESC LIMIT 5
         `).catch(e => ({ rows: [] }));

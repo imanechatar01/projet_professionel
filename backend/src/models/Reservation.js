@@ -21,7 +21,6 @@ class Reservation {
             statut = 'En attente'
         } = data;
 
-        console.log(excursion_id);
 
         const result = await pool.query(
             `INSERT INTO reservations 
@@ -30,6 +29,7 @@ class Reservation {
              RETURNING *`,
             [client_id, excursion_id || null, nb_personnes, montant_total, demande_speciale || null,statut]
 
+            [client_id, excursion_id || null, nb_personnes, montant_total, demande_speciale || null, statut]
         );
         
         return result.rows[0];
@@ -41,7 +41,9 @@ class Reservation {
             `SELECT r.*, e.titre as excursion_titre, e.prix as excursion_prix, r.created_at as excursion_date, c.nom as client_nom, c.prenom as client_prenom, c.email as client_email
              FROM reservations r
              LEFT JOIN clientes c ON r.client_id = c.id
+             LEFT JOIN clientes c ON r.client_id = c.id
              LEFT JOIN excursions e ON r.excursion_id = e.id
+             WHERE r.client_id = $1 
              WHERE r.client_id = $1 
              ORDER BY r.created_at DESC`,
             [clientId]
@@ -54,6 +56,7 @@ class Reservation {
         const result = await pool.query(
             `SELECT r.*, e.titre as excursion_titre, e.prix as excursion_prix, r.created_at as excursion_date, c.nom as client_nom, c.email as client_email, c.prenom as client_prenom
              FROM reservations r
+             LEFT JOIN clientes c ON r.client_id = c.id
              LEFT JOIN clientes c ON r.client_id = c.id
              LEFT JOIN excursions e ON r.excursion_id = e.id
              WHERE r.id = $1`,
@@ -68,7 +71,7 @@ class Reservation {
             `SELECT r.*, e.titre as excursion_titre, e.prix as excursion_prix, r.created_at as excursion_date, c.nom as client_nom, c.email as client_email, c.prenom as client_prenom
              FROM reservations r
              LEFT JOIN clientes c ON r.client_id = c.id
-             LEFT JOIN excursions e ON r.excursion_id = e.id
+             LEFT JOIN public.excursions e ON r.excursion_id = e.id
              ORDER BY r.created_at DESC`
         );
         return result.rows;
