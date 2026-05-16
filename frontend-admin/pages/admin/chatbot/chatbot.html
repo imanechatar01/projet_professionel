@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestion Chatbot FAQ</title>
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #c2185b;
+      --rose-pink: #DE94A4;
+      --sidebar-bg: #B65C7A;
+      --warm-beige: #F8F5F2;
+      --bg-body: #f7f2f5;
+      --text-dark: #222;
+      --text-gray: #666;
+      --border: #eee;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Plus Jakarta Sans", Arial, sans-serif;
+      background: var(--bg-body);
+      margin: 0;
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 288px;
+      background: var(--sidebar-bg);
+      color: white;
+      padding: 24px;
+      position: fixed;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      z-index: 50;
+      left: 0;
+      top: 0;
+    }
+
+    .logo {
+      font-family: "Playfair Display", serif;
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 40px;
+      color: var(--warm-beige);
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: var(--rose-pink);
+    }
+
+    .sidebar nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar nav ul li {
+      margin-bottom: 8px;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      color: rgba(255, 255, 255, 0.75);
+      text-decoration: none;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .sidebar a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .sidebar a.active {
+      background: var(--rose-pink);
+      color: white;
+    }
+
+    .sidebar i {
+      margin-right: 12px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .logout-item {
+      margin-top: 32px;
+      padding-top: 20px;
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      margin-left: 288px;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    h1 {
+      color: var(--primary);
+      margin-bottom: 10px;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      color: var(--text-gray);
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    button {
+      border: none;
+      padding: 11px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-right: 8px;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #a3144c;
+    }
+
+    .btn-secondary {
+      background: #777;
+      color: white;
+    }
+
+    .btn-edit {
+      background: #1976d2;
+      color: white;
+    }
+
+    .btn-delete {
+      background: #d32f2f;
+      color: white;
+    }
+
+    .faq-item {
+      border: 1px solid var(--border);
+      padding: 18px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      background: #fff;
+    }
+
+    .faq-question {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .faq-answer {
+      color: #444;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    .faq-meta {
+      font-size: 13px;
+      color: #777;
+      margin-bottom: 12px;
+    }
+
+    .status-active {
+      color: green;
+      font-weight: bold;
+    }
+
+    .status-inactive {
+      color: red;
+      font-weight: bold;
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      EcoTrips<span>Women</span>
+    </div>
+
+    <nav>
+      <ul>
+        <li>
+          <a href="../dashboard.html">
+            <i class="fas fa-th-large"></i> Dashboard
+          </a>
+        </li>
+
+        <li>
+          <a href="../excursions/index.html">
+            <i class="fas fa-map-marked-alt"></i> Excursions
+          </a>
+        </li>
+
+        <li>
+          <a href="../reservations/index.html">
+            <i class="fas fa-calendar-check"></i> Réservations
+          </a>
+        </li>
+
+        <li>
+          <a href="../clientes/index.html">
+            <i class="fas fa-users"></i> Clientes
+          </a>
+        </li>
+
+        <li>
+          <a href="../messages/index.html">
+            <i class="fas fa-envelope"></i> Messages
+          </a>
+        </li>
+
+        <li>
+          <a href="../analyses.html">
+            <i class="fas fa-chart-line"></i> Analyses
+          </a>
+        </li>
+
+        <li>
+          <a href="../galerie/index.html">
+            <i class="fas fa-images"></i> Galerie
+          </a>
+        </li>
+
+        <li>
+          <a href="/admin/chatbot/chatbot.html" class="active">
+            <i class="fas fa-comments"></i> Chatbot FAQ
+          </a>
+        </li>
+
+        <li class="logout-item">
+          <a href="#" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i> Déconnexion
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <h1>Gestion du Chatbot FAQ</h1>
+
+      <p class="subtitle">
+        Ici, l’admin peut ajouter, modifier ou supprimer les réponses utilisées par le chatbot public.
+      </p>
+
+      <div class="card">
+        <h2 id="form-title">Ajouter une FAQ</h2>
+
+        <form id="faq-form">
+          <input type="hidden" id="faq-id" />
+
+          <label>Question</label>
+          <input
+            type="text"
+            id="question"
+            placeholder="Exemple : Quels sont les prix ?"
+            required
+          />
+
+          <label>Réponse</label>
+          <textarea
+            id="reponse"
+            placeholder="Réponse que le chatbot va afficher..."
+            required
+          ></textarea>
+
+          <label>Mots-clés</label>
+          <input
+            type="text"
+            id="keywords"
+            placeholder="prix, tarif, réservation, voyage..."
+          />
+
+          <label>Catégorie</label>
+          <select id="categorie">
+            <option value="general">Général</option>
+            <option value="tarifs">Tarifs</option>
+            <option value="reservation">Réservation</option>
+            <option value="voyages">Voyages</option>
+            <option value="contact">Contact</option>
+          </select>
+
+          <label>Statut</label>
+          <select id="actif">
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+          </select>
+
+          <button type="submit" class="btn-primary" id="submit-btn">
+            Ajouter
+          </button>
+
+          <button type="button" class="btn-secondary" onclick="resetForm()">
+            Annuler
+          </button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Liste des FAQ</h2>
+
+        <div id="faq-list">
+          Chargement...
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="chatbot.js"></script>
+</body>
+</html>
