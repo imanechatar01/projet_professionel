@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion Galerie · Ecotripswomen Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap');
 
@@ -160,9 +161,175 @@
         @media (max-width: 768px) {
             .container { grid-template-columns: 1fr; }
         }
+
+        /* Sidebar Admin */
+        .admin-sidebar {
+            width: 288px;
+            background: #B65C7A;
+            color: white;
+            padding: 24px;
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 50;
+            left: 0;
+            top: 0;
+        }
+
+        .admin-sidebar .sidebar-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2.5rem;
+            color: #F8F5F2;
+            letter-spacing: -0.5px;
+        }
+
+        .admin-sidebar .sidebar-logo span {
+            color: #DE94A4;
+        }
+
+        .admin-sidebar nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .admin-sidebar nav ul li {
+            margin-bottom: 8px;
+        }
+
+        .admin-sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .admin-sidebar a:hover {
+            background: rgba(255,255,255,0.10);
+            color: white;
+        }
+
+        .admin-sidebar a.active {
+            background: #DE94A4;
+            color: white;
+        }
+
+        .admin-sidebar i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .logout-item {
+            margin-top: 32px;
+            padding-top: 20px;
+        }
+
+        .gallery-main {
+            margin-left: 288px;
+            padding: 2rem;
+            max-width: 1200px;
+        }
+
+        body {
+            max-width: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        @media (max-width: 900px) {
+            .admin-sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+            }
+
+            .gallery-main {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+        }
+
     </style>
 </head>
 <body>
+
+    <!-- Sidebar Admin -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-logo">
+            EcoTrips<span>Women</span>
+        </div>
+
+        <nav>
+            <ul>
+                <li>
+                    <a href="/admin/dashboard.html">
+                        <i class="fas fa-th-large"></i> Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/admin/excursions/index.html">
+                        <i class="fas fa-map-marked-alt"></i> Excursions
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/admin/reservations/index.html">
+                        <i class="fas fa-calendar-check"></i> Réservations
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/admin/clientes/index.html">
+                        <i class="fas fa-users"></i> Clientes
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/admin/messages/index.html">
+                        <i class="fas fa-envelope"></i> Messages
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/admin/analyses.html">
+                        <i class="fas fa-chart-line"></i> Analyses
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/admin/galerie/index.html" class="active">
+                        <i class="fas fa-images"></i> Galerie
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/admin/chatbot/chatbot.html">
+                        <i class="fas fa-comments"></i> Chatbot FAQ
+                    </a>
+                </li>
+
+                <li class="logout-item">
+                    <a href="#" onclick="localStorage.clear(); window.location.href='/admin/login.html'; return false;">
+                        <i class="fas fa-sign-out-alt"></i> Déconnexion
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Contenu principal -->
+    <main class="gallery-main">
+
 
     <header>
         <div>
@@ -228,6 +395,8 @@
             </div>
         </section>
     </div>
+
+    </main>
 
     <!-- Le script externe est importé ici -->
     <script src="index.js"></script>
