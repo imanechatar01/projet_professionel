@@ -1,7 +1,26 @@
 const API_BASE = 'http://localhost:5000/api';
 const RESERVATIONS_URL = `${API_BASE}/reservations`;
 const ADMIN_URL = `${API_BASE}/admin`;
-const token = localStorage.getItem('token');
+
+const token =
+    localStorage.getItem('token') ||
+    localStorage.getItem('adminToken');
+
+if (!token) {
+    window.location.href = '../../login.html';
+}
+
+function logoutAdmin(event) {
+    if (event) event.preventDefault();
+
+    localStorage.removeItem('token');
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('admin');
+
+    window.location.href = '../../login.html';
+}
+
+window.logoutAdmin = logoutAdmin;
 
 const state = {
     reservations: [],

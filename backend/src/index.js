@@ -41,7 +41,10 @@ app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use(express.static(path.join(__dirname, "../../frontend-public")));
 
 // Sert les fichiers admin
-app.use("/admin", express.static(path.join(__dirname, "../../frontend-admin/pages")));
+app.use(
+  "/admin",
+  express.static(path.join(__dirname, "../../frontend-admin/pages"))
+);
 
 /* =========================
    IMPORT ROUTES
@@ -55,8 +58,10 @@ const adminRoutes = require("./routes/admin");
 const galerieRoutes = require("./routes/galerie");
 const excursionRoutes = require("./routes/excursions");
 const chatbotRoutes = require("./routes/chatbotRoutes");
+const avisRoutes = require("./routes/avisRoutes");
 
-// Paiement désactivé temporairement
+// Paiement : garde ta configuration actuelle.
+// Si tu as déjà un fichier routes/paiement.js fonctionnel, on pourra le réactiver après.
 // const paiementRoutes = require("./routes/paiement");
 
 /* =========================
@@ -65,9 +70,6 @@ const chatbotRoutes = require("./routes/chatbotRoutes");
 
 const { getDashboardStats } = require("./controllers/adminController");
 const { verifyAdminToken } = require("./controllers/authController");
-
-// Paiement désactivé temporairement
-// const { createPaymentIntent } = require("./controllers/payementController");
 
 /* =========================
    API ROUTES
@@ -81,8 +83,9 @@ app.use("/api/reservations", reservationRoutes);
 app.use("/api/galerie", galerieRoutes);
 app.use("/api/excursions", excursionRoutes);
 app.use("/api/chatbot", chatbotRoutes);
+app.use("/api/avis", avisRoutes);
 
-// Paiement désactivé temporairement
+// Paiement désactivé temporairement pour ne pas toucher à ta partie paiement maintenant.
 // app.use("/api/paiement", paiementRoutes);
 
 /* =========================
@@ -90,7 +93,9 @@ app.use("/api/chatbot", chatbotRoutes);
 ========================= */
 
 app.get("/", (req, res) => {
-  res.json({ message: "API Ecotripswomen is running" });
+  res.json({
+    message: "API Ecotripswomen is running",
+  });
 });
 
 /* =========================
@@ -98,12 +103,6 @@ app.get("/", (req, res) => {
 ========================= */
 
 app.get("/api/admin/dashboard-stats", verifyAdminToken, getDashboardStats);
-
-/* =========================
-   PAYMENT TEST ROUTE DISABLED
-========================= */
-
-// app.get("/api/paiement/create-intent", createPaymentIntent);
 
 /* =========================
    START SERVER

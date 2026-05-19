@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="assets/css/design-system.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <link rel="stylesheet" href="assets/css/pages/reservation.css">
+  <link rel="stylesheet" href="assets/css/pages/chatbot.css">
+  <link rel="stylesheet" href="assets/css/pages/client-panel.css">
 </head>
 
 <body>
@@ -114,101 +116,64 @@
     </div>
   </main>
 
+  <!-- CHATBOT PUBLIC -->
+  <div class="chatbot-widget">
+    <div class="chat-window" id="chat-window">
+      <div class="chat-header">
+        <div class="chat-header-avatar">🌸</div>
+
+        <div>
+          <div class="chat-name">Salma — Assistante</div>
+          <div class="chat-status">En ligne · Réponse rapide</div>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-msg bot">
+          <div class="chat-bubble">
+            Salam ! Je suis Salma 🌸 Comment puis-je t'aider aujourd'hui ?
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-chips">
+        <button type="button" class="chip" onclick="sendQuickMsg('Quels voyages sont disponibles ?')">
+          Voyages dispo
+        </button>
+
+        <button type="button" class="chip" onclick="sendQuickMsg('Quels sont les prix ?')">
+          Tarifs
+        </button>
+
+        <button type="button" class="chip" onclick="sendQuickMsg('Comment réserver ?')">
+          Réserver
+        </button>
+      </div>
+
+      <div class="chat-input-area">
+        <input
+          type="text"
+          class="chat-input"
+          id="chat-input"
+          placeholder="Ta question..."
+          onkeydown="if(event.key === 'Enter') sendChat()"
+        >
+
+        <button type="button" class="chat-send" onclick="sendChat()">→</button>
+      </div>
+    </div>
+
+    <button type="button" class="chat-toggle" onclick="toggleChat()" id="chat-toggle-btn">
+      💬
+    </button>
+  </div>
+
   <script src="assets/js/config.js"></script>
   <script src="assets/js/api.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/reservation.js"></script>
-    <script>
-        const token = localStorage.getItem('clientToken');
-        const client = JSON.parse(localStorage.getItem('client') || '{}');
-
-        // Vérifier si le client est connecté
-        if (!token) {
-            document.getElementById('message').className = 'message warning';
-            document.getElementById('message').innerHTML = '⚠️ Vous devez être connecté pour réserver. <a href="login.html">Se connecter</a>';
-            document.getElementById('reservationForm').style.display = 'none';
-        } else {
-            document.getElementById('userInfo').style.display = 'block';
-            document.getElementById('clientNom').textContent = client.nom || client.email;
-        }
-
-        const form = document.getElementById('reservationForm');
-        const messageDiv = document.getElementById('message');
-        const submitBtn = document.getElementById('submitBtn');
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            messageDiv.className = 'message';
-            messageDiv.innerHTML = '';
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Envoi en cours...';
-
-            const reservationData = {
-                nb_personnes: parseInt(document.getElementById('nb_personnes').value),
-                montant_total: parseFloat(document.getElementById('montant_total').value),
-                demande_speciale: document.getElementById('demande_speciale').value.trim()
-            };
-
-            // Validation
-            if (reservationData.nb_personnes < 1) {
-                showMessage('Le nombre de personnes doit être au moins 1', 'error');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Confirmer la réservation';
-                return;
-            }
-
-            if (isNaN(reservationData.montant_total) || reservationData.montant_total <= 0) {
-                showMessage('Veuillez entrer un montant valide', 'error');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Confirmer la réservation';
-                return;
-            }
-
-            try {
-                const response = await fetch('http://localhost:5000/api/reservations', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(reservationData)
-                });
-
-                const result = await response.json();
-                const reservationId = result.reservation.id; // Récupérer l'ID de la réservation créée
-               
-                if (result.success) {
-                    showMessage(`✅ Réservation confirmée ! `, 'success');
-                        setTimeout(() => {
-                            window.location.href = `paiement.html?id=${reservationId}`;
-        });
-                    setTimeout(() => {
-                        window.location.href = `paiement.html?id=${reservationId}`;
-                    }, 1200);
-                } else {
-                    showMessage(result.message || 'Erreur lors de la réservation', 'error');
-                    
-                    if (result.message.includes('connecter')) {
-                        setTimeout(() => {
-                            window.location.href = 'login.html';
-                        }, 2000);
-                    }
-                }
-            } catch (error) {
-                console.error('Erreur:', error);
-                showMessage('Erreur de connexion au serveur', 'error');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Confirmer la réservation';
-            }
-        });
-
-        function showMessage(msg, type) {
-            messageDiv.className = `message ${type}`;
-            messageDiv.innerHTML = msg;
-            messageDiv.scrollIntoView({ behavior: 'smooth' });
-        }
-    </script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/client-panel.js"></script>
+  <script src="assets/js/chatbot.js"></script>
 </body>
 </html>

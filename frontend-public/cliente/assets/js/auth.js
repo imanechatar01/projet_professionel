@@ -9,7 +9,9 @@
 
   function getClient() {
     try {
-      return JSON.parse(localStorage.getItem(config().STORAGE_KEYS.CLIENT_DATA) || "{}");
+      return JSON.parse(
+        localStorage.getItem(config().STORAGE_KEYS.CLIENT_DATA) || "{}"
+      );
     } catch (error) {
       return {};
     }
@@ -17,7 +19,10 @@
 
   function setSession(token, client) {
     localStorage.setItem(config().STORAGE_KEYS.CLIENT_TOKEN, token);
-    localStorage.setItem(config().STORAGE_KEYS.CLIENT_DATA, JSON.stringify(client || {}));
+    localStorage.setItem(
+      config().STORAGE_KEYS.CLIENT_DATA,
+      JSON.stringify(client || {})
+    );
   }
 
   function clearSession() {
@@ -36,6 +41,10 @@
     }
 
     return true;
+  }
+
+  function redirectAfterAuth() {
+    window.location.href = config().ROUTES.CATALOGUE;
   }
 
   function showError(message) {
@@ -83,10 +92,10 @@
         if (data.success) {
           setSession(data.token, data.client);
 
-          showSuccess("Connexion réussie ! Redirection...");
+          showSuccess("Connexion réussie ! Redirection vers les voyages...");
 
           setTimeout(function () {
-            window.location.href = config().ROUTES.CATALOGUE;
+            redirectAfterAuth();
           }, 1200);
         } else {
           showError(data.message || "Email ou mot de passe incorrect");
@@ -161,20 +170,23 @@
         if (data.success) {
           setSession(data.token, data.client);
 
-          showSuccess("Inscription réussie ! Redirection vers le catalogue...");
+          showSuccess("Inscription réussie ! Redirection vers les voyages...");
 
           setTimeout(function () {
-            window.location.href = config().ROUTES.CATALOGUE;
+            redirectAfterAuth();
           }, 1200);
         } else {
           showError(data.message || "Erreur lors de l'inscription");
         }
       } catch (error) {
-        showError(error.message || "Erreur de connexion au serveur. Vérifie que le backend est démarré.");
+        showError(
+          error.message ||
+            "Erreur de connexion au serveur. Vérifie que le backend est démarré."
+        );
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
-          submitBtn.textContent = "Créer mon compte →";
+          submitBtn.textContent = "Créer mon compte";
         }
       }
     });

@@ -7,6 +7,7 @@
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -35,15 +36,33 @@
     
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
+
     <style>
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #E91E63; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #166534; }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #E91E63;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #166534;
+        }
         
-        .message-read { opacity: 0.6; }
-        .message-unread { font-weight: bold; background: #fff0f3; }
+        .message-read {
+            opacity: 0.6;
+        }
+
+        .message-unread {
+            font-weight: bold;
+            background: #fff0f3;
+        }
         
         .btn {
             padding: 5px 10px;
@@ -56,13 +75,16 @@
         .modal {
             display: none;
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0,0,0,0.5);
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
+
         .modal-content {
             background: white;
             padding: 30px;
@@ -70,6 +92,7 @@
             width: 500px;
             max-width: 90%;
         }
+
         textarea {
             width: 100%;
             padding: 10px;
@@ -88,33 +111,88 @@
         <div class="font-playfair text-3xl font-bold mb-10 text-warm-beige tracking-tight">
             EcoTrips<span class="text-rose-pink">Women</span>
         </div>
+
         <nav>
             <ul class="space-y-2">
-                <li><a href="../dashboard.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-th-large mr-3 w-5 text-center"></i> Dashboard
-                </a></li>
-                <li><a href="../excursions/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-map-marked-alt mr-3 w-5 text-center"></i> Excursions
-                </a></li>
-                <li><a href="../reservations/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-calendar-check mr-3 w-5 text-center"></i> Réservations
-                </a></li>
-                <li><a href="../clientes/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-users mr-3 w-5 text-center"></i> Clientes
-                </a></li>
-                <li><a href="messages.html" class="flex items-center p-3 text-white bg-rose-pink rounded-xl transition-all duration-300">
-                    <i class="fas fa-envelope mr-3 w-5 text-center"></i> Messages
-                </a></li>
-                <li><a href="../analyses.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-chart-line mr-3 w-5 text-center"></i> Analyses
-                </a></li>
-                <li><a href="../galerie/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-images mr-3 w-5 text-center"></i> Galerie
-                </a></li>
-                <li class="mt-auto pt-8"><a href="#" id="logoutBtn" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i> Déconnexion
-                </a></li>
-                <li><a href="/admin/chatbot/chatbot.html" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-comments mr-4 w-5 text-center"></i> Chatbot FAQ</a></li>
+                <!-- Dashboard -->
+                <li>
+                    <a href="../dashboard.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-th-large mr-3 w-5 text-center"></i>
+                        Dashboard
+                    </a>
+                </li>
+
+                <!-- Excursions -->
+                <li>
+                    <a href="../excursions/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-map-marked-alt mr-3 w-5 text-center"></i>
+                        Excursions
+                    </a>
+                </li>
+
+                <!-- Réservations -->
+                <li>
+                    <a href="../reservations/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-calendar-check mr-3 w-5 text-center"></i>
+                        Réservations
+                    </a>
+                </li>
+
+                <!-- Clientes -->
+                <li>
+                    <a href="../clientes/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-users mr-3 w-5 text-center"></i>
+                        Clientes
+                    </a>
+                </li>
+
+                <!-- Messages active -->
+                <li>
+                    <a href="index.html" class="flex items-center p-3 text-white bg-rose-pink rounded-xl transition-all duration-300">
+                        <i class="fas fa-envelope mr-3 w-5 text-center"></i>
+                        Messages
+                    </a>
+                </li>
+
+                <!-- Avis clientes -->
+                <li>
+                    <a href="../avis/avis.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-star mr-3 w-5 text-center"></i>
+                        Avis clientes
+                    </a>
+                </li>
+
+                <!-- Chatbot FAQ -->
+                <li>
+                    <a href="../chatbot/chatbot.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-comments mr-3 w-5 text-center"></i>
+                        Chatbot FAQ
+                    </a>
+                </li>
+
+                <!-- Galerie -->
+                <li>
+                    <a href="../galerie/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-images mr-3 w-5 text-center"></i>
+                        Galerie
+                    </a>
+                </li>
+
+                <!-- Analyses -->
+                <li>
+                    <a href="../analyses.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-chart-line mr-3 w-5 text-center"></i>
+                        Analyses
+                    </a>
+                </li>
+
+                <!-- Déconnexion -->
+                <li class="pt-8">
+                    <a href="../../login.html" id="logoutBtn" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
+                        Déconnexion
+                    </a>
+                </li>
             </ul>
         </nav>
     </aside>
@@ -126,15 +204,24 @@
             <div class="flex justify-between items-center mb-8">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-3">
-                        <i class="fas fa-envelope text-rose-pink"></i> Messages des clientes
+                        <i class="fas fa-envelope text-rose-pink"></i>
+                        Messages des clientes
                     </h1>
-                    <p class="text-gray-500 mt-1">Consultez et répondez aux messages de vos clientes</p>
+                    <p class="text-gray-500 mt-1">
+                        Consultez et répondez aux messages de vos clientes
+                    </p>
                 </div>
+
                 <div class="flex items-center gap-4">
                     <div class="text-right">
-                        <p class="font-semibold text-gray-800" id="adminName">Administrateur</p>
-                        <p class="text-sm text-gray-500">Espace Admin</p>
+                        <p class="font-semibold text-gray-800" id="adminName">
+                            Administrateur
+                        </p>
+                        <p class="text-sm text-gray-500">
+                            Espace Admin
+                        </p>
                     </div>
+
                     <div class="w-10 h-10 bg-rose-pink rounded-full flex items-center justify-center text-white font-bold">
                         A
                     </div>
@@ -147,6 +234,7 @@
                     <div class="w-12 h-12 bg-soft-rose rounded-full flex items-center justify-center">
                         <i class="fas fa-envelope-open-text text-rose-pink text-xl"></i>
                     </div>
+
                     <div>
                         <span class="text-2xl font-bold" id="unreadCount">0</span>
                         <span class="text-gray-500 ml-2">messages non lus</span>
@@ -168,9 +256,12 @@
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600">Actions</th>
                             </tr>
                         </thead>
+
                         <tbody id="messagesBody">
                             <tr>
-                                <td colspan="6" class="text-center py-8 text-gray-400">Chargement des messages...</td>
+                                <td colspan="6" class="text-center py-8 text-gray-400">
+                                    Chargement des messages...
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -183,115 +274,202 @@
     <div id="replyModal" class="modal">
         <div class="modal-content">
             <h3 class="text-xl font-semibold mb-4">Répondre au message</h3>
-            <p><strong>De :</strong> <span id="replyNom"></span> (<span id="replyEmail"></span>)</p>
-            <p class="mt-3"><strong>Message :</strong></p>
+
+            <p>
+                <strong>De :</strong>
+                <span id="replyNom"></span>
+                (<span id="replyEmail"></span>)
+            </p>
+
+            <p class="mt-3">
+                <strong>Message :</strong>
+            </p>
+
             <p id="replyMessage" style="background:#f5f5f5; padding:10px; border-radius:8px; margin:10px 0;"></p>
+
             <textarea id="reponseText" rows="5" placeholder="Votre réponse..."></textarea>
+
             <div class="flex gap-3 mt-4">
-                <button onclick="sendReply()" class="bg-rose-pink text-white px-4 py-2 rounded-lg hover:bg-[#c97e8e] transition">Envoyer la réponse</button>
-                <button onclick="closeModal()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition">Annuler</button>
+                <button onclick="sendReply()" class="bg-rose-pink text-white px-4 py-2 rounded-lg hover:bg-[#c97e8e] transition">
+                    Envoyer la réponse
+                </button>
+
+                <button onclick="closeModal()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition">
+                    Annuler
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        const token = localStorage.getItem('token');
+        const token =
+            localStorage.getItem('token') ||
+            localStorage.getItem('adminToken');
+
         let currentMessageId = null;
 
         if (!token) {
-            window.location.href = 'login.html';
+            window.location.href = '../login.html';
         }
 
-        // Afficher le nom de l'admin
         const adminData = localStorage.getItem('admin');
+
         if (adminData) {
-            const admin = JSON.parse(adminData);
-            document.getElementById('adminName').textContent = admin.nom || 'Administrateur';
+            try {
+                const admin = JSON.parse(adminData);
+
+                document.getElementById('adminName').textContent =
+                    admin.nom || admin.prenom || 'Administrateur';
+            } catch (error) {
+                document.getElementById('adminName').textContent = 'Administrateur';
+            }
         }
 
         async function loadMessages() {
             try {
                 const response = await fetch('/api/messages', {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 });
+
                 const data = await response.json();
-                
+
                 if (data.success) {
-                    document.getElementById('unreadCount').textContent = data.unreadCount;
-                    displayMessages(data.messages);
+                    document.getElementById('unreadCount').textContent =
+                        data.unreadCount || 0;
+
+                    displayMessages(data.messages || []);
+                } else {
+                    throw new Error(data.message || 'Erreur de chargement');
                 }
             } catch (error) {
                 console.error('Erreur:', error);
-                document.getElementById('messagesBody').innerHTML = '<tr><td colspan="6" class="text-center py-8 text-red-500">Erreur de chargement des messages</td></tr>';
+
+                document.getElementById('messagesBody').innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-8 text-red-500">
+                            Erreur de chargement des messages
+                        </td>
+                    </tr>
+                `;
             }
         }
 
         function displayMessages(messages) {
             const tbody = document.getElementById('messagesBody');
+
             tbody.innerHTML = '';
-            
-            if (messages.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-gray-400">Aucun message pour le moment</td></tr>';
+
+            if (!messages.length) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-8 text-gray-400">
+                            Aucun message pour le moment
+                        </td>
+                    </tr>
+                `;
                 return;
             }
-            
+
             messages.forEach(msg => {
                 const row = tbody.insertRow();
+
                 row.className = msg.lu ? 'message-read' : 'message-unread';
-                
-                row.insertCell(0).innerHTML = `<div class="px-6 py-4 text-sm text-gray-600">${new Date(msg.created_at).toLocaleString()}</div>`;
-                row.insertCell(1).innerHTML = `<div class="px-6 py-4 font-medium text-gray-800">${escapeHtml(msg.nom)}</div>`;
-                row.insertCell(2).innerHTML = `<div class="px-6 py-4 text-sm text-gray-600">${escapeHtml(msg.email)}</div>`;
-                row.insertCell(3).innerHTML = `<div class="px-6 py-4 text-sm text-gray-600">${escapeHtml(msg.sujet || '-')}</div>`;
-                row.insertCell(4).innerHTML = `<div class="px-6 py-4 text-sm text-gray-600">${escapeHtml(msg.message.substring(0, 100))}${msg.message.length > 100 ? '...' : ''}</div>`;
-                
+
+                row.insertCell(0).innerHTML = `
+                    <div class="px-6 py-4 text-sm text-gray-600">
+                        ${msg.created_at ? new Date(msg.created_at).toLocaleString('fr-FR') : '-'}
+                    </div>
+                `;
+
+                row.insertCell(1).innerHTML = `
+                    <div class="px-6 py-4 font-medium text-gray-800">
+                        ${escapeHtml(msg.nom)}
+                    </div>
+                `;
+
+                row.insertCell(2).innerHTML = `
+                    <div class="px-6 py-4 text-sm text-gray-600">
+                        ${escapeHtml(msg.email)}
+                    </div>
+                `;
+
+                row.insertCell(3).innerHTML = `
+                    <div class="px-6 py-4 text-sm text-gray-600">
+                        ${escapeHtml(msg.sujet || '-')}
+                    </div>
+                `;
+
+                row.insertCell(4).innerHTML = `
+                    <div class="px-6 py-4 text-sm text-gray-600">
+                        ${escapeHtml((msg.message || '').substring(0, 100))}
+                        ${(msg.message || '').length > 100 ? '...' : ''}
+                    </div>
+                `;
+
                 const actions = document.createElement('td');
                 actions.className = 'px-6 py-4';
                 actions.style.whiteSpace = 'nowrap';
-                
+
                 if (!msg.lu) {
                     const readBtn = document.createElement('button');
+
                     readBtn.innerHTML = '<i class="fas fa-check-circle mr-1"></i> Marquer lu';
                     readBtn.className = 'bg-green-500 text-white px-3 py-1.5 rounded-lg text-sm mr-2 hover:bg-green-600 transition';
                     readBtn.onclick = () => markAsRead(msg.id);
+
                     actions.appendChild(readBtn);
                 }
-                
+
                 const replyBtn = document.createElement('button');
+
                 replyBtn.innerHTML = '<i class="fas fa-reply mr-1"></i> Répondre';
                 replyBtn.className = 'bg-rose-pink text-white px-3 py-1.5 rounded-lg text-sm hover:bg-[#c97e8e] transition';
                 replyBtn.onclick = () => openReplyModal(msg);
+
                 actions.appendChild(replyBtn);
-                
                 row.appendChild(actions);
             });
         }
 
         function escapeHtml(text) {
             if (!text) return '';
+
             const div = document.createElement('div');
             div.textContent = text;
+
             return div.innerHTML;
         }
 
         async function markAsRead(id) {
             try {
-                await fetch(`/api/messages/${id}/read`, {
+                const response = await fetch(`/api/messages/${id}/read`, {
                     method: 'PUT',
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 });
+
+                if (!response.ok) {
+                    throw new Error('Erreur lors de la mise à jour');
+                }
+
                 loadMessages();
             } catch (error) {
                 console.error(error);
+                alert('Erreur lors du marquage comme lu');
             }
         }
 
         function openReplyModal(message) {
             currentMessageId = message.id;
-            document.getElementById('replyNom').textContent = message.nom;
-            document.getElementById('replyEmail').textContent = message.email;
-            document.getElementById('replyMessage').textContent = message.message;
+
+            document.getElementById('replyNom').textContent = message.nom || '';
+            document.getElementById('replyEmail').textContent = message.email || '';
+            document.getElementById('replyMessage').textContent = message.message || '';
             document.getElementById('reponseText').value = '';
+
             document.getElementById('replyModal').style.display = 'flex';
         }
 
@@ -300,12 +478,13 @@
         }
 
         async function sendReply() {
-            const reponse = document.getElementById('reponseText').value;
+            const reponse = document.getElementById('reponseText').value.trim();
+
             if (!reponse) {
                 alert('Veuillez écrire une réponse');
                 return;
             }
-            
+
             try {
                 const response = await fetch(`/api/messages/${currentMessageId}/reply`, {
                     method: 'POST',
@@ -315,25 +494,28 @@
                     },
                     body: JSON.stringify({ reponse })
                 });
-                
+
                 if (response.ok) {
                     closeModal();
                     loadMessages();
                     alert('Réponse envoyée avec succès !');
                 } else {
-                    alert('Erreur lors de l\'envoi');
+                    alert("Erreur lors de l'envoi");
                 }
             } catch (error) {
-                alert('Erreur lors de l\'envoi');
+                console.error(error);
+                alert("Erreur lors de l'envoi");
             }
         }
 
-        // Déconnexion
         document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
             e.preventDefault();
+
             localStorage.removeItem('token');
+            localStorage.removeItem('adminToken');
             localStorage.removeItem('admin');
-            window.location.href = 'login.html';
+
+            window.location.href = '../login.html';
         });
 
         loadMessages();

@@ -1,10 +1,14 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoTrips Women | Admin Dashboard</title>
-    
-    <!-- Content Security Policy -->
+
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' http://localhost:5000;">
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -28,57 +32,108 @@
         }
     </script>
 
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- Chart.js -->
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
     <style>
-        /* Custom scrollbar for a cleaner look */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #E91E63; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #166534; }
     </style>
 </head>
+
 <body class="font-jakarta bg-warm-beige text-gray-800 flex min-h-screen">
 
     <!-- Sidebar -->
-    <aside class="w-72 bg-sidebar-bg text-white p-10 fixed h-screen flex flex-col z-50">
-        <div class="font-playfair text-3xl font-bold mb-12 text-warm-beige tracking-tight">
+    <aside class="w-72 bg-sidebar-bg text-white p-6 fixed h-screen flex flex-col z-50">
+        <div class="font-playfair text-3xl font-bold mb-10 text-warm-beige tracking-tight">
             EcoTrips<span class="text-rose-pink">Women</span>
         </div>
+
         <nav>
             <ul class="space-y-2">
-                <li><a href="#" class="flex items-center p-4 text-white bg-rose-pink rounded-xl transition-all duration-300">
-                    <i class="fas fa-th-large mr-4 w-5 text-center"></i> Dashboard
-                </a></li>
-                <li><a href="excursions/index.html" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-map-marked-alt mr-4 w-5 text-center"></i> Excursions
-                </a></li>
-                <li><a href="reservations/index.html" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-calendar-check mr-4 w-5 text-center"></i> Réservations
-                </a></li>
-                <li><a href="clientes/index.html" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-users mr-4 w-5 text-center"></i> Clientes
-                </a></li>
-                <li><a href="messages/index.html" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-envelope mr-4 w-5 text-center"></i> Messages
-                </a></li>
-                <li><a href="#" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-chart-line mr-4 w-5 text-center"></i> Analyses
-                </a></li>
-                <li><a href="galerie/index.html" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-images mr-4 w-5 text-center"></i>  Galerie
-                </a></li>
-                <li class="mt-auto pt-8"><a href="chatbot/chatbot.html" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-comments mr-4 w-5 text-center"></i> Chatbot FAQ
-                </a></li>
-                <li class="mt-auto pt-8"><a href="#" class="flex items-center p-4 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-cog mr-4 w-5 text-center"></i> Paramètres
-                </a></li>
+                <!-- Dashboard active -->
+                <li>
+                    <a href="dashboard.html" class="flex items-center p-3 text-white bg-rose-pink rounded-xl transition-all duration-300">
+                        <i class="fas fa-th-large mr-3 w-5 text-center"></i>
+                        Dashboard
+                    </a>
+                </li>
+
+                <!-- Excursions -->
+                <li>
+                    <a href="excursions/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-map-marked-alt mr-3 w-5 text-center"></i>
+                        Excursions
+                    </a>
+                </li>
+
+                <!-- Réservations -->
+                <li>
+                    <a href="reservations/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-calendar-check mr-3 w-5 text-center"></i>
+                        Réservations
+                    </a>
+                </li>
+
+                <!-- Clientes -->
+                <li>
+                    <a href="clientes/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-users mr-3 w-5 text-center"></i>
+                        Clientes
+                    </a>
+                </li>
+
+                <!-- Messages -->
+                <li>
+                    <a href="messages/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-envelope mr-3 w-5 text-center"></i>
+                        Messages
+                    </a>
+                </li>
+
+                <!-- Avis clientes -->
+                <li>
+                    <a href="avis/avis.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-star mr-3 w-5 text-center"></i>
+                        Avis clientes
+                    </a>
+                </li>
+
+                <!-- Chatbot FAQ -->
+                <li>
+                    <a href="chatbot/chatbot.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-comments mr-3 w-5 text-center"></i>
+                        Chatbot FAQ
+                    </a>
+                </li>
+
+                <!-- Galerie -->
+                <li>
+                    <a href="galerie/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-images mr-3 w-5 text-center"></i>
+                        Galerie
+                    </a>
+                </li>
+
+                <!-- Analyses -->
+                <li>
+                    <a href="analyses.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-chart-line mr-3 w-5 text-center"></i>
+                        Analyses
+                    </a>
+                </li>
+
+                <!-- Déconnexion -->
+                <li class="pt-8">
+                    <a href="../login.html" onclick="Dashboard.logout(); return false;" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
+                        Déconnexion
+                    </a>
+                </li>
             </ul>
         </nav>
     </aside>
@@ -86,34 +141,37 @@
     <main class="flex-1 ml-72 p-10">
         <header class="flex justify-between items-center mb-12">
             <div>
-                <h1 class="font-playfair text-4xl font-bold text-gray-900 tracking-tight">Bonjour <span class="text-rose-pink">Salma</span>,</h1>
-                <p class="text-gray-500 mt-1 font-medium">Voici les statistiques d'aujourd'hui pour <span class="text-forest-green italic font-semibold">EcoTrips Women</span>.</p>
+                <h1 class="font-playfair text-4xl font-bold text-gray-900 tracking-tight">
+                    Bonjour <span class="text-rose-pink" id="adminFirstName">Salma</span>,
+                </h1>
+                <p class="text-gray-500 mt-1 font-medium">
+                    Voici les statistiques d'aujourd'hui pour
+                    <span class="text-forest-green italic font-semibold">EcoTrips Women</span>.
+                </p>
             </div>
-            
-            <div class="flex items-center gap-6">
 
-                <!-- Notifications (static en cours)-->
+            <div class="flex items-center gap-6">
                 <div class="relative w-12 h-12 bg-white flex items-center justify-center rounded-xl border border-gray-100 shadow-sm cursor-pointer hover:bg-rose-50 transition-colors group">
                     <i class="fas fa-bell text-gray-400 group-hover:text-rose-pink transition-colors text-lg"></i>
                     <div class="absolute top-3 right-3 w-2.5 h-2.5 bg-rose-pink rounded-full border-2 border-white animate-pulse"></div>
                 </div>
 
-                <!-- Profile (sa)-->
                 <div class="flex items-center gap-4 pl-4 border-l border-gray-200 cursor-pointer group">
                     <div class="text-right">
                         <div class="font-bold text-gray-900 group-hover:text-rose-pink transition-colors" id="adminHeaderName">Salma Chair</div>
                         <div class="text-[11px] font-bold text-forest-green/60 uppercase tracking-widest">Administratrice</div>
                     </div>
+
                     <div class="relative">
-                        <img src="https://ui-avatars.com/api/?name=Salma+Chair&background=E91E63&color=fff" 
-                             alt="Salma" class="w-12 h-12 rounded-xl border-2 border-white shadow-md group-hover:scale-105 transition-transform duration-300">
+                        <img src="https://ui-avatars.com/api/?name=Salma+Chair&background=E91E63&color=fff"
+                             alt="Admin"
+                             class="w-12 h-12 rounded-xl border-2 border-white shadow-md group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white"></div>
                     </div>
                 </div>
 
-                <!--Logout button-->
                 <div class="pl-4 border-l border-gray-200">
-                    <button onclick="Dashboard.logout()" 
+                    <button onclick="Dashboard.logout()"
                             title="Se déconnecter"
                             class="w-12 h-12 bg-white flex items-center justify-center rounded-xl border border-gray-100 shadow-sm cursor-pointer hover:bg-rose-50 hover:border-rose-100 group transition-all duration-300">
                         <i class="fas fa-sign-out-alt text-gray-400 group-hover:text-rose-pink transition-colors text-lg"></i>
@@ -122,57 +180,93 @@
             </div>
         </header>
 
+        <!-- KPI -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 mb-12">
-            <!--Revenue -->
             <div class="bg-white p-8 rounded-[24px] shadow-sm hover:shadow-xl hover:shadow-rose-500/5 hover:-translate-y-1 transition-all duration-500 border border-gray-50 group">
                 <div class="w-14 h-14 rounded-2xl bg-rose-50 text-rose-pink flex items-center justify-center text-2xl mb-6 group-hover:bg-rose-pink group-hover:text-white transition-colors duration-500">
                     <i class="fas fa-wallet"></i>
                 </div>
                 <div class="text-3xl font-bold mb-1 text-gray-900 tracking-tight" id="revenue">0 DH</div>
                 <div class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-3">Revenus</div>
-                
             </div>
 
-            <!--Reservations -->
             <div class="bg-white p-8 rounded-[24px] shadow-sm hover:shadow-xl hover:shadow-emerald-500/5 hover:-translate-y-1 transition-all duration-500 border border-gray-50 group">
                 <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-forest-green flex items-center justify-center text-2xl mb-6 group-hover:bg-forest-green group-hover:text-white transition-colors duration-500">
                     <i class="fas fa-calendar-check"></i>
                 </div>
                 <div class="text-3xl font-bold mb-1 text-gray-900 tracking-tight" id="reservations">0</div>
                 <div class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-3">Réservations</div>
-                
             </div>
 
-            <!-- Clientes -->
             <div class="bg-white p-8 rounded-[24px] shadow-sm hover:shadow-xl hover:shadow-rose-500/5 hover:-translate-y-1 transition-all duration-500 border border-gray-50 group">
                 <div class="w-14 h-14 rounded-2xl bg-pink-50 text-rose-pink flex items-center justify-center text-2xl mb-6 group-hover:bg-rose-pink group-hover:text-white transition-colors duration-500">
                     <i class="fas fa-user-friends"></i>
                 </div>
                 <div class="text-3xl font-bold mb-1 text-gray-900 tracking-tight" id="newClients">0</div>
                 <div class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-3">Clientes</div>
-                
             </div>
 
-            <!--Rating (en cours --static)-->
             <div class="bg-white p-8 rounded-[24px] shadow-sm hover:shadow-xl hover:shadow-amber-500/5 hover:-translate-y-1 transition-all duration-500 border border-gray-50 group">
                 <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-amber-500 group-hover:text-white transition-colors duration-500">
                     <i class="fas fa-star"></i>
                 </div>
+
                 <div class="text-3xl font-bold mb-1 text-gray-900 tracking-tight" id="rating">0/5</div>
-                <div class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-3">Satisfaction</div>
-                
+
+                <div class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-2">
+                    Satisfaction avis
+                </div>
+
+                <div class="text-xs text-gray-500">
+                    <span id="avisTotalCount">0</span> avis collecté(s) ·
+                    <span id="avisPendingCount">0</span> en attente
+                </div>
+
+                <a href="avis/avis.html" class="text-rose-pink text-sm font-bold hover:underline inline-block mt-3">
+                    Gérer les avis
+                </a>
             </div>
         </div>
 
-        <!-- les diagrammes  -->
+        <!-- Analyse des avis -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-50">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="font-playfair text-xl font-semibold">Répartition des avis</h2>
+                </div>
+
+                <div class="h-[260px]">
+                    <canvas id="avisStatusChart"></canvas>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 bg-white p-8 rounded-2xl shadow-sm border border-gray-50">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="font-playfair text-xl font-semibold">Derniers avis reçus</h2>
+                        <p class="text-sm text-gray-400 mt-1">
+                            Les avis publiés apparaîtront dans le site public.
+                        </p>
+                    </div>
+
+                    <a href="avis/avis.html" class="bg-rose-pink text-white px-4 py-2 rounded-xl text-sm font-bold hover:opacity-90">
+                        Voir tous
+                    </a>
+                </div>
+
+                <div id="latestAvisList" class="space-y-4">
+                    Chargement des avis...
+                </div>
+            </div>
+        </div>
+
+        <!-- Diagrammes réservations -->
         <div class="space-y-8 mb-12">
-            <!-- Row 1: Evolution + Status -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Evolution (2/3) -->
                 <div class="lg:col-span-2 bg-white p-8 rounded-2xl shadow-sm border border-gray-50">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="font-playfair text-xl font-semibold">Évolution des réservations</h2>
-                        <select id="filterEvolution" onchange="fetchDashboardData()" 
+                        <select id="filterEvolution" onchange="fetchDashboardData()"
                                 class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-rose-pink outline-none">
                             <option value="2024">2024</option>
                             <option value="2025">2025</option>
@@ -184,11 +278,11 @@
                         <canvas id="evolutionChart"></canvas>
                     </div>
                 </div>
-                <!-- Status (1/3) -->
+
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-50">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="font-playfair text-xl font-semibold">Répartition par statut</h2>
-                        <select id="filterStatus" onchange="fetchDashboardData()" 
+                        <select id="filterStatus" onchange="fetchDashboardData()"
                                 class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-rose-pink outline-none text-xs">
                             <option value="30">30 jours</option>
                             <option value="90" selected>3 mois</option>
@@ -201,13 +295,11 @@
                 </div>
             </div>
 
-            <!-- Row 2: Type + Popular -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Type -->
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-50">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="font-playfair text-xl font-semibold">Répartition par type d'excursion</h2>
-                        <select id="filterType" onchange="fetchDashboardData()" 
+                        <select id="filterType" onchange="fetchDashboardData()"
                                 class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-rose-pink outline-none">
                             <option value="30">30 jours</option>
                             <option value="90">3 mois</option>
@@ -218,11 +310,11 @@
                         <canvas id="typeChart"></canvas>
                     </div>
                 </div>
-                <!-- Popular -->
+
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-50">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="font-playfair text-xl font-semibold">Top 5 excursions</h2>
-                        <select id="filterPopular" onchange="fetchDashboardData()" 
+                        <select id="filterPopular" onchange="fetchDashboardData()"
                                 class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-rose-pink outline-none">
                             <option value="30">30 jours</option>
                             <option value="90">3 mois</option>
@@ -236,14 +328,15 @@
             </div>
         </div>
 
-        <!-- les dernières réservations -->
+        <!-- Dernières réservations -->
         <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-50">
             <div class="flex justify-between items-center mb-8">
                 <h2 class="font-playfair text-2xl font-semibold">Dernières réservations</h2>
-                <button class="bg-forest-green hover:bg-[#0c401e] text-white px-6 py-2.5 rounded-xl font-semibold transition-colors flex items-center gap-2">
+                <a href="reservations/index.html" class="bg-forest-green hover:bg-[#0c401e] text-white px-6 py-2.5 rounded-xl font-semibold transition-colors flex items-center gap-2">
                     Voir tout <i class="fas fa-arrow-right text-xs"></i>
-                </button>
+                </a>
             </div>
+
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead>
@@ -256,24 +349,26 @@
                             <th class="pb-4 font-semibold text-center">Statut</th>
                         </tr>
                     </thead>
-                    <tbody id="reservationsTable" class="divide-y divide-gray-50">
-                    </tbody>
+                    <tbody id="reservationsTable" class="divide-y divide-gray-50"></tbody>
                 </table>
             </div>
         </div>
     </main>
 
     <script>
-
         const Dashboard = {
             charts: {},
-            token: localStorage.getItem('token'),
+            token: localStorage.getItem('token') || localStorage.getItem('adminToken'),
+
             config: {
                 apiUrl: 'http://localhost:5000/api/admin/dashboard-stats',
+                avisApiUrl: 'http://localhost:5000/api/avis/admin',
                 months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
                 colors: {
                     rose: '#E91E63',
                     forest: '#166534',
+                    amber: '#F59E0B',
+                    red: '#EF4444',
                     types: {
                         'Désert': '#166534',
                         'Montagne': '#4ADE80',
@@ -286,37 +381,41 @@
             },
 
             async init() {
-                console.log("Dashboard - Initialisation...");
-                // On affiche le profil même sans données
                 this.setupProfile();
-                
+
+if (!this.token) {
+    window.location.href = '../login.html';
+    return;
+}
                 try {
-                    // On tente de rafraîchir les données
                     await this.refresh();
-                    console.log("Dashboard - Données chargées avec succès.");
+                    await this.loadAvisAnalytics();
                 } catch (err) {
-                    console.error("Dashboard - Erreur lors du chargement des données:", err);
+                    console.error("Dashboard - Erreur :", err);
                 }
             },
 
-            logout() {
-                localStorage.clear();
-                window.location.href = '../login.html';
-            },
+           logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('admin');
+
+    window.location.href = '../login.html';
+},
 
             async fetch(params = {}) {
                 const query = new URLSearchParams(params).toString();
+
                 try {
                     const response = await fetch(`${this.config.apiUrl}?${query}`, {
-                        headers: { 
+                        headers: {
                             'Authorization': `Bearer ${this.token || ''}`
                         }
                     });
-                    
-                    // Supression de la redirection automatique (logout) pour test
+
                     return await response.json();
                 } catch (err) {
-                    console.error("Erreur de fetch Dashboard:", err);
+                    console.error("Erreur fetch Dashboard:", err);
                     return { success: false, message: "Erreur réseau" };
                 }
             },
@@ -331,37 +430,27 @@
                     });
 
                     if (data.success) {
-                        this.updateKPIs(data.stats.kpi);
-                        if(data.stats.kpi) {
-                            console.log("Dashboard - KPIs reçus:", data.stats.kpi);
-                        } else {
-                            console.warn("Dashboard - Aucune KPI reçue.");
-                        }
-                        this.renderCharts(data.stats);
-                        if(data.stats.length > 0) {
-                            console.log("Dashboard - Statistiques reçues:", data.stats);
-                        }                        else {
-                            console.warn("Dashboard - Aucune statistique reçue.");
-                        }
-                        this.updateTable(data.stats.recent);
-                        if(data.stats.recent.length > 0) {
-                            console.log("Dashboard - Dernières réservations:", data.stats.recent);
-                        }
-                        else {
-                            console.warn("Dashboard - Aucune réservation récente trouvée.");
-                        }
-                    }else {
-                        console.error("Dashboard - API Error:", data.message);
+                        this.updateKPIs(data.stats?.kpi || {});
+                        this.renderCharts(data.stats || {});
+                        this.updateTable(data.stats?.recent || []);
+                    } else {
+                        console.error("Dashboard API Error:", data.message);
                     }
-                } catch (e) { console.error('Dashboard Error:', e); }
+                } catch (e) {
+                    console.error('Dashboard Error:', e);
+                }
             },
 
             updateKPIs(kpi = {}) {
                 const fmt = (v) => new Intl.NumberFormat('fr-FR').format(v || 0);
-                document.getElementById('revenue').textContent = `${fmt(kpi.revenue)} DH`;
-                document.getElementById('reservations').textContent = kpi.active || 0;
-                document.getElementById('newClients').textContent = kpi.newClients || 0;
-                document.getElementById('rating').textContent = `${kpi.rating || 0}/5`;
+
+                const revenueEl = document.getElementById('revenue');
+                const reservationsEl = document.getElementById('reservations');
+                const clientsEl = document.getElementById('newClients');
+
+                if (revenueEl) revenueEl.textContent = `${fmt(kpi.revenue)} DH`;
+                if (reservationsEl) reservationsEl.textContent = kpi.active || 0;
+                if (clientsEl) clientsEl.textContent = kpi.newClients || 0;
             },
 
             renderCharts(stats) {
@@ -372,24 +461,33 @@
             },
 
             renderEvolution(data) {
-                const yr = document.getElementById('filterEvolution').value;
+                const yr = document.getElementById('filterEvolution')?.value || '2026';
                 const datasets = [];
 
                 if (yr === 'all') {
                     const years = [...new Set(data.map(d => d.year))].sort();
+
                     years.forEach((y, i) => {
                         const vals = new Array(12).fill(0);
                         data.filter(d => d.year === y).forEach(d => vals[d.month_num - 1] = d.count);
-                        datasets.push({ label: y, data: vals, borderColor: i % 2 ? this.config.colors.forest : this.config.colors.rose, tension: 0.4 });
+
+                        datasets.push({
+                            label: y,
+                            data: vals,
+                            borderColor: i % 2 ? this.config.colors.forest : this.config.colors.rose,
+                            tension: 0.4
+                        });
                     });
                 } else {
                     const vals = new Array(12).fill(0);
                     data.forEach(d => vals[d.month_num - 1] = d.count);
-                    datasets.push({ 
-                        data: vals, 
-                        borderColor: this.config.colors.rose, 
-                        backgroundColor: 'rgba(233, 30, 99, 0.1)', 
-                        fill: true, 
+
+                    datasets.push({
+                        label: 'Réservations',
+                        data: vals,
+                        borderColor: this.config.colors.rose,
+                        backgroundColor: 'rgba(233, 30, 99, 0.1)',
+                        fill: true,
                         tension: 0.4,
                         borderWidth: 4
                     });
@@ -400,12 +498,15 @@
 
             renderStatus(data) {
                 const map = { 'Confirmée': 0, 'En attente': 0, 'Annulée': 0 };
+
                 data.forEach(d => {
-                    const l = d.statut.toLowerCase();
-                    if (l.includes('conf')) map['Confirmée'] += +d.count;
-                    else if (l.includes('atten')) map['En attente'] += +d.count;
-                    else if (l.includes('annu')) map['Annulée'] += +d.count;
+                    const l = String(d.statut || '').toLowerCase();
+
+                    if (l.includes('conf')) map['Confirmée'] += Number(d.count || 0);
+                    else if (l.includes('atten')) map['En attente'] += Number(d.count || 0);
+                    else if (l.includes('annu')) map['Annulée'] += Number(d.count || 0);
                 });
+
                 this.updateChart('status', 'doughnut', Object.keys(map), [{
                     data: Object.values(map),
                     backgroundColor: [this.config.colors.forest, '#FCD34D', '#EF4444'],
@@ -414,7 +515,8 @@
             },
 
             renderTypes(data) {
-                const labels = data.map(d => d.categorie);
+                const labels = data.map(d => d.categorie || 'Autre');
+
                 this.updateChart('type', 'bar', labels, [{
                     label: 'Réservations',
                     data: data.map(d => d.count),
@@ -423,113 +525,274 @@
                     barThickness: 35,
                     borderWidth: 0
                 }], {
-                    plugins: { 
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#fff',
-                            titleColor: '#1f2937',
-                            bodyColor: '#4b5563',
-                            borderColor: '#f3f4f6',
-                            borderWidth: 1,
-                            padding: 12,
-                            displayColors: true,
-                            bodyFont: { family: 'Plus Jakarta Sans' }
-                        }
+                    plugins: {
+                        legend: { display: false }
                     },
                     scales: {
-                        y: { 
-                            beginAtZero: true, 
-                            grid: { color: '#f3f4f6', drawBorder: false },
-                            ticks: { font: { family: 'Plus Jakarta Sans', size: 11 } }
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f3f4f6' }
                         },
-                        x: { 
-                            grid: { display: false },
-                            ticks: { font: { family: 'Plus Jakarta Sans', size: 11, weight: '500' } }
+                        x: {
+                            grid: { display: false }
                         }
                     }
                 });
             },
 
             renderPopular(data) {
-                this.updateChart('popular', 'bar', data.map(d => d.titre.length > 20 ? d.titre.slice(0, 20) + '...' : d.titre), [{
-                    label: 'Ventes',
-                    data: data.map(d => d.count),
-                    backgroundColor: this.config.colors.forest,
-                    borderRadius: 10,
-                    barThickness: 25,
-                }], { 
-                    indexAxis: 'y',
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { beginAtZero: true, grid: { display: false } },
-                        y: { grid: { display: false } }
+                this.updateChart('popular', 'bar',
+                    data.map(d => (d.titre || '').length > 20 ? d.titre.slice(0, 20) + '...' : d.titre || 'Voyage'),
+                    [{
+                        label: 'Réservations',
+                        data: data.map(d => d.count),
+                        backgroundColor: this.config.colors.forest,
+                        borderRadius: 10,
+                        barThickness: 25,
+                    }],
+                    {
+                        indexAxis: 'y',
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { beginAtZero: true, grid: { display: false } },
+                            y: { grid: { display: false } }
+                        }
                     }
-                });
+                );
             },
 
             updateChart(id, type, labels, datasets, extra = {}) {
                 const canvas = document.getElementById(`${id}Chart`);
-                if (!canvas) {
-                    console.error(`Canvas with id ${id}Chart not found`);
-                    return;
-                }
-                
+
+                if (!canvas) return;
+
                 if (this.charts[id]) this.charts[id].destroy();
-                
-                try {
-                    this.charts[id] = new Chart(canvas, {
-                        type,
-                        data: { labels, datasets },
-                        options: { 
-                            responsive: true, 
-                            maintainAspectRatio: false, 
-                            plugins: { 
-                                legend: { 
-                                    display: type === 'doughnut' || datasets.length > 1, 
-                                    position: 'bottom' 
-                                } 
-                            },
-                            ...extra 
-                        }
-                    });
-                } catch (err) {
-                    console.error(`Error creating chart ${id}:`, err);
-                }
+
+                this.charts[id] = new Chart(canvas, {
+                    type,
+                    data: { labels, datasets },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: type === 'doughnut' || datasets.length > 1,
+                                position: 'bottom'
+                            }
+                        },
+                        ...extra
+                    }
+                });
             },
 
             updateTable(recent = []) {
-                const colors = { 'Confirmée': 'emerald', 'En attente': 'amber', 'Annulée': 'rose' };
-                document.getElementById('reservationsTable').innerHTML = recent.map(res => `
-                    <tr class="hover:bg-gray-50/50">
-                        <td class="py-4 text-sm text-gray-500">#RES-26-${res.id}</td>
-                        
-                        <td class="py-4 font-semibold">${res.cliente_prenom} ${res.cliente_nom}</td>
-                        <td class="py-4 text-gray-600">${res.excursion_titre}</td>
-                        <td class="py-4 text-gray-500">${new Date(res.created_at).toLocaleDateString('fr-FR')}</td>
-                        <td class="py-4 text-right font-bold">${res.prix} DH</td>
-                        <td class="py-4 text-center">
-                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-${colors[res.statut] || 'gray'}-50 text-${colors[res.statut] || 'gray'}-600 uppercase">
-                                ${res.statut}
-                            </span>
-                        </td>
-                    </tr>
-                `).join('');
+                const table = document.getElementById('reservationsTable');
+
+                if (!table) return;
+
+                if (!recent.length) {
+                    table.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="py-8 text-center text-gray-400">
+                                Aucune réservation récente.
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                const colors = {
+                    'Confirmée': 'emerald',
+                    'En attente': 'amber',
+                    'Annulée': 'rose'
+                };
+
+                table.innerHTML = recent.map(res => {
+                    const color = colors[res.statut] || 'gray';
+
+                    return `
+                        <tr class="hover:bg-gray-50/50">
+                            <td class="py-4 text-sm text-gray-500">#RES-26-${res.id}</td>
+                            <td class="py-4 font-semibold">${this.escapeHtml(`${res.cliente_prenom || ''} ${res.cliente_nom || ''}`.trim())}</td>
+                            <td class="py-4 text-gray-600">${this.escapeHtml(res.excursion_titre || '')}</td>
+                            <td class="py-4 text-gray-500">${res.created_at ? new Date(res.created_at).toLocaleDateString('fr-FR') : '-'}</td>
+                            <td class="py-4 text-right font-bold">${res.prix || res.montant_total || 0} DH</td>
+                            <td class="py-4 text-center">
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-${color}-50 text-${color}-600 uppercase">
+                                    ${this.escapeHtml(res.statut || '')}
+                                </span>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            },
+
+            async fetchAvis() {
+                try {
+                    const response = await fetch(this.config.avisApiUrl, {
+                        headers: {
+                            Authorization: `Bearer ${this.token || ''}`
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (!data.success) {
+                        throw new Error(data.message || "Erreur lors du chargement des avis");
+                    }
+
+                    return data.avis || [];
+                } catch (error) {
+                    console.error("Erreur fetch avis :", error);
+                    return [];
+                }
+            },
+
+            async loadAvisAnalytics() {
+                const avis = await this.fetchAvis();
+
+                this.updateAvisKPIs(avis);
+                this.renderAvisStatusChart(avis);
+                this.renderLatestAvis(avis);
+            },
+
+            updateAvisKPIs(avis = []) {
+                const total = avis.length;
+                const pending = avis.filter((item) => item.statut === "en_attente").length;
+
+                const published = avis.filter((item) => item.statut === "publie");
+
+                const notes = published
+                    .map((item) => Number(item.note))
+                    .filter((note) => !isNaN(note) && note > 0);
+
+                const average = notes.length
+                    ? (notes.reduce((sum, note) => sum + note, 0) / notes.length).toFixed(1)
+                    : "0.0";
+
+                const ratingEl = document.getElementById("rating");
+                const totalEl = document.getElementById("avisTotalCount");
+                const pendingEl = document.getElementById("avisPendingCount");
+
+                if (ratingEl) ratingEl.textContent = `${average}/5`;
+                if (totalEl) totalEl.textContent = total;
+                if (pendingEl) pendingEl.textContent = pending;
+            },
+
+            renderAvisStatusChart(avis = []) {
+                const map = {
+                    "En attente": avis.filter((item) => item.statut === "en_attente").length,
+                    "Publiés": avis.filter((item) => item.statut === "publie").length,
+                    "Rejetés": avis.filter((item) => item.statut === "rejete").length
+                };
+
+                this.updateChart("avisStatus", "doughnut", Object.keys(map), [{
+                    data: Object.values(map),
+                    backgroundColor: ["#FCD34D", "#166534", "#EF4444"],
+                    borderWidth: 0
+                }], {
+                    cutout: "72%",
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: "bottom"
+                        }
+                    }
+                });
+            },
+
+            renderLatestAvis(avis = []) {
+                const container = document.getElementById("latestAvisList");
+
+                if (!container) return;
+
+                if (!avis.length) {
+                    container.innerHTML = `
+                        <div class="text-center py-8 text-gray-400">
+                            Aucun avis reçu pour le moment.
+                        </div>
+                    `;
+                    return;
+                }
+
+                const latest = avis.slice(0, 5);
+
+                container.innerHTML = latest.map((item) => {
+                    const clientName =
+                        `${item.client_prenom || ""} ${item.client_nom || ""}`.trim() ||
+                        item.client_email ||
+                        "Cliente";
+
+                    const statusClasses = {
+                        en_attente: "bg-yellow-100 text-yellow-700",
+                        publie: "bg-green-100 text-green-700",
+                        rejete: "bg-red-100 text-red-700"
+                    };
+
+                    const statusLabels = {
+                        en_attente: "En attente",
+                        publie: "Publié",
+                        rejete: "Rejeté"
+                    };
+
+                    const note = Number(item.note || 0);
+
+                    return `
+                        <div class="p-4 rounded-2xl border border-gray-100 bg-gray-50/60">
+                            <div class="flex justify-between items-start gap-4">
+                                <div>
+                                    <div class="font-bold text-gray-900">
+                                        ${this.escapeHtml(clientName)}
+                                    </div>
+
+                                    <div class="text-sm text-gray-500 mt-1">
+                                        ${this.escapeHtml(item.excursion_titre || "Excursion")}
+                                    </div>
+                                </div>
+
+                                <span class="px-3 py-1 rounded-full text-xs font-bold ${statusClasses[item.statut] || "bg-gray-100 text-gray-600"}">
+                                    ${statusLabels[item.statut] || item.statut}
+                                </span>
+                            </div>
+
+                            <div class="text-yellow-400 mt-3">
+                                ${"★".repeat(note)}${"☆".repeat(5 - note)}
+                            </div>
+
+                            <p class="text-gray-600 text-sm mt-2">
+                                ${this.escapeHtml(item.commentaire || "")}
+                            </p>
+                        </div>
+                    `;
+                }).join("");
             },
 
             setupProfile() {
                 const admin = JSON.parse(localStorage.getItem('admin') || '{}');
-                if (admin.nom) {
-                    const fullName = `${admin.prenom || ''} ${admin.nom}`.trim() || 'Salma Chair';
-                    document.getElementById('adminHeaderName').textContent = fullName;
-                    // For the sidebar or other places
-                    const sidebarName = document.querySelector('.group span');
-                    if (sidebarName) sidebarName.textContent = admin.prenom || admin.nom;
+
+                if (admin.nom || admin.prenom) {
+                    const fullName = `${admin.prenom || ''} ${admin.nom || ''}`.trim();
+
+                    const nameEl = document.getElementById('adminHeaderName');
+                    const firstNameEl = document.getElementById('adminFirstName');
+
+                    if (nameEl) nameEl.textContent = fullName || 'Admin';
+                    if (firstNameEl) firstNameEl.textContent = admin.prenom || admin.nom || 'Admin';
                 }
+            },
+
+            escapeHtml(value) {
+                const div = document.createElement("div");
+                div.textContent = value || "";
+                return div.innerHTML;
             }
         };
 
-        // UI Event listeners
-        window.fetchDashboardData = () => Dashboard.refresh();
+        window.fetchDashboardData = async () => {
+            await Dashboard.refresh();
+            await Dashboard.loadAvisAnalytics();
+        };
+
         document.addEventListener('DOMContentLoaded', () => Dashboard.init());
     </script>
 </body>

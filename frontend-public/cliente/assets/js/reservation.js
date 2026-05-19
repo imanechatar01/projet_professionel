@@ -38,7 +38,8 @@ function displayUser() {
 
     if (msg) {
       msg.className = "message warning";
-      msg.innerHTML = 'Tu dois être connectée pour réserver. <a href="login.html" style="color:#8a5c00;font-weight:700;">Se connecter</a>';
+      msg.innerHTML =
+        'Tu dois être connectée pour réserver. <a href="login.html" style="color:#8a5c00;font-weight:700;">Se connecter</a>';
     }
 
     const form = document.getElementById("reservationForm");
@@ -54,9 +55,11 @@ function displayUser() {
 
   if (userInfo) {
     userInfo.classList.add("visible");
+    userInfo.style.display = "flex";
   }
 
   const nom = client.nom || client.prenom || client.email || "Cliente";
+
   const fullName = client.prenom
     ? `${client.prenom} ${client.nom || ""}`.trim()
     : nom;
@@ -69,9 +72,10 @@ function displayUser() {
 
   const parts = fullName.split(" ").filter(Boolean);
 
-  const initials = parts.length >= 2
-    ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
-    : fullName.substring(0, 2).toUpperCase();
+  const initials =
+    parts.length >= 2
+      ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+      : fullName.substring(0, 2).toUpperCase();
 
   const userInitials = document.getElementById("userInitials");
 
@@ -83,32 +87,33 @@ function displayUser() {
 }
 
 async function resolveSelectedTrip() {
-  const saved = sessionStorage.getItem(window.APP_CONFIG.STORAGE_KEYS.SELECTED_TRIP);
   const excursionId = getQueryParam("excursion_id");
-  console.log("Excursion ID dans l'URL:", excursionId);
 
-  /*if (saved) {
-    try {
-      const parsed = JSON.parse(saved);
-
-      if (!excursionId || String(parsed.id) === String(excursionId)) {
-        return parsed;
-      }
-    } catch (error) {
-      console.warn("Erreur selectedTrip:", error.message);
-    }
+  if (!excursionId) {
+    showMessage(
+      'Aucun voyage sélectionné. Retourne au <a href="catalogue.html" style="font-weight:700;">catalogue</a> et clique sur “Réserver maintenant”.',
+      "warning"
+    );
+    return null;
   }
-*/
-  if (excursionId && window.ApiClient) {
+
+  if (window.ApiClient) {
     try {
       const data = await window.ApiClient.getExcursionById(excursionId);
+
       return data.excursion || data.data || data;
     } catch (error) {
-      console.warn("Impossible de charger l'excursion:", error.message);
+      console.warn("Impossible de charger l'excursion :", error.message);
     }
   }
 
-  return null;
+  return {
+    id: excursionId,
+    title: "Voyage Ecotrips Women",
+    location: "Maroc",
+    date: "Date à confirmer",
+    price: ""
+  };
 }
 
 function renderSelectedTrip(trip) {
@@ -133,14 +138,18 @@ function renderSelectedTrip(trip) {
   const location = trip.location || trip.lieu || "Maroc";
   const date = trip.date || trip.date_depart || "Date à confirmer";
   const price = trip.price || trip.prix || trip.tarif || "";
-  const image = trip.img || trip.image || trip.image_url || "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&q=80";
+  const image =
+    trip.img ||
+    trip.image ||
+    trip.image_url ||
+    "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&q=80";
 
   block.innerHTML = `
     <img src="${image}" alt="${title}">
     <div>
       <div class="selected-trip-title">${title}</div>
       <div class="selected-trip-meta">Lieu : ${location} · Date : ${date}</div>
-      <div class="selected-trip-price">${price}</div>
+      <div class="selected-trip-price">${price || "Prix à confirmer"}</div>
     </div>
   `;
 
@@ -187,6 +196,19 @@ function setupLivePrice() {
   montant.addEventListener("input", function () {
     updatePriceDisplay(this.value);
   });
+
+  updatePriceDisplay(montant.value);
+}
+
+function extractReservationId(result) {
+  return (
+    result?.reservation?.id ||
+    result?.data?.reservation?.id ||
+    result?.data?.id ||
+    result?.reservation_id ||
+    result?.id ||
+    null
+  );
 }
 
 function setupReservationForm() {
@@ -199,18 +221,34 @@ function setupReservationForm() {
     e.preventDefault();
 
     if (!window.Auth.isAuthenticated()) {
-      showMessage('Session expirée. <a href="login.html" style="font-weight:700;">Se connecter</a>', "warning");
+      showMessage(
+        'Session expirée. <a href="login.html" style="font-weight:700;">Se connecter</a>',
+        "warning"
+      );
       return;
     }
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Envoi en cours...";
+    const excursionId =
+      getQueryParam("excursion_id") ||
+      selectedTrip?.id ||
+      selectedTrip?._id ||
+      null;
 
-    const excursionId = getQueryParam("excursion_id") || selectedTrip?.id || selectedTrip?._id || null;
+    if (!excursionId) {
+      showMessage(
+        'Aucun voyage sélectionné. Retourne au <a href="catalogue.html" style="font-weight:700;">catalogue</a>.',
+        "error"
+      );
+      return;
+    }
 
     const reservationData = {
       excursion_id: excursionId,
-      excursion_title: selectedTrip?.title || selectedTrip?.titre || selectedTrip?.nom || null,
+      excursion_title:
+        selectedTrip?.title ||
+        selectedTrip?.titre ||
+        selectedTrip?.nom ||
+        null,
       nb_personnes: parseInt(document.getElementById("nb_personnes").value),
       montant_total: parseFloat(document.getElementById("montant_total").value),
       demande_speciale: document.getElementById("demande_speciale").value.trim()
@@ -218,38 +256,58 @@ function setupReservationForm() {
 
     if (reservationData.nb_personnes < 1) {
       showMessage("Le nombre de personnes doit être au moins 1", "error");
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Confirmer la réservation";
       return;
     }
 
-    if (isNaN(reservationData.montant_total) || reservationData.montant_total <= 0) {
+    if (
+      isNaN(reservationData.montant_total) ||
+      reservationData.montant_total <= 0
+    ) {
       showMessage("Veuillez entrer un montant valide", "error");
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Confirmer la réservation";
       return;
     }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Envoi en cours...";
 
     try {
+      console.log("Réservation envoyée :", reservationData);
+
       const result = await window.ApiClient.createReservation(reservationData);
 
       if (result.success) {
-        showMessage("Réservation confirmée. On te contacte très vite.", "success");
+        const reservationId = extractReservationId(result);
+
+        if (!reservationId) {
+          showMessage(
+            "Réservation créée, mais l'identifiant de paiement est introuvable.",
+            "warning"
+          );
+          return;
+        }
+
+        showMessage(
+          "✅ Réservation confirmée ! Redirection vers le paiement...",
+          "success"
+        );
 
         sessionStorage.removeItem(window.APP_CONFIG.STORAGE_KEYS.SELECTED_TRIP);
 
         setTimeout(function () {
-          window.location.href = window.APP_CONFIG.ROUTES.CATALOGUE;
-        }, 1800);
+          window.location.href = `paiement.html?id=${reservationId}`;
+        }, 1200);
       } else {
         showMessage(result.message || "Erreur lors de la réservation", "error");
       }
     } catch (error) {
-      console.error("Erreur:", error);
+      console.error("Erreur réservation :", error);
 
       if (error.status === 401 || error.status === 403) {
         window.Auth.clearSession();
-        showMessage('Session expirée. <a href="login.html" style="font-weight:700;">Reconnecte-toi</a>', "warning");
+        showMessage(
+          'Session expirée. <a href="login.html" style="font-weight:700;">Reconnecte-toi</a>',
+          "warning"
+        );
       } else {
         showMessage(error.message || "Erreur de connexion au serveur", "error");
       }

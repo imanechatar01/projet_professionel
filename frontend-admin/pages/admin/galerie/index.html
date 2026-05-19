@@ -3,121 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion Galerie · Ecotripswomen Admin</title>
+    <title>Galerie | EcoTrips Women Admin</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'forest-green': '#166534',
+                        'rose-pink': '#DE94A4',
+                        'soft-rose': '#FCE7F3',
+                        'warm-beige': '#F8F5F2',
+                        'sidebar-bg': '#B65C7A',
+                    },
+                    fontFamily: {
+                        'playfair': ['Playfair Display', 'serif'],
+                        'jakarta': ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap');
-
-        :root {
-            --primary: #E91E63;
-            --primary-light: #ff8fbb;
-            --bg-body: #f7f9fa;
-            --bg-card: #ffffff;
-            --text-dark: #1a1a2e;
-            --text-gray: #6b7280;
-            --border: #eef2f6;
-            --success: #10b981;
-            --danger: #ef4444;
+        ::-webkit-scrollbar {
+            width: 6px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-dark);
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
         }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
+        ::-webkit-scrollbar-thumb {
+            background: #DE94A4;
+            border-radius: 10px;
         }
 
-        h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.5rem;
-            color: var(--text-dark);
+        .gallery-card {
+            background: white;
+            border: 1px solid #f3f4f6;
+            border-radius: 24px;
+            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
         }
 
-        .back-link {
-            text-decoration: none;
-            color: var(--primary);
-            font-weight: 500;
-        }
-
-        .container {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 2rem;
-        }
-
-        .card {
-            background: var(--bg-card);
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-        }
-
-        h2 {
-            font-size: 1.25rem;
-            margin-bottom: 1.5rem;
-            color: var(--text-dark);
-        }
-
-        /* Formulaire */
-        .form-group { margin-bottom: 1.25rem; }
-        .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-gray);
-            margin-bottom: 0.5rem;
-        }
         .form-control {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-family: inherit;
+            padding: 0.85rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            outline: none;
+            background: #fbfbfb;
+            transition: all 0.2s ease;
         }
-        .btn {
-            background: linear-gradient(135deg, var(--primary) 0%, #c2185b 100%);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            width: 100%;
-            transition: opacity 0.2s;
-        }
-        .btn:hover { opacity: 0.9; }
 
-        /* Galerie Grid */
+        .form-control:focus {
+            background: white;
+            border-color: #DE94A4;
+            box-shadow: 0 0 0 4px rgba(222, 148, 164, 0.15);
+        }
+
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.4rem;
         }
 
         .gallery-item {
-            background: var(--bg-card);
-            border-radius: 10px;
+            background: #fff;
+            border: 1px solid #f3f4f6;
+            border-radius: 22px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: relative;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05);
+            transition: all 0.25s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.10);
         }
 
         .gallery-item img {
             width: 100%;
-            height: 150px;
+            height: 170px;
             object-fit: cover;
+            display: block;
         }
 
         .gallery-info {
@@ -125,280 +99,308 @@
         }
 
         .gallery-title {
-            font-weight: 700;
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 0.35rem;
         }
-        
+
         .gallery-desc {
-            font-size: 0.85rem;
-            color: var(--text-gray);
+            color: #6b7280;
+            font-size: 0.87rem;
+            line-height: 1.5;
+            min-height: 40px;
             margin-bottom: 1rem;
         }
 
         .delete-btn {
-            background: #fff0f0;
-            color: var(--danger);
-            border: 1px solid #ffd0d0;
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 600;
             width: 100%;
+            border: none;
+            border-radius: 12px;
+            padding: 0.7rem 1rem;
+            background: #fff1f2;
+            color: #dc2626;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+            color: white;
         }
 
         .alert {
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            display: none;
-        }
-        .alert.error { background: #fee2e2; color: #b91c1c; display: block; }
-        .alert.success { background: #d1fae5; color: #047857; display: block; }
-
-        @media (max-width: 768px) {
-            .container { grid-template-columns: 1fr; }
+            padding: 1rem 1.2rem;
+            border-radius: 16px;
+            margin-bottom: 1.3rem;
+            font-weight: 700;
+            border: 1px solid transparent;
         }
 
-        /* Sidebar Admin */
-        .admin-sidebar {
-            width: 288px;
-            background: #B65C7A;
+        .alert.success {
+            background: #ecfdf5;
+            color: #047857;
+            border-color: #bbf7d0;
+        }
+
+        .alert.error {
+            background: #fef2f2;
+            color: #b91c1c;
+            border-color: #fecaca;
+        }
+
+        .page-btn {
+            border: none;
+            border-radius: 14px;
+            padding: 0.7rem 1.1rem;
+            background: #166534;
             color: white;
-            padding: 24px;
-            position: fixed;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            z-index: 50;
-            left: 0;
-            top: 0;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        .admin-sidebar .sidebar-logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 2.5rem;
-            color: #F8F5F2;
-            letter-spacing: -0.5px;
+        .page-btn:hover:not(:disabled) {
+            background: #14532d;
         }
 
-        .admin-sidebar .sidebar-logo span {
-            color: #DE94A4;
-        }
-
-        .admin-sidebar nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .admin-sidebar nav ul li {
-            margin-bottom: 8px;
-        }
-
-        .admin-sidebar a {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            color: rgba(255,255,255,0.75);
-            text-decoration: none;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            font-size: 15px;
-            font-weight: 500;
-        }
-
-        .admin-sidebar a:hover {
-            background: rgba(255,255,255,0.10);
-            color: white;
-        }
-
-        .admin-sidebar a.active {
-            background: #DE94A4;
-            color: white;
-        }
-
-        .admin-sidebar i {
-            margin-right: 12px;
-            width: 20px;
-            text-align: center;
-        }
-
-        .logout-item {
-            margin-top: 32px;
-            padding-top: 20px;
-        }
-
-        .gallery-main {
-            margin-left: 288px;
-            padding: 2rem;
-            max-width: 1200px;
-        }
-
-        body {
-            max-width: none;
-            margin: 0;
-            padding: 0;
+        .page-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
         }
 
         @media (max-width: 900px) {
-            .admin-sidebar {
+            .admin-layout {
+                flex-direction: column;
+            }
+
+            .admin-sidebar-mobile {
                 position: static;
                 width: 100%;
                 height: auto;
             }
 
-            .gallery-main {
+            .admin-main-mobile {
                 margin-left: 0;
-                padding: 1.5rem;
             }
         }
-
     </style>
 </head>
-<body>
 
-    <!-- Sidebar Admin -->
-    <aside class="admin-sidebar">
-        <div class="sidebar-logo">
-            EcoTrips<span>Women</span>
+<body class="font-jakarta bg-warm-beige text-gray-800 min-h-screen admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar-mobile w-72 bg-sidebar-bg text-white p-6 fixed h-screen flex flex-col z-50">
+        <div class="font-playfair text-3xl font-bold mb-10 text-warm-beige tracking-tight">
+            EcoTrips<span class="text-rose-pink">Women</span>
         </div>
 
         <nav>
-            <ul>
+            <ul class="space-y-2">
                 <li>
-                    <a href="/admin/dashboard.html">
-                        <i class="fas fa-th-large"></i> Dashboard
+                    <a href="../dashboard.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-th-large mr-3 w-5 text-center"></i>
+                        Dashboard
                     </a>
                 </li>
 
                 <li>
-                    <a href="/admin/excursions/index.html">
-                        <i class="fas fa-map-marked-alt"></i> Excursions
+                    <a href="../excursions/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-map-marked-alt mr-3 w-5 text-center"></i>
+                        Excursions
                     </a>
                 </li>
 
                 <li>
-                    <a href="/admin/reservations/index.html">
-                        <i class="fas fa-calendar-check"></i> Réservations
+                    <a href="../reservations/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-calendar-check mr-3 w-5 text-center"></i>
+                        Réservations
                     </a>
                 </li>
 
                 <li>
-                    <a href="/admin/clientes/index.html">
-                        <i class="fas fa-users"></i> Clientes
+                    <a href="../clientes/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-users mr-3 w-5 text-center"></i>
+                        Clientes
                     </a>
                 </li>
 
                 <li>
-                    <a href="/admin/messages/index.html">
-                        <i class="fas fa-envelope"></i> Messages
+                    <a href="../messages/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-envelope mr-3 w-5 text-center"></i>
+                        Messages
                     </a>
                 </li>
 
                 <li>
-                    <a href="/admin/analyses.html">
-                        <i class="fas fa-chart-line"></i> Analyses
+                    <a href="../avis/avis.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-star mr-3 w-5 text-center"></i>
+                        Avis clientes
                     </a>
                 </li>
 
                 <li>
-                    <a href="/admin/galerie/index.html" class="active">
-                        <i class="fas fa-images"></i> Galerie
+                    <a href="../chatbot/chatbot.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-comments mr-3 w-5 text-center"></i>
+                        Chatbot FAQ
                     </a>
                 </li>
 
                 <li>
-                    <a href="/admin/chatbot/chatbot.html">
-                        <i class="fas fa-comments"></i> Chatbot FAQ
+                    <a href="../galerie/index.html" class="flex items-center p-3 text-white bg-rose-pink rounded-xl transition-all duration-300">
+                        <i class="fas fa-images mr-3 w-5 text-center"></i>
+                        Galerie
                     </a>
                 </li>
 
-                <li class="logout-item">
-                    <a href="#" onclick="localStorage.clear(); window.location.href='/admin/login.html'; return false;">
-                        <i class="fas fa-sign-out-alt"></i> Déconnexion
+                <li>
+                    <a href="../analyses.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-chart-line mr-3 w-5 text-center"></i>
+                        Analyses
+                    </a>
+                </li>
+
+                <li class="pt-8">
+                    <a href="../../login.html" onclick="localStorage.clear(); window.location.href='../login.html'; return false;" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
+                        Déconnexion
                     </a>
                 </li>
             </ul>
         </nav>
     </aside>
 
-    <!-- Contenu principal -->
-    <main class="gallery-main">
+    <!-- Main -->
+    <main class="admin-main-mobile ml-72 p-10">
+        <header class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-10">
+            <div>
+                <h1 class="font-playfair text-4xl font-bold text-gray-900 tracking-tight">
+                    Gestion de la Galerie
+                </h1>
+                <p class="text-gray-500 mt-2 font-medium">
+                    Ajoutez, filtrez et supprimez les photos affichées sur le site public.
+                </p>
+            </div>
 
+            <div class="bg-white border border-gray-100 rounded-2xl px-5 py-4 shadow-sm flex items-center gap-3">
+                <div class="w-11 h-11 rounded-xl bg-soft-rose text-rose-pink flex items-center justify-center">
+                    <i class="fas fa-images"></i>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-400 font-bold uppercase tracking-wider">Module</p>
+                    <p class="font-bold text-gray-800">Galerie publique</p>
+                </div>
+            </div>
+        </header>
 
-    <header>
-        <div>
-            <a href="../dashboard.html" class="back-link">← Retour au Dashboard</a>
-            <h1>Gestion de la Galerie</h1>
+        <div id="messageBox"></div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            <!-- Formulaire -->
+            <section class="gallery-card p-6 xl:col-span-1 h-fit">
+                <div class="mb-6">
+                    <h2 class="font-playfair text-2xl font-bold text-gray-900">
+                        Ajouter une photo
+                    </h2>
+                    <p class="text-gray-500 text-sm mt-1">
+                        La photo sera enregistrée dans la galerie sélectionnée.
+                    </p>
+                </div>
+
+                <form id="uploadForm" class="space-y-5">
+                    <div>
+                        <label for="titre" class="block text-sm font-bold text-gray-600 mb-2">
+                            Titre
+                        </label>
+                        <input type="text" id="titre" class="form-control" required placeholder="Ex : Randonnée dans l’Atlas">
+                    </div>
+
+                    <div>
+                        <label for="description" class="block text-sm font-bold text-gray-600 mb-2">
+                            Description
+                        </label>
+                        <textarea id="description" class="form-control" rows="4" placeholder="Une expérience inoubliable..."></textarea>
+                    </div>
+
+                    <div>
+                        <label for="image" class="block text-sm font-bold text-gray-600 mb-2">
+                            Image
+                        </label>
+                        <input type="file" id="image" class="form-control" accept="image/jpeg, image/png, image/webp" required>
+                        <p class="text-xs text-gray-400 mt-2">
+                            Formats acceptés : JPG, PNG, WEBP.
+                        </p>
+                    </div>
+
+                    <div>
+                        <label for="categorie" class="block text-sm font-bold text-gray-600 mb-2">
+                            Catégorie / Excursion
+                        </label>
+                        <select id="categorie" class="form-control" required>
+                            <option value="principale">Page Principale de l'Agence</option>
+                            <option value="excursion_sahara">Excursion Sahara</option>
+                            <option value="excursion_atlas">Excursion Haut-Atlas</option>
+                            <option value="excursion_dakhla">Excursion Dakhla</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="w-full bg-forest-green hover:bg-green-700 text-white rounded-xl px-5 py-3 font-bold shadow-md transition-all flex items-center justify-center gap-2">
+                        <i class="fas fa-cloud-arrow-up"></i>
+                        Mettre en ligne
+                    </button>
+                </form>
+            </section>
+
+            <!-- Galerie -->
+            <section class="gallery-card p-6 xl:col-span-2">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+                    <div>
+                        <h2 class="font-playfair text-2xl font-bold text-gray-900">
+                            Photos en ligne
+                        </h2>
+                        <p class="text-gray-500 text-sm mt-1">
+                            Gérez les images visibles dans la galerie.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <select id="filterCategorie" class="form-control sm:w-56">
+                            <option value="toutes">Toutes les galeries</option>
+                            <option value="principale">Page Principale</option>
+                            <option value="excursion_sahara">Excursion Sahara</option>
+                            <option value="excursion_atlas">Excursion Haut-Atlas</option>
+                            <option value="excursion_dakhla">Excursion Dakhla</option>
+                        </select>
+
+                        <input type="text" id="searchInput" class="form-control sm:w-64" placeholder="Rechercher par titre...">
+                    </div>
+                </div>
+
+                <div class="gallery-grid" id="galleryContainer">
+                    <p class="text-gray-400 col-span-full">
+                        Chargement des images...
+                    </p>
+                </div>
+
+                <div id="paginationControls" class="flex justify-center items-center gap-4 mt-8">
+                    <button class="page-btn" id="prevBtn" type="button">
+                        <i class="fas fa-chevron-left mr-1"></i>
+                        Précédent
+                    </button>
+
+                    <span id="pageInfo" class="font-bold text-gray-600">
+                        Page 1
+                    </span>
+
+                    <button class="page-btn" id="nextBtn" type="button">
+                        Suivant
+                        <i class="fas fa-chevron-right ml-1"></i>
+                    </button>
+                </div>
+            </section>
         </div>
-    </header>
-
-    <div id="messageBox"></div>
-
-    <div class="container">
-        <!-- Formulaire d'ajout -->
-        <aside class="card">
-            <h2>Ajouter une photo</h2>
-            <form id="uploadForm">
-                <div class="form-group">
-                    <label for="titre">Titre</label>
-                    <input type="text" id="titre" class="form-control" required placeholder="Ex: Randonnée dans l'Atlas">
-                </div>
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" class="form-control" rows="3" placeholder="Une expérience inoubliable..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="image">Image (JPG, PNG - Max 2MB)</label>
-                    <input type="file" id="image" class="form-control" accept="image/jpeg, image/png" required>
-                </div>
-                <div class="form-group">
-                    <label for="categorie">Catégorie / Excursion</label>
-                    <select id="categorie" class="form-control" required>
-                        <option value="principale">Page Principale de l'Agence</option>
-                        <option value="excursion_sahara">Excursion Sahara</option>
-                        <option value="excursion_atlas">Excursion Haut-Atlas</option>
-                        <option value="excursion_dakhla">Excursion Dakhla</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn" id="submitBtn">Mettre en ligne</button>
-            </form>
-        </aside>
-
-        <!-- Affichage de la galerie -->
-        <section class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-                <h2 style="margin: 0;">Photos en ligne</h2>
-                <div style="display: flex; gap: 1rem;">
-                    <select id="filterCategorie" class="form-control" style="width: auto; padding: 0.5rem;">
-                        <option value="toutes">Toutes les galeries</option>
-                        <option value="principale">Page Principale</option>
-                        <option value="excursion_sahara">Excursion Sahara</option>
-                        <option value="excursion_atlas">Excursion Haut-Atlas</option>
-                        <option value="excursion_dakhla">Excursion Dakhla</option>
-                    </select>
-                    <input type="text" id="searchInput" class="form-control" style="width: 250px; padding: 0.5rem;" placeholder="Rechercher par titre...">
-                </div>
-            </div>
-            <div class="gallery-grid" id="galleryContainer">
-                <p style="color:var(--text-gray); grid-column: 1/-1;">Chargement des images...</p>
-            </div>
-            <div id="paginationControls" style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem;">
-                <button class="btn" id="prevBtn" style="width: auto; padding: 0.5rem 1rem;">Précédent</button>
-                <span id="pageInfo" style="align-self: center; font-weight: 500;">Page 1</span>
-                <button class="btn" id="nextBtn" style="width: auto; padding: 0.5rem 1rem;">Suivant</button>
-            </div>
-        </section>
-    </div>
-
     </main>
 
-    <!-- Le script externe est importé ici -->
     <script src="index.js"></script>
 </body>
 </html>
