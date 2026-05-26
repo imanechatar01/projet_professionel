@@ -18,7 +18,7 @@ class Message {
             `SELECT m.*, c.nom as client_nom 
              FROM messages m
              LEFT JOIN clientes c ON m.client_id = c.id
-             ORDER BY m.created_at DESC`
+             ORDER BY m.created_at `
         );
         return result.rows;
     }
@@ -26,7 +26,7 @@ class Message {
     // Récupérer les messages d'un client spécifique
     static async findByClientId(clientId) {
         const result = await pool.query(
-            `SELECT * FROM messages WHERE client_id = $1 ORDER BY created_at DESC`,
+            `SELECT * FROM messages WHERE client_id = $1 ORDER BY created_at `,
             [clientId]
         );
         return result.rows;
@@ -35,7 +35,7 @@ class Message {
     // Récupérer les messages non lus
     static async findUnread() {
         const result = await pool.query(
-            `SELECT * FROM messages WHERE lu = false ORDER BY created_at DESC`
+            `SELECT * FROM messages WHERE lu = false ORDER BY created_at `
         );
         return result.rows;
     }

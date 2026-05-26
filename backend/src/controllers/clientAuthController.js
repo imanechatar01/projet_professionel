@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const pool = require('../config/database');
+const { verifyClientToken } = require('../middleware/auth');
 
 // Inscription cliente
 const clientRegister = async (req, res) => {
@@ -122,64 +123,15 @@ const clientLogin = async (req, res) => {
     }
 };
 
-// Récupérer profil client (protégé)
-const getClientProfile = async (req, res) => {
-    try {
-        const result = await pool.query(
-            'SELECT id, nom, prenom, email, telephone, created_at FROM clientes WHERE id = $1',
-            [req.user.id]
-        );
 
-        if (result.rows.length === 0) {
-            return res.status(404).json({ 
-                success: false, 
-                message: 'Client non trouvé' 
-            });
-        }
 
-        res.json({ success: true, client: result.rows[0] });
-    } catch (error) {
-        res.status(500).json({ success: false, message: 'Erreur serveur' });
-    }
-};
 
-// Middleware vérification token client
-const verifyClientToken = async (req, res, next) => {
-    const authHeader = req.headers.authorization;
-    
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return res.status(401).json({ 
-            success: false, 
-            message: 'Token manquant' 
-        });
-    }
 
-    const token = authHeader.split(' ')[1];
 
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        
-        if (decoded.role !== 'client') {
-            return res.status(403).json({ 
-                success: false, 
-                message: 'Accès réservé aux clients' 
-            });
-        }
-
-        req.user = decoded;
-        next();
-        
-    } catch (error) {
-        return res.status(401).json({ 
-            success: false, 
-            message: 'Token invalide ou expiré' 
-        });
-    }
-};
 
 module.exports = {
     clientRegister,
     clientLogin,
-    getClientProfile,
+   
     verifyClientToken
 };

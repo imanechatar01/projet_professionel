@@ -22,7 +22,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use(express.static(path.join(__dirname, '../../frontend-public')));
 app.use('/admin', express.static(path.join(__dirname, '../../frontend-admin/pages')));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
-
+app.use('/api/me', express.static(path.join(__dirname, '../../frontend-public/cliente/profile.html')));
 
 
 const messageRoutes = require('./routes/messages');
@@ -45,6 +45,7 @@ app.use('/api/client', clientRoutes);
 app.use('/api/reservations', reservationRoutes);
 app.use('/api/galerie', galerieRoutes);
 app.use('/api/paiement', paiementRoutes);
+app.use('/api/client', clientRoutes);
 app.get('/', (req, res) => {
     res.json({ message: 'API Ecotripswomen is running' });
 });
@@ -55,7 +56,7 @@ app.get('/api/admin/dashboard-stats',verifyAdminToken, getDashboardStats);
 
 app.get('/api/paiement/create-intent',createPaymentIntent );
 app.use('/api/excursions', excursionRoutes);
-
+app.get('/api/me',reservationRoutes );
 app.listen(PORT, () => {
     console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
 });
