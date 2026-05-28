@@ -1,10 +1,6 @@
 let trips = [];
 let currentTrip = null;
 
-/*
-  Données de secours si le backend n'est pas encore disponible.
-  Plus tard, le catalogue utilisera surtout GET /api/excursions.
-*/
 const FALLBACK_TRIPS = [
   {
     id: 1,
@@ -17,44 +13,22 @@ const FALLBACK_TRIPS = [
     tags: ["Rafting", "Nature"],
     region: "Centre Maroc",
     type: "Aventure",
-    desc: "Un week-end inoubliable qui combine la magie de la Cathédrale de la forêt d'Imsfrane et le frisson du rafting sur les eaux vives. Départ en groupe depuis Tanger, Tétouan ou Sala El Jadida dans une ambiance 100% féminine et conviviale.",
-    includesIcons: [
-      "Transport touristique",
-      "Nuit et petit-déjeuner",
-      "Session rafting",
-      "Guide accompagnatrice"
-    ],
-    includes: [
-      "Transport touristique aller-retour",
-      "Assurance et encadrement",
-      "Nuit en hébergement + petit-déjeuner",
-      "Équipement rafting complet",
-      "Accompagnement et organisation"
-    ],
+    desc: "Un week-end inoubliable combinant nature et rafting dans une ambiance 100% féminine.",
+    includesIcons: ["Transport", "Encadrement", "Rafting", "Organisation"],
+    includes: ["Transport aller-retour", "Encadrement", "Équipement rafting", "Organisation complète"],
     itinerary: [
       {
         day: "J1",
-        title: "Départ et Cathédrale Imsfrane",
-        body: "Départ tôt depuis Tanger, Tétouan ou Sala El Jadida. Visite de la majestueuse forêt de cèdres et Cathédrale d'Imsfrane. Dîner de groupe et nuit en hébergement."
+        title: "Départ et découverte",
+        body: "Départ, visite de la région et installation."
       },
       {
         day: "J2",
-        title: "Rafting sur l'Oum Er-Rbia",
-        body: "Petit-déjeuner, puis grande session de rafting avec équipement complet fourni. Pique-nique au bord de la rivière. Retour en fin d'après-midi."
+        title: "Rafting et retour",
+        body: "Session rafting encadrée puis retour."
       }
     ],
-    reviews: [
-      {
-        name: "Fatima Zahra",
-        text: "Le rafting c'était de la folie. Ambiance top, guide au top, j'ai adoré chaque instant.",
-        date: "Mars 2026"
-      },
-      {
-        name: "Meriem Lahlou",
-        text: "Parfaitement organisé. Transport confortable, hébergement sympa, et la forêt d'Imsfrane c'est magnifique.",
-        date: "Janvier 2026"
-      }
-    ]
+    reviews: []
   },
   {
     id: 2,
@@ -67,49 +41,27 @@ const FALLBACK_TRIPS = [
     tags: ["Montagne", "Désert"],
     region: "Sud Maroc",
     type: "Aventure",
-    desc: "3 jours magiques entre la ville impériale de Marrakech, les sommets de l'Atlas à Imlil et le désert lunaire d'Agafay. Un circuit complet pour vivre le Maroc dans toute sa diversité.",
-    includesIcons: [
-      "Transport inclus",
-      "2 nuits hébergement",
-      "Repas en groupe",
-      "Guide locale"
-    ],
-    includes: [
-      "Transport aller-retour",
-      "2 nuits en hébergement",
-      "Petit-déjeuners inclus",
-      "Circuit guidé Marrakech",
-      "Randonnée Imlil"
-    ],
+    desc: "Un circuit entre Marrakech, les montagnes de l’Atlas et le désert d’Agafay.",
+    includesIcons: ["Transport", "Hébergement", "Guide", "Organisation"],
+    includes: ["Transport aller-retour", "Hébergement", "Programme guidé", "Organisation complète"],
     itinerary: [
       {
         day: "J1",
-        title: "Départ et Marrakech",
-        body: "Arrivée à Marrakech, visite de la Médina, place Jemaa El Fna et souks. Nuit à Marrakech."
+        title: "Marrakech",
+        body: "Visite de Marrakech et installation."
       },
       {
         day: "J2",
-        title: "Imlil et Atlas",
-        body: "Route vers Imlil, randonnée dans les montagnes de l'Atlas, repas berbère traditionnel. Nuit au pied de l'Atlas."
+        title: "Imlil",
+        body: "Découverte de l’Atlas et randonnée."
       },
       {
         day: "J3",
-        title: "Agafay et retour",
-        body: "Matin dans le désert d'Agafay, balade à chameau optionnelle. Retour en fin d'après-midi."
+        title: "Agafay",
+        body: "Découverte du désert d’Agafay puis retour."
       }
     ],
-    reviews: [
-      {
-        name: "Houda Mansouri",
-        text: "Des paysages à couper le souffle et une énergie de groupe extraordinaire. Merci.",
-        date: "Avril 2026"
-      },
-      {
-        name: "Zineb Alami",
-        text: "Imlil c'est magique, je n'avais jamais vu l'Atlas de si près. Expérience inoubliable.",
-        date: "Février 2026"
-      }
-    ]
+    reviews: []
   },
   {
     id: 3,
@@ -122,190 +74,90 @@ const FALLBACK_TRIPS = [
     tags: ["Randonnée", "Cascade"],
     region: "Nord Maroc",
     type: "Nature",
-    desc: "Une journée ressourçante dans les gorges d'Akchour avec ses cascades et ponts naturels, suivie d'une balade dans les ruelles bleues de Chefchaouen. La destination incontournable du Nord.",
-    includesIcons: [
-      "Transport",
-      "Randonnée guidée",
-      "Cascades",
-      "Chefchaouen"
-    ],
-    includes: [
-      "Transport aller-retour",
-      "Encadrement et organisation",
-      "Accès aux sites naturels"
-    ],
+    desc: "Une journée entre les cascades d’Akchour et les ruelles bleues de Chefchaouen.",
+    includesIcons: ["Transport", "Randonnée", "Cascades", "Chefchaouen"],
+    includes: ["Transport aller-retour", "Encadrement", "Organisation"],
     itinerary: [
       {
         day: "Matin",
-        title: "Gorges d'Akchour",
-        body: "Départ tôt, arrivée aux gorges. Randonnée jusqu'aux cascades et pont de Dieu. Pique-nique sur place."
+        title: "Akchour",
+        body: "Randonnée et découverte des cascades."
       },
       {
         day: "Après-midi",
         title: "Chefchaouen",
-        body: "Après-midi libre dans les ruelles bleues de Chefchaouen. Shopping artisanat et photos. Retour en soirée."
+        body: "Visite libre de Chefchaouen puis retour."
       }
     ],
-    reviews: [
-      {
-        name: "Nadia Bensouda",
-        text: "Organisation parfaite, guide adorable, et le zipline à Akchour, je n'oublierai jamais.",
-        date: "Avril 2026"
-      }
-    ]
-  },
-  {
-    id: 4,
-    title: "Plongée Belyounech",
-    location: "Bélyounech, Tétouan",
-    date: "17 Mai 2026",
-    duration: "1 jour",
-    price: "399 dhs",
-    img: "https://images.unsplash.com/photo-1542401886-65d6c61db217?w=1200&q=80",
-    tags: ["Plongée", "Mer"],
-    region: "Nord Maroc",
-    type: "Plongée",
-    desc: "Explore les fonds marins cristallins de Bélyounech avec une session de plongée encadrée par des professionnels. Accessible même sans expérience. Un monde sous-marin à couper le souffle.",
-    includesIcons: [
-      "Transport",
-      "Équipement plongée",
-      "Instructrice",
-      "2 plongées"
-    ],
-    includes: [
-      "Transport aller-retour",
-      "Équipement plongée complet",
-      "2 sessions de plongée",
-      "Instructrice certifiée",
-      "Assurance"
-    ],
-    itinerary: [
-      {
-        day: "Matin",
-        title: "Briefing et première plongée",
-        body: "Arrivée à Bélyounech, briefing sécurité, première plongée en eaux peu profondes pour débutantes."
-      },
-      {
-        day: "Après-midi",
-        title: "Deuxième plongée et détente",
-        body: "Deuxième plongée en eau plus profonde. Déjeuner sur la plage. Retour en fin d'après-midi."
-      }
-    ],
-    reviews: [
-      {
-        name: "Sara El Fassi",
-        text: "Jamais fait de plongée avant. L'instructrice était super patiente et les poissons magnifiques.",
-        date: "Mars 2026"
-      }
-    ]
-  },
-  {
-    id: 5,
-    title: "Zipline Akchour — Chefchaouen",
-    location: "Akchour, Nord Maroc",
-    date: "À confirmer",
-    duration: "1 jour",
-    price: "À partir de 190 dhs",
-    img: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&q=80",
-    tags: ["Zipline", "Aventure"],
-    region: "Nord Maroc",
-    type: "Aventure",
-    desc: "L'adrénaline en pleine nature. Enchaîne les tyroliennes au-dessus des gorges d'Akchour et termine par la ville bleue. Pour les amatrices de sensations fortes.",
-    includesIcons: [
-      "Transport",
-      "Zipline",
-      "Équipement",
-      "Chefchaouen"
-    ],
-    includes: [
-      "Transport aller-retour",
-      "Équipement sécurité complet",
-      "Encadrement zipline",
-      "Visite libre Chefchaouen"
-    ],
-    itinerary: [
-      {
-        day: "Matin",
-        title: "Gorges et zipline",
-        body: "Arrivée aux gorges d'Akchour. Session zipline encadrée avec équipement de sécurité complet."
-      },
-      {
-        day: "Après-midi",
-        title: "Chefchaouen",
-        body: "Déjeuner et après-midi libre dans les ruelles bleues de Chefchaouen."
-      }
-    ],
-    reviews: [
-      {
-        name: "Houda El Amrani",
-        text: "Quelle montée d'adrénaline. La vue depuis le zipline est incroyable. Je recommande à 100%.",
-        date: "Janvier 2026"
-      }
-    ]
-  },
-  {
-    id: 6,
-    title: "Rafting au Maroc",
-    location: "Oum Er-Rbia",
-    date: "1–3 Mai 2026",
-    duration: "3 jours",
-    price: "1 200 dhs",
-    img: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200&q=80",
-    tags: ["Rafting", "Éco"],
-    region: "Centre Maroc",
-    type: "Aventure",
-    desc: "3 jours d'aventure pure sur les rapides de l'Oum Er-Rbia. Le circuit le plus complet pour les amatrices de rafting : camping, feu de camp, et les plus beaux rapides du Maroc.",
-    includesIcons: [
-      "Transport",
-      "Camping",
-      "Rafting 3 jours",
-      "Feu de camp"
-    ],
-    includes: [
-      "Transport aller-retour",
-      "2 nuits camping",
-      "Repas tous inclus",
-      "Équipement rafting",
-      "Guide spécialisée"
-    ],
-    itinerary: [
-      {
-        day: "J1",
-        title: "Arrivée et première descente",
-        body: "Installation au camp. Première descente de rapides niveau débutant pour s'échauffer."
-      },
-      {
-        day: "J2",
-        title: "Grands rapides",
-        body: "La journée la plus intense. Rapides de niveau intermédiaire à avancé. Feu de camp le soir."
-      },
-      {
-        day: "J3",
-        title: "Dernière descente et retour",
-        body: "Matinée de rafting puis retour. Diplômes remis à toutes les participantes."
-      }
-    ],
-    reviews: [
-      {
-        name: "Meriem Tazi",
-        text: "3 jours de pure adrénaline. Le camping au bord de l'oued, le feu de camp, parfait.",
-        date: "Février 2026"
-      }
-    ]
+    reviews: []
   }
 ];
 
+function escapeHtml(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function formatApiDate(value) {
+  if (!value) return "";
+
+  const date = new Date(value);
+
+  if (isNaN(date.getTime())) return value;
+
+  return date.toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  });
+}
+
+function formatDateRange(start, end) {
+  const startText = formatApiDate(start);
+  const endText = formatApiDate(end);
+
+  if (startText && endText && startText !== endText) {
+    return `${startText} → ${endText}`;
+  }
+
+  return startText || endText || "Date à confirmer";
+}
+
+function formatPrice(value) {
+  if (value === null || value === undefined || value === "") {
+    return "Prix à confirmer";
+  }
+
+  const number = parseFloat(value);
+
+  if (isNaN(number)) return String(value);
+
+  return number.toLocaleString("fr-MA") + " dhs";
+}
+
 function normalizeTrip(raw) {
+  const programmeText = raw.programme || raw.program || "";
+
   return {
     id: raw.id || raw._id,
     title: raw.title || raw.titre || raw.nom || "Excursion",
-    location: raw.location || raw.lieu || raw.depart || "Maroc",
-    date: raw.date || raw.date_depart || "Date à confirmer",
+    location: raw.location || raw.lieu || raw.depart || raw.destination || "Maroc",
+    date: raw.date || raw.date_depart || formatDateRange(raw.date_debut, raw.date_fin),
     duration: raw.duration || raw.duree || "Durée à confirmer",
-    price: raw.price || raw.prix || raw.tarif || "Prix à confirmer",
-    img: raw.img || raw.image || raw.image_url || raw.photo || "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200&q=80",
+    price: raw.price || formatPrice(raw.prix || raw.tarif),
+    rawPrice: raw.prix || raw.tarif || raw.price || "",
+    img:
+      raw.img ||
+      raw.image ||
+      raw.image_url ||
+      raw.photo ||
+      "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200&q=80",
     tags: Array.isArray(raw.tags) ? raw.tags : raw.type ? [raw.type] : ["Voyage"],
-    region: raw.region || "Nord Maroc",
+    region: raw.region || raw.destination || "Nord Maroc",
     type: raw.type || "Aventure",
     desc: raw.desc || raw.description || "Une expérience féminine unique organisée par ecotrips_women.",
     includesIcons: raw.includesIcons || raw.includes_icons || [
@@ -319,7 +171,17 @@ function normalizeTrip(raw) {
       "Encadrement",
       "Organisation"
     ],
-    itinerary: raw.itinerary || raw.programme || [],
+    itinerary: Array.isArray(raw.itinerary)
+      ? raw.itinerary
+      : programmeText
+        ? [
+            {
+              day: "Programme",
+              title: "Programme du voyage",
+              body: programmeText
+            }
+          ]
+        : [],
     reviews: raw.reviews || raw.avis || []
   };
 }
@@ -375,24 +237,26 @@ function renderTrips(list) {
     return `
       <div class="trip-card" onclick="showDetail('${trip.id}')">
         <div class="trip-img">
-          <img src="${trip.img}" alt="${trip.title}" loading="lazy">
-          <div class="trip-price">${trip.price}</div>
+          <img src="${escapeHtml(trip.img)}" alt="${escapeHtml(trip.title)}" loading="lazy">
+          <div class="trip-price">${escapeHtml(trip.price)}</div>
+
           <div class="trip-tags">
             ${trip.tags.map(function (tag) {
-              return `<span class="tag">${tag}</span>`;
+              return `<span class="tag">${escapeHtml(tag)}</span>`;
             }).join("")}
           </div>
         </div>
 
         <div class="trip-body">
-          <div class="trip-title">${trip.title}</div>
+          <div class="trip-title">${escapeHtml(trip.title)}</div>
 
           <div class="trip-meta">
             <div class="trip-meta-item">
-              <span class="trip-meta-icon">Lieu :</span>${trip.location}
+              <span class="trip-meta-icon">Lieu :</span>${escapeHtml(trip.location)}
             </div>
+
             <div class="trip-meta-item">
-              <span class="trip-meta-icon">Date :</span>${trip.date} · ${trip.duration}
+              <span class="trip-meta-icon">Date :</span>${escapeHtml(trip.date)} · ${escapeHtml(trip.duration)}
             </div>
           </div>
 
@@ -423,6 +287,213 @@ function filterTrips() {
   renderTrips(filtered);
 }
 
+function isClientLoggedIn() {
+  return window.Auth && window.Auth.isAuthenticated();
+}
+
+function showLoginRequiredModal(trip) {
+  const oldModal = document.getElementById("login-required-modal");
+
+  if (oldModal) oldModal.remove();
+
+  sessionStorage.setItem("pendingReservationTrip", JSON.stringify(trip));
+
+  const modal = document.createElement("div");
+  modal.id = "login-required-modal";
+
+  modal.innerHTML = `
+    <div style="
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 10, 15, 0.42);
+      backdrop-filter: blur(4px);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    ">
+      <div style="
+        width: 100%;
+        max-width: 430px;
+        background: white;
+        border-radius: 24px;
+        padding: 2rem;
+        box-shadow: 0 25px 80px rgba(0,0,0,0.22);
+        text-align: center;
+        border: 1px solid rgba(194,24,91,0.12);
+      ">
+        <div style="
+          width: 58px;
+          height: 58px;
+          border-radius: 50%;
+          background: var(--fuchsia-lt, #fce7f0);
+          color: var(--fuchsia, #c2185b);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 1rem;
+          font-size: 1.6rem;
+        ">
+          🌸
+        </div>
+
+        <h3 style="
+          font-family: var(--font-h);
+          font-size: 1.55rem;
+          margin-bottom: 0.6rem;
+          color: var(--charcoal);
+        ">
+          Connecte-toi pour réserver
+        </h3>
+
+        <p style="
+          color: var(--gray);
+          line-height: 1.7;
+          font-size: 0.95rem;
+          margin-bottom: 1.4rem;
+        ">
+          Pour réserver <strong>${escapeHtml(trip.title)}</strong>, connecte-toi ou crée ton compte.
+          Après connexion, la réservation s’ouvrira automatiquement dans ton espace client.
+        </p>
+
+        <div style="display:flex; flex-direction:column; gap:0.75rem;">
+          <button type="button" class="btn btn-pink btn-full" id="goLoginBtn">
+            Se connecter
+          </button>
+
+          <button type="button" class="btn btn-outline-pink btn-full" id="goSignupBtn">
+            Créer un compte
+          </button>
+
+          <button type="button" class="btn btn-outline-dark btn-full" id="closeLoginModalBtn">
+            Continuer à voir les voyages
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  document.getElementById("goLoginBtn").onclick = function () {
+    window.location.href = "login.html";
+  };
+
+  document.getElementById("goSignupBtn").onclick = function () {
+    window.location.href = "signup.html";
+  };
+
+  document.getElementById("closeLoginModalBtn").onclick = function () {
+    modal.remove();
+  };
+}
+
+function handleReserveTrip(trip) {
+  sessionStorage.setItem(
+    window.APP_CONFIG.STORAGE_KEYS.SELECTED_TRIP,
+    JSON.stringify(trip)
+  );
+
+  if (!isClientLoggedIn()) {
+    showLoginRequiredModal(trip);
+    return;
+  }
+
+  if (window.openReservationPanel) {
+    window.openReservationPanel(trip);
+  } else {
+    console.warn("openReservationPanel n'est pas encore chargé.");
+  }
+}
+
+function extractPublicAvisArray(data) {
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data.avis)) return data.avis;
+  if (Array.isArray(data.data)) return data.data;
+  if (Array.isArray(data.results)) return data.results;
+
+  return [];
+}
+
+function getPublicAvisName(avis) {
+  const fullName = `${avis.client_prenom || ""} ${avis.client_nom || ""}`.trim();
+
+  return (
+    fullName ||
+    avis.client_name ||
+    avis.nom_client ||
+    avis.name ||
+    "Cliente EcoTrips"
+  );
+}
+
+function renderPublicAvis(avisList) {
+  const container = document.getElementById("detail-reviews");
+
+  if (!container) return;
+
+  if (!avisList.length) {
+    container.innerHTML = `
+      <p style="color:var(--gray);">
+        Aucun avis publié pour le moment.
+      </p>
+    `;
+    return;
+  }
+
+  container.innerHTML = avisList.map(function (avis, index) {
+    const note = Number(avis.note || avis.rating || 5);
+    const name = getPublicAvisName(avis);
+    const commentaire = avis.commentaire || avis.comment || avis.text || "";
+    const date = avis.created_at || avis.date || "";
+
+    return `
+      <div style="${index < avisList.length - 1 ? "border-bottom:1px solid var(--gray-lt);padding-bottom:1.5rem;" : ""}">
+        <div style="display:flex;justify-content:space-between;gap:1rem;margin-bottom:0.5rem;">
+          <strong>${escapeHtml(name)}</strong>
+          <span style="color:var(--saffron);white-space:nowrap;">
+            ${"★".repeat(note)}${"☆".repeat(Math.max(0, 5 - note))}
+          </span>
+        </div>
+
+        <p style="color:var(--gray);font-size:0.88rem;font-style:italic;">
+          "${escapeHtml(commentaire)}"
+        </p>
+
+        ${
+          date
+            ? `<div style="font-size:0.75rem;color:var(--gray);margin-top:0.5rem;">${formatApiDate(date)}</div>`
+            : ""
+        }
+      </div>
+    `;
+  }).join("");
+}
+
+async function loadPublicAvisForTrip(trip) {
+  const container = document.getElementById("detail-reviews");
+
+  if (!container || !trip || !trip.id) return;
+
+  container.innerHTML = `
+    <p style="color:var(--gray);">
+      Chargement des avis...
+    </p>
+  `;
+
+  try {
+    const data = await window.ApiClient.getPublicAvisByExcursion(trip.id);
+    const avis = extractPublicAvisArray(data);
+
+    renderPublicAvis(avis);
+  } catch (error) {
+    console.warn("Avis publics indisponibles :", error.message);
+
+    renderPublicAvis(trip.reviews || []);
+  }
+}
+
 function showDetail(id) {
   const trip = trips.find(function (item) {
     return String(item.id) === String(id);
@@ -441,8 +512,9 @@ function showDetail(id) {
   document.getElementById("detail-img").alt = trip.title;
   document.getElementById("detail-title").textContent = trip.title;
   document.getElementById("detail-subtitle").textContent = `${trip.location} — ${trip.date}`;
+
   document.getElementById("detail-tags").innerHTML = trip.tags.map(function (tag) {
-    return `<span class="tag">${tag}</span>`;
+    return `<span class="tag">${escapeHtml(tag)}</span>`;
   }).join("");
 
   document.getElementById("detail-price").textContent = trip.price;
@@ -453,13 +525,13 @@ function showDetail(id) {
   document.getElementById("detail-includes-grid").innerHTML = trip.includesIcons.map(function (item) {
     return `
       <div style="background:var(--fuchsia-pale);border-radius:var(--r-sm);padding:1rem;display:flex;align-items:center;gap:0.75rem;border:1px solid rgba(194,24,91,0.08);font-size:0.88rem;font-weight:600;">
-        ${item}
+        ${escapeHtml(item)}
       </div>
     `;
   }).join("");
 
   document.getElementById("detail-includes").innerHTML = trip.includes.map(function (item) {
-    return `<li>${item}</li>`;
+    return `<li>${escapeHtml(item)}</li>`;
   }).join("");
 
   document.getElementById("detail-itinerary").innerHTML = trip.itinerary.length
@@ -467,36 +539,29 @@ function showDetail(id) {
       return `
         <div style="display:flex;gap:1.5rem;align-items:flex-start;">
           <div style="background:var(--fuchsia);color:white;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;margin-top:0.2rem;">
-            ${day.day}
+            ${escapeHtml(day.day)}
           </div>
+
           <div>
-            <strong>${day.title}</strong>
-            <p style="color:var(--gray);font-size:0.87rem;margin-top:0.25rem;">${day.body}</p>
+            <strong>${escapeHtml(day.title)}</strong>
+            <p style="color:var(--gray);font-size:0.87rem;margin-top:0.25rem;">${escapeHtml(day.body)}</p>
           </div>
         </div>
       `;
     }).join("")
     : `<p style="color:var(--gray);">Programme bientôt disponible.</p>`;
 
-  document.getElementById("detail-reviews").innerHTML = trip.reviews.length
-    ? trip.reviews.map(function (review, index) {
-      return `
-        <div style="${index < trip.reviews.length - 1 ? "border-bottom:1px solid var(--gray-lt);padding-bottom:1.5rem;" : ""}">
-          <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
-            <strong>${review.name}</strong>
-            <span style="color:var(--saffron);">★★★★★</span>
-          </div>
-          <p style="color:var(--gray);font-size:0.88rem;font-style:italic;">"${review.text}"</p>
-          <div style="font-size:0.75rem;color:var(--gray);margin-top:0.5rem;">${review.date}</div>
-        </div>
-      `;
-    }).join("")
-    : `<p style="color:var(--gray);">Aucun avis pour le moment.</p>`;
+  renderPublicAvis(trip.reviews || []);
+  loadPublicAvisForTrip(trip);
 
   const reserveLink = document.querySelector('.detail-sidebar a[href^="reservation.html"]');
 
   if (reserveLink) {
-    reserveLink.href = `reservation.html?excursion_id=${encodeURIComponent(trip.id)}`;
+    reserveLink.href = "#";
+    reserveLink.onclick = function (event) {
+      event.preventDefault();
+      handleReserveTrip(trip);
+    };
   }
 
   switchTab("overview");

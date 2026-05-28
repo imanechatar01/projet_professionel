@@ -1,341 +1,652 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Messages - Admin Ecotripswomen</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'forest-green': '#166534',
-                        'rose-pink': '#DE94A4',
-                        'soft-rose': '#FCE7F3',
-                        'warm-beige': '#F8F5F2',
-                        'sidebar-bg': '#B65C7A',
-                    },
-                    fontFamily: {
-                        'playfair': ['Playfair Display', 'serif'],
-                        'jakarta': ['Plus Jakarta Sans', 'sans-serif'],
-                    },
-                    borderRadius: {
-                        'xl-20': '20px',
-                    }
-                }
-            }
-        }
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messages - Admin Ecotripswomen</title>
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
-    <style>
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #E91E63; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #166534; }
-        
-        .message-read { opacity: 0.6; }
-        .message-unread { font-weight: bold; background: #fff0f3; }
-        
-        .btn {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 0 2px;
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'forest-green': '#166534',
+            'rose-pink': '#DE94A4',
+            'soft-rose': '#FCE7F3',
+            'warm-beige': '#F8F5F2',
+            'sidebar-bg': '#B65C7A',
+          },
+          fontFamily: {
+            'playfair': ['Playfair Display', 'serif'],
+            'jakarta': ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          borderRadius: {
+            'xl-20': '20px',
+          }
         }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            width: 500px;
-            max-width: 90%;
-        }
-        textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin: 10px 0;
-            resize: vertical;
-        }
-    </style>
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* Scrollbar personnalisée */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #E91E63; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #166534; }
+
+    /* Styles pour la messagerie */
+    .app-area {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .contacts-sidebar {
+      width: 300px;
+      flex-shrink: 0;
+      background: white;
+      border-right: 1px solid #f0e0e8;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .contacts-header {
+      padding: 18px 16px 12px;
+      border-bottom: 1px solid #f0e0e8;
+    }
+
+    .contacts-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e1e2a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .unread-total-badge {
+      background: #c2185b;
+      color: white;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-left: auto;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #fdf6f8;
+      border: 1px solid #f0e0e8;
+      border-radius: 20px;
+      padding: 7px 14px;
+    }
+
+    .search-box input {
+      border: none;
+      background: transparent;
+      font-size: 13px;
+      color: #1e1e2a;
+      outline: none;
+      width: 100%;
+      font-family: inherit;
+    }
+
+    .search-box input::placeholder { color: #bbb; }
+
+    .contacts-list { flex: 1; overflow-y: auto; }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 13px 16px;
+      border-bottom: 1px solid #fdf6f8;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .contact-item:hover { background: #fdf6f8; }
+
+    .contact-item.active {
+      background: #fce4ec;
+      border-left: 3px solid #c2185b;
+      padding-left: 13px;
+    }
+
+    .contact-item.active .contact-name {
+      font-weight: 600;
+      color: #c2185b;
+    }
+
+    .avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .contact-meta { flex: 1; min-width: 0; }
+    .contact-top { display: flex; justify-content: space-between; align-items: center; }
+    .contact-name { font-size: 14px; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .contact-time { font-size: 11px; color: #bbb; flex-shrink: 0; margin-left: 4px; }
+    .contact-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 3px; }
+    .contact-preview { font-size: 12px; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+    .unread-badge {
+      background: #c2185b;
+      color: white;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 50%;
+      min-width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 3px;
+      flex-shrink: 0;
+    }
+
+    .chat-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #fdf6f8;
+      overflow: hidden;
+    }
+
+    .empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #ccc;
+      gap: 12px;
+      font-size: 15px;
+    }
+
+    .chat-header {
+      background: white;
+      border-bottom: 1px solid #f0e0e8;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .mark-read-btn {
+      margin-left: auto;
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+    }
+
+    .messages-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scroll-behavior: smooth;
+    }
+
+    .date-sep {
+      text-align: center;
+      font-size: 11px;
+      color: #bbb;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 4px 0;
+    }
+
+    .date-sep::before, .date-sep::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #f0e0e8;
+    }
+
+    .msg-row.client { align-items: flex-start; display: flex; flex-direction: column; }
+    .msg-row.admin-reply { align-items: flex-end; display: flex; flex-direction: column; }
+
+    .bubble {
+      max-width: 65%;
+      padding: 10px 15px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .bubble.client-bubble {
+      background: white;
+      color: #1e1e2a;
+      border: 1px solid #f0e0e8;
+      border-bottom-left-radius: 4px;
+    }
+
+    .bubble.admin-bubble {
+      background: #c2185b;
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg-time { font-size: 11px; color: #bbb; padding: 0 4px; margin-top: 3px; }
+    .admin-label, .sender-label { font-size: 11px; font-weight: 600; padding: 0 4px; margin-bottom: 2px; }
+    .admin-label { color: #2c7a4d; }
+    .sender-label { color: #c2185b; }
+
+    .input-area {
+      background: white;
+      border-top: 1px solid #f0e0e8;
+      padding: 12px 16px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      flex-shrink: 0;
+    }
+
+    .input-area textarea {
+      flex: 1;
+      border: 1.5px solid #f0e0e8;
+      border-radius: 22px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: none;
+      max-height: 120px;
+      outline: none;
+      background: #fdf6f8;
+    }
+
+    .input-area textarea:focus { border-color: #c2185b; }
+
+    .send-btn {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: #c2185b;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+
+    .send-btn:hover { background: #ad1457; }
+    .send-btn i { color: white; font-size: 17px; }
+    .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .msg-new { animation: fadeIn 0.2s ease; }
+
+    /* La colonne des contacts : hauteur fixe et scroll si nécessaire */
+.contacts-sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;               /* prend toute la hauteur */
+  overflow: hidden;
+}
+
+.contacts-list {
+  flex: 1;
+  overflow-y: auto;           /* défilement vertical si trop de contacts */
+  scrollbar-width: thin;
+}
+
+/* La zone de chat : corps qui scroll, header et input fixes */
+.chat-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.messages-area {
+  flex: 1;
+  overflow-y: auto;           /* c’est ici que les messages défilent */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scroll-behavior: smooth;
+}
+
+.chat-header,
+.input-area {
+  flex-shrink: 0;             /* empêche header et input de rétrécir */
+}
+  </style>
 </head>
 
 <body class="font-jakarta bg-warm-beige text-gray-800 flex min-h-screen">
 
-    <!-- Sidebar -->
-    <aside class="w-72 bg-sidebar-bg text-white p-6 fixed h-screen flex flex-col z-50">
-        <div class="font-playfair text-3xl font-bold mb-10 text-warm-beige tracking-tight">
-            EcoTrips<span class="text-rose-pink">Women</span>
-        </div>
-        <nav>
-            <ul class="space-y-2">
-                <li><a href="../dashboard.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-th-large mr-3 w-5 text-center"></i> Dashboard
-                </a></li>
-                <li><a href="../excursions/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-map-marked-alt mr-3 w-5 text-center"></i> Excursions
-                </a></li>
-                <li><a href="../reservations/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-calendar-check mr-3 w-5 text-center"></i> Réservations
-                </a></li>
-                <li><a href="../clientes/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-users mr-3 w-5 text-center"></i> Clientes
-                </a></li>
-                <li><a href="messages.html" class="flex items-center p-3 text-white bg-rose-pink rounded-xl transition-all duration-300">
-                    <i class="fas fa-envelope mr-3 w-5 text-center"></i> Messages
-                </a></li>
-                <li><a href="../analyses.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-chart-line mr-3 w-5 text-center"></i> Analyses
-                </a></li>
-                <li><a href="../galerie/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-images mr-3 w-5 text-center"></i> Galerie
-                </a></li>
-                <li class="mt-auto pt-8"><a href="#" id="logoutBtn" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                    <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i> Déconnexion
-                </a></li>
-            </ul>
-        </nav>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="flex-1 ml-72 p-8">
-        <div class="max-w-7xl mx-auto">
-            <!-- Header -->
-            <div class="flex justify-between items-center mb-8">
-                <div>
-                    <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-3">
-                        <i class="fas fa-envelope text-rose-pink"></i> Messages des clientes
-                    </h1>
-                    <p class="text-gray-500 mt-1">Consultez et répondez aux messages de vos clientes</p>
-                </div>
-                <div class="flex items-center gap-4">
-                    <div class="text-right">
-                        <p class="font-semibold text-gray-800" id="adminName">Administrateur</p>
-                        <p class="text-sm text-gray-500">Espace Admin</p>
-                    </div>
-                    <div class="w-10 h-10 bg-rose-pink rounded-full flex items-center justify-center text-white font-bold">
-                        A
-                    </div>
-                </div>
-            </div>
-
-            <!-- Stats Card -->
-            <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-soft-rose rounded-full flex items-center justify-center">
-                        <i class="fas fa-envelope-open-text text-rose-pink text-xl"></i>
-                    </div>
-                    <div>
-                        <span class="text-2xl font-bold" id="unreadCount">0</span>
-                        <span class="text-gray-500 ml-2">messages non lus</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Messages Table -->
-            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead class="bg-gray-50 border-b border-gray-200">
-                            <tr>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600">Date</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600">Nom</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600">Email</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600">Sujet</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600">Message</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="messagesBody">
-                            <tr>
-                                <td colspan="6" class="text-center py-8 text-gray-400">Chargement des messages...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Modal Réponse -->
-    <div id="replyModal" class="modal">
-        <div class="modal-content">
-            <h3 class="text-xl font-semibold mb-4">Répondre au message</h3>
-            <p><strong>De :</strong> <span id="replyNom"></span> (<span id="replyEmail"></span>)</p>
-            <p class="mt-3"><strong>Message :</strong></p>
-            <p id="replyMessage" style="background:#f5f5f5; padding:10px; border-radius:8px; margin:10px 0;"></p>
-            <textarea id="reponseText" rows="5" placeholder="Votre réponse..."></textarea>
-            <div class="flex gap-3 mt-4">
-                <button onclick="sendReply()" class="bg-rose-pink text-white px-4 py-2 rounded-lg hover:bg-[#c97e8e] transition">Envoyer la réponse</button>
-                <button onclick="closeModal()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition">Annuler</button>
-            </div>
-        </div>
+  <!-- Sidebar fixe (identique à ton design) -->
+  <aside class="w-72 bg-sidebar-bg text-white p-6 fixed h-screen flex flex-col z-50 overflow-y-auto">
+    <div class="font-playfair text-3xl font-bold mb-10 text-warm-beige tracking-tight">
+      EcoTrips<span class="text-rose-pink">Women</span>
     </div>
 
-    <script>
-        const token = localStorage.getItem('token');
-        let currentMessageId = null;
+    <nav>
+      <ul class="space-y-2">
+        <li><a href="../dashboard.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-star mr-3 w-5 text-center"></i> Dashboard</a></li>
+        <li><a href="../excursions/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-map-marked-alt mr-3 w-5 text-center"></i> Excursions</a></li>
+        <li><a href="../reservations/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-calendar-check mr-3 w-5 text-center"></i> Réservations</a></li>
+        <li><a href="../clientes/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-users mr-3 w-5 text-center"></i> Clientes</a></li>
+        <li><a href="../messages/index.html" class="flex items-center p-3 text-white bg-rose-pink rounded-xl transition-all duration-300"><i class="fas fa-envelope mr-3 w-5 text-center"></i> Messages</a></li>
+        <li><a href="../avis/avis.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-star mr-3 w-5 text-center"></i> Avis clientes</a></li>
+        <li><a href="../chatbot/chatbot.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-comments mr-3 w-5 text-center"></i> Chatbot FAQ</a></li>
+        <li><a href="../galerie/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-images mr-3 w-5 text-center"></i> Galerie</a></li>
+        <li><a href="../analyses.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-chart-line mr-3 w-5 text-center"></i> Analyses</a></li>
+        <li class="pt-8"><a href="../login.html" id="logoutBtn" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i> Déconnexion</a></li>
+      </ul>
+    </nav>
+  </aside>
 
-        if (!token) {
-            window.location.href = 'login.html';
-        }
+  <!-- Zone principale : messages -->
+  <div class="app-area" style="margin-left: 288px; width: calc(100% - 288px);">
+    <!-- Contacts list -->
+    <div class="contacts-sidebar">
+      <div class="contacts-header">
+        <div class="contacts-title">
+          <i class="fas fa-comments" style="color:#c2185b;"></i>
+          Messages
+          <span class="unread-total-badge" id="unreadTotal" style="display:none;">0</span>
+        </div>
+        <div class="search-box">
+          <i class="fas fa-search" style="font-size:13px;color:#bbb;"></i>
+          <input type="text" id="searchInput" placeholder="Rechercher une cliente…" oninput="filterContacts()">
+        </div>
+      </div>
+      <div class="contacts-list" id="contactsList">
+        <div style="text-align:center;padding:2rem;color:#bbb;font-size:13px;">Chargement…</div>
+      </div>
+    </div>
 
-        // Afficher le nom de l'admin
-        const adminData = localStorage.getItem('admin');
-        if (adminData) {
-            const admin = JSON.parse(adminData);
-            document.getElementById('adminName').textContent = admin.nom || 'Administrateur';
-        }
+    <!-- Chat area -->
+    <div class="chat-panel" id="chatPanel">
+      <div class="empty-state" id="emptyState">
+        <i class="fas fa-comments"></i>
+        Sélectionnez une conversation
+      </div>
+      <div id="chatContent" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
+        <div class="chat-header" id="chatHeader"></div>
+        <div class="messages-area" id="messagesArea"></div>
+        <div class="input-area">
+          <textarea id="replyInput" rows="1" placeholder="Écrire une réponse…"
+            oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"
+            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendReply();}"></textarea>
+          <button class="send-btn" onclick="sendReply()">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        async function loadMessages() {
-            try {
-                const response = await fetch('/api/messages', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                const data = await response.json();
-                
-                if (data.success) {
-                    document.getElementById('unreadCount').textContent = data.unreadCount;
-                    displayMessages(data.messages);
-                }
-            } catch (error) {
-                console.error('Erreur:', error);
-                document.getElementById('messagesBody').innerHTML = '<tr><td colspan="6" class="text-center py-8 text-red-500">Erreur de chargement des messages</td></tr>';
-            }
-        }
+  <script>
+    const token = localStorage.getItem('token');
+    if (!token) window.location.href = 'login.html';
 
-        function displayMessages(messages) {
-            const tbody = document.getElementById('messagesBody');
-            tbody.innerHTML = '';
-            
-            if (messages.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-gray-400">Aucun message pour le moment</td></tr>';
-                return;
-            }
-            
-            messages.forEach(msg => {
-                const row = tbody.insertRow();
-                row.className = msg.lu ? 'message-read' : 'message-unread';
-                
-                row.insertCell(0).innerHTML = `<div class="px-6 py-4 text-sm text-gray-600">${new Date(msg.created_at).toLocaleString()}</div>`;
-                row.insertCell(1).innerHTML = `<div class="px-6 py-4 font-medium text-gray-800">${escapeHtml(msg.nom)}</div>`;
-                row.insertCell(2).innerHTML = `<div class="px-6 py-4 text-sm text-gray-600">${escapeHtml(msg.email)}</div>`;
-                row.insertCell(3).innerHTML = `<div class="px-6 py-4 text-sm text-gray-600">${escapeHtml(msg.sujet || '-')}</div>`;
-                row.insertCell(4).innerHTML = `<div class="px-6 py-4 text-sm text-gray-600">${escapeHtml(msg.message.substring(0, 100))}${msg.message.length > 100 ? '...' : ''}</div>`;
-                
-                const actions = document.createElement('td');
-                actions.className = 'px-6 py-4';
-                actions.style.whiteSpace = 'nowrap';
-                
-                if (!msg.lu) {
-                    const readBtn = document.createElement('button');
-                    readBtn.innerHTML = '<i class="fas fa-check-circle mr-1"></i> Marquer lu';
-                    readBtn.className = 'bg-green-500 text-white px-3 py-1.5 rounded-lg text-sm mr-2 hover:bg-green-600 transition';
-                    readBtn.onclick = () => markAsRead(msg.id);
-                    actions.appendChild(readBtn);
-                }
-                
-                const replyBtn = document.createElement('button');
-                replyBtn.innerHTML = '<i class="fas fa-reply mr-1"></i> Répondre';
-                replyBtn.className = 'bg-rose-pink text-white px-3 py-1.5 rounded-lg text-sm hover:bg-[#c97e8e] transition';
-                replyBtn.onclick = () => openReplyModal(msg);
-                actions.appendChild(replyBtn);
-                
-                row.appendChild(actions);
-            });
-        }
+    let allMessages = [];
+    let activeContact = null;
 
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
+    const COLORS = ['#c2185b','#7b1fa2','#0288d1','#00838f','#388e3c','#f57c00','#5d4037'];
+    function getColor(name) {
+      let h = 0;
+      for (let c of (name||'')) h = (h * 31 + c.charCodeAt(0)) % COLORS.length;
+      return COLORS[h];
+    }
+    function initials(name) {
+      return (name||'?').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    }
+    function esc(s) {
+      return (s||'').replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+    }
+    function fmtTime(d) {
+      return new Date(d).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    }
+    function fmtDate(d) {
+      const t = new Date(d), n = new Date();
+      if (t.toDateString() === n.toDateString()) return 'Aujourd\'hui';
+      const y = new Date(n); y.setDate(n.getDate()-1);
+      if (t.toDateString() === y.toDateString()) return 'Hier';
+      return t.toLocaleDateString('fr-FR',{day:'numeric',month:'long'});
+    }
+    function fmtShort(d) {
+      const t = new Date(d), n = new Date();
+      if (t.toDateString() === n.toDateString()) return fmtTime(d);
+      return t.toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
+    }
 
-        async function markAsRead(id) {
-            try {
-                await fetch(`/api/messages/${id}/read`, {
-                    method: 'PUT',
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                loadMessages();
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
-        function openReplyModal(message) {
-            currentMessageId = message.id;
-            document.getElementById('replyNom').textContent = message.nom;
-            document.getElementById('replyEmail').textContent = message.email;
-            document.getElementById('replyMessage').textContent = message.message;
-            document.getElementById('reponseText').value = '';
-            document.getElementById('replyModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('replyModal').style.display = 'none';
-        }
-
-        async function sendReply() {
-            const reponse = document.getElementById('reponseText').value;
-            if (!reponse) {
-                alert('Veuillez écrire une réponse');
-                return;
-            }
-            
-            try {
-                const response = await fetch(`/api/messages/${currentMessageId}/reply`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ reponse })
-                });
-                
-                if (response.ok) {
-                    closeModal();
-                    loadMessages();
-                    alert('Réponse envoyée avec succès !');
-                } else {
-                    alert('Erreur lors de l\'envoi');
-                }
-            } catch (error) {
-                alert('Erreur lors de l\'envoi');
-            }
-        }
-
-        // Déconnexion
-        document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('token');
-            localStorage.removeItem('admin');
-            window.location.href = 'login.html';
+    async function loadMessages() {
+      try {
+        const res = await fetch('/api/messages', {
+          headers: { Authorization: `Bearer ${token}` }
         });
+        const data = await res.json();
+        if (data.success) {
+          allMessages = data.messages;
+          renderContactList(allMessages);
+          if (activeContact) {
+            const updated = allMessages.find(m => m.id === activeContact.id);
+            if (updated) openConversation(updated);
+          }
+        }
+      } catch(e) {
+        document.getElementById('contactsList').innerHTML = '<div style="text-align:center;padding:2rem;color:#e57373;font-size:13px;">Erreur de chargement</div>';
+      }
+    }
 
-        loadMessages();
-    </script>
+    function groupByContact(messages) {
+      const map = {};
+      messages.forEach(msg => {
+        const key = msg.client_id || msg.email;
+        if (!map[key]) map[key] = {
+          key, nom: msg.nom, email: msg.email,
+          lu: true, messages: [], lastDate: msg.created_at
+        };
+        map[key].messages.push(msg);
+        if (!msg.lu) map[key].lu = false;
+        if (new Date(msg.created_at) > new Date(map[key].lastDate))
+          map[key].lastDate = msg.created_at;
+      });
+      return Object.values(map).sort((a,b) => new Date(b.lastDate) - new Date(a.lastDate));
+    }
+
+    function renderContactList(messages) {
+      const groups = groupByContact(messages);
+      const unreadGroups = groups.filter(g => !g.lu);
+      document.getElementById('unreadTotal').textContent = unreadGroups.length;
+      document.getElementById('unreadTotal').style.display = unreadGroups.length ? '' : 'none';
+
+      const list = document.getElementById('contactsList');
+      list.innerHTML = '';
+      if (!groups.length) {
+        list.innerHTML = '<div style="text-align:center;padding:2rem;color:#bbb;font-size:13px;">Aucun message</div>';
+        return;
+      }
+      groups.forEach(g => {
+        const last = g.messages[g.messages.length - 1];
+        const unread = g.messages.filter(m => !m.lu).length;
+        const div = document.createElement('div');
+        div.className = 'contact-item' +
+          (activeContact && activeContact.key === g.key ? ' active' : '') +
+          (!g.lu ? ' unread' : '');
+        div.innerHTML = `
+          <div class="avatar" style="background:${getColor(g.nom)}">${initials(g.nom)}</div>
+          <div class="contact-meta">
+            <div class="contact-top">
+              <span class="contact-name">${esc(g.nom)}</span>
+              <span class="contact-time">${fmtShort(g.lastDate)}</span>
+            </div>
+            <div class="contact-bottom">
+              <span class="contact-preview">${esc(last.message.slice(0,45))}${last.message.length>45?'…':''}</span>
+              ${unread > 0 ? `<span class="unread-badge">${unread}</span>` : ''}
+            </div>
+          </div>`;
+        div.onclick = () => openConversation(g);
+        list.appendChild(div);
+      });
+    }
+
+    function openConversation(group) {
+      activeContact = group;
+      document.getElementById('emptyState').style.display = 'none';
+      const cc = document.getElementById('chatContent');
+      cc.style.display = 'flex';
+
+      const hasUnread = group.messages.some(m => !m.lu);
+      document.getElementById('chatHeader').innerHTML = `
+        <div class="avatar" style="background:${getColor(group.nom)};width:38px;height:38px;font-size:14px;">${initials(group.nom)}</div>
+        <div class="chat-header-info">
+          <div class="name">${esc(group.nom)}</div>
+          <div class="email">${esc(group.email)}</div>
+        </div>
+        ${hasUnread ? `<button class="mark-read-btn" onclick="markAllRead()"><i class="fas fa-check-circle"></i> Marquer lu</button>` : ''}`;
+
+      renderMessages(group);
+      renderContactList(allMessages);
+    }
+
+    function renderMessages(group) {
+      const area = document.getElementById('messagesArea');
+      area.innerHTML = '';
+      let lastDate = '';
+      group.messages.forEach(msg => {
+        const d = fmtDate(msg.created_at);
+        if (d !== lastDate) {
+          const sep = document.createElement('div');
+          sep.className = 'date-sep'; sep.textContent = d;
+          area.appendChild(sep); lastDate = d;
+        }
+        const clientRow = document.createElement('div');
+        clientRow.className = 'msg-row client';
+        clientRow.innerHTML = `
+          <div class="sender-label">${esc(group.nom)}</div>
+          <div class="bubble client-bubble">${esc(msg.message)}</div>
+          <div class="msg-time">${fmtTime(msg.created_at)}</div>`;
+        area.appendChild(clientRow);
+
+        if (msg.reponse) {
+          const adminRow = document.createElement('div');
+          adminRow.className = 'msg-row admin-reply';
+          adminRow.innerHTML = `
+            <div class="admin-label">Vous (admin)</div>
+            <div class="bubble admin-bubble">${esc(msg.reponse)}</div>
+            <div class="msg-time">${fmtTime(msg.updated_at)}</div>`;
+          area.appendChild(adminRow);
+        } else {
+          const pending = document.createElement('div');
+          pending.className = 'msg-row client';
+          pending.innerHTML = `<div class="no-reply"><i class="fas fa-clock" style="font-size:11px;"></i> Sans réponse</div>`;
+          area.appendChild(pending);
+        }
+      });
+      area.scrollTop = area.scrollHeight;
+    }
+
+    async function markAllRead() {
+      if (!activeContact) return;
+      const unread = activeContact.messages.filter(m => !m.lu);
+      await Promise.all(unread.map(m =>
+        fetch(`/api/messages/${m.id}/read`, {
+          method: 'PUT',
+          headers: { Authorization: `Bearer ${token}` }
+        })
+      ));
+      loadMessages();
+    }
+
+    async function sendReply() {
+      const input = document.getElementById('replyInput');
+      const text = input.value.trim();
+      if (!text || !activeContact) return;
+
+      const unreplied = activeContact.messages.find(m => !m.reponse);
+      if (!unreplied) return;
+
+      input.value = '';
+      input.style.height = 'auto';
+
+      const btn = document.querySelector('.send-btn');
+      if (btn) btn.disabled = true;
+
+      const area = document.getElementById('messagesArea');
+      const pendingRows = [...area.querySelectorAll('.no-reply')].map(el => el.closest('.msg-row'));
+      pendingRows.forEach(r => r && r.remove());
+
+      const now = new Date().toISOString();
+      const adminRow = document.createElement('div');
+      adminRow.className = 'msg-row admin-reply msg-new';
+      adminRow.innerHTML = `
+        <div class="admin-label">Vous (admin)</div>
+        <div class="bubble admin-bubble">${text.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}</div>
+        <div class="msg-time">${new Date(now).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})}</div>`;
+      area.appendChild(adminRow);
+      area.scrollTop = area.scrollHeight;
+
+      unreplied.reponse = text;
+      activeContact.lu = true;
+      renderContactList(allMessages);
+
+      try {
+        await fetch(`/api/messages/${unreplied.id}/reply`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ reponse: text })
+        });
+      } catch(e) {
+        console.error('Erreur envoi:', e);
+      }
+
+      if (btn) btn.disabled = false;
+      input.focus();
+    }
+
+    function filterContacts() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = allMessages.filter(m =>
+        (m.nom||'').toLowerCase().includes(q) ||
+        (m.email||'').toLowerCase().includes(q)
+      );
+      renderContactList(filtered);
+    }
+
+    document.getElementById('logoutBtn')?.addEventListener('click', e => {
+      e.preventDefault();
+      localStorage.removeItem('token');
+      localStorage.removeItem('admin');
+      window.location.href = 'login.html';
+    });
+
+    loadMessages();
+  </script>
 </body>
 </html>

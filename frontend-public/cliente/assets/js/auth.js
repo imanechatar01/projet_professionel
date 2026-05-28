@@ -9,7 +9,9 @@
 
   function getClient() {
     try {
-      return JSON.parse(localStorage.getItem(config().STORAGE_KEYS.CLIENT_DATA) || "{}");
+      return JSON.parse(
+        localStorage.getItem(config().STORAGE_KEYS.CLIENT_DATA) || "{}"
+      );
     } catch (error) {
       return {};
     }
@@ -17,7 +19,10 @@
 
   function setSession(token, client) {
     localStorage.setItem(config().STORAGE_KEYS.CLIENT_TOKEN, token);
-    localStorage.setItem(config().STORAGE_KEYS.CLIENT_DATA, JSON.stringify(client || {}));
+    localStorage.setItem(
+      config().STORAGE_KEYS.CLIENT_DATA,
+      JSON.stringify(client || {})
+    );
   }
 
   function clearSession() {
@@ -36,6 +41,10 @@
     }
 
     return true;
+  }
+
+  function redirectAfterAuth() {
+    window.location.href = config().ROUTES.CATALOGUE;
   }
 
   function showError(message) {
@@ -83,10 +92,10 @@
         if (data.success) {
           setSession(data.token, data.client);
 
-          showSuccess("Connexion réussie ! Redirection...");
+          showSuccess("Connexion réussie ! Redirection vers les voyages...");
 
           setTimeout(function () {
-            window.location.href = config().ROUTES.CATALOGUE;
+            redirectAfterAuth();
           }, 1200);
         } else {
           showError(data.message || "Email ou mot de passe incorrect");
@@ -161,20 +170,23 @@
         if (data.success) {
           setSession(data.token, data.client);
 
-          showSuccess("Inscription réussie ! Redirection vers le catalogue...");
+          showSuccess("Inscription réussie ! Redirection vers les voyages...");
 
           setTimeout(function () {
-            window.location.href = config().ROUTES.CATALOGUE;
+            redirectAfterAuth();
           }, 1200);
         } else {
           showError(data.message || "Erreur lors de l'inscription");
         }
       } catch (error) {
-        showError(error.message || "Erreur de connexion au serveur. Vérifie que le backend est démarré.");
+        showError(
+          error.message ||
+            "Erreur de connexion au serveur. Vérifie que le backend est démarré."
+        );
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
-          submitBtn.textContent = "Créer mon compte →";
+          submitBtn.textContent = "Créer mon compte";
         }
       }
     });
@@ -194,3 +206,46 @@
     requireAuth: requireAuth
   };
 })();
+
+// frontend-public/assets/js/auth.js
+function updateNavForClient() {
+  const token = localStorage.getItem('clientToken');
+  const client = JSON.parse(localStorage.getItem('client') || '{}');
+  
+  // Lien "Réserver" dans la barre de navigation
+  const ctaLink = document.querySelector('.nav-cta');
+  if (ctaLink) {
+    if (token && client.nom) {
+      ctaLink.textContent = `👤 ${client.nom}`;
+      ctaLink.href = 'profil.html';
+      ctaLink.classList.add('nav-profile');
+    } else {
+      ctaLink.textContent = 'Réserver';
+      ctaLink.href = 'login.html';
+      ctaLink.classList.remove('nav-profile');
+    }
+  }
+
+  // Menu mobile
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (mobileMenu) {
+    let loginLink = Array.from(mobileMenu.querySelectorAll('a')).find(a => a.textContent === 'Espace client' || a.href.includes('login.html'));
+    if (token && client.nom) {
+      if (loginLink) {
+        loginLink.textContent = `Mon profil (${client.nom})`;
+        loginLink.href = 'profil.html';
+      }
+      // Cacher le bouton "Voir les voyages" si tu veux (optionnel)
+      const mobCta = mobileMenu.querySelector('.mob-cta');
+      if (mobCta) mobCta.style.display = 'none';
+    } else {
+      if (loginLink && loginLink.textContent.includes('Mon profil')) {
+        loginLink.textContent = 'Espace client';
+        loginLink.href = 'login.html';
+      }
+    }
+  }
+}
+
+// Exécuter au chargement de la page
+document.addEventListener('DOMContentLoaded', updateNavForClient);

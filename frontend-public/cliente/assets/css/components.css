@@ -771,3 +771,32 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+.nav-links a {
+    transition: all 0.2s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 40px;
+}
+
+/* Survol de n'importe quel lien */
+.nav-links a:hover {
+    background: #fce4ec;
+    color: #c2185b;
+}
+
+/* Lien actif (Accueil, Messages, etc.) */
+.nav-links a.active {
+    background: #c2185b;
+    color: white;
+}
+
+/* Style spécial pour le bouton Réserver */
+.nav-links a.nav-cta {
+    background: #c2185b;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border-radius: 40px;
+}
+.nav-links a.nav-cta:hover {
+    background: #ad1457;
+}

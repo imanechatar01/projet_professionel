@@ -1,105 +1,184 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Support - Ecotripswomen</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            max-width: 500px;
-            width: 100%;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-        h1 { color: #E91E63; margin-bottom: 20px; }
-        input, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin: 10px 0;
-        }
-        button {
-            background: #E91E63;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 12px;
-            width: 100%;
-            cursor: pointer;
-        }
-        .message { margin-top: 10px; padding: 10px; border-radius: 8px; display: none; }
-        .success { background: #d4edda; color: #155724; }
-        .error { background: #f8d7da; color: #721c24; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Messagerie - Ecotrips Women</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="assets/css/pages/message.css">
+  <link rel="stylesheet" href="assets/css/design-system.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/pages/client-panel.css">
 </head>
 <body>
-    <div class="container">
-        <h1>📩 Contacter le support</h1>
-        
-        <div id="successMsg" class="message success"></div>
-        <div id="errorMsg" class="message error"></div>
-        
-        <form id="messageForm">
-            <input type="text" id="sujet" placeholder="Sujet" required>
-            <textarea id="message" rows="5" placeholder="Votre message..." required></textarea>
-            <button type="submit">Envoyer</button>
-        </form>
+  
+
+ <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a class="logo" href="web_site.html">
+        <div class="logo-mark">EW</div>
+        <div>
+          <div class="logo-text">ecotrips_women</div>
+          <div class="logo-sub">She Can Travel</div>
+        </div>
+      </a>
+
+      <div class="nav-links">
+        <a href="web_site.html">Accueil</a>
+        <a href="catalogue.html" >Voyages</a>
+        <a href="web_site.html#galerie">Galerie</a>
+        <a href="web_site.html#contact">Contact</a>
+        <a href="message.html" class="nav-active">messages</a>
+        <a href="login.html" class="nav-cta">Réserver</a>
+      </div>
+
+      <button class="menu-btn" onclick="toggleMobileMenu()" aria-label="Ouvrir le menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      
     </div>
+  </nav>
 
-    <script>
-        const token = localStorage.getItem('clientToken');
-        
-        if (!token) {
-            window.location.href = 'login.html';
-        }
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="web_site.html" onclick="closeMobileMenu()">Accueil</a>
+    <a href="catalogue.html" onclick="closeMobileMenu()">Voyages</a>
+    <a href="web_site.html#galerie" onclick="closeMobileMenu()">Galerie</a>
+    <a href="web_site.html#contact" onclick="closeMobileMenu()">Contact</a>
+       <a href="message.html" class="nav-active">messages</a>
+    <a href="login.html" onclick="closeMobileMenu()">Espace Client</a>
+    <button class="mob-cta" onclick="window.location.href='login.html'">Réserver maintenant</button>
+  </div>
 
-        const form = document.getElementById('messageForm');
-        
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const sujet = document.getElementById('sujet').value;
-            const message = document.getElementById('message').value;
-            
-            try {
-                const response = await fetch('/api/messages', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ sujet, message })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    document.getElementById('successMsg').textContent = data.message;
-                    document.getElementById('successMsg').style.display = 'block';
-                    form.reset();
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 2000);
-                } else {
-                    document.getElementById('errorMsg').textContent = data.message;
-                    document.getElementById('errorMsg').style.display = 'block';
-                }
-            } catch (error) {
-                document.getElementById('errorMsg').textContent = 'Erreur de connexion';
-                document.getElementById('errorMsg').style.display = 'block';
-            }
-        });
-    </script>
+
+<div class="chat-wrapper">
+  <div class="chat-header">
+    <div class="avatar">🌿</div>
+    <div>
+      <div class="chat-title">Ecotrips Women</div>
+      <div class="chat-sub">
+        <span class="online-dot"></span> Support voyage
+      </div>
+    </div>
+  </div>
+
+  <div class="messages-area" id="messagesArea">
+    <div id="messageList" style="display:flex;flex-direction:column;gap:10px;">
+      <div class="empty-state">
+        <i class="ti ti-message-circle"></i>
+        Chargement…
+      </div>
+    </div>
+  </div>
+
+  <div class="input-area">
+    <textarea id="newMsg" rows="1" placeholder="Écrire un message…"
+      oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
+    <button class="send-btn" onclick="sendMessage()" title="Envoyer">
+      <i class="ti ti-send"></i>
+    </button>
+  </div>
+</div>
+
+<script>
+  const token = localStorage.getItem('clientToken');
+  if (!token) window.location.href = 'login.html';
+
+  function formatTime(dateStr) {
+    return new Date(dateStr).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function formatDate(dateStr) {
+    const d = new Date(dateStr);
+    const today = new Date();
+    if (d.toDateString() === today.toDateString()) return 'Aujourd\'hui';
+    return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+  }
+
+  async function loadMessages() {
+    const res = await fetch('/api/client/messages', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const data = await res.json();
+    const container = document.getElementById('messageList');
+
+    if (!data.success || !data.messages.length) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="ti ti-message-circle"></i>
+          Aucun message pour l'instant. Dites bonjour !
+        </div>`;
+      return;
+    }
+
+    let lastDate = '';
+    container.innerHTML = data.messages.map(msg => {
+      const msgDate = formatDate(msg.created_at);
+      const divider = msgDate !== lastDate
+        ? `<div class="date-divider">${msgDate}</div>`
+        : '';
+      lastDate = msgDate;
+
+      const clientRow = `
+        <div class="msg-row client">
+          <div class="bubble client">${escapeHtml(msg.message)}</div>
+          <div class="msg-meta">Vous · ${formatTime(msg.created_at)}</div>
+        </div>`;
+
+      const agencyRow = msg.reponse ? `
+        <div class="msg-row agency">
+          <div class="agency-label">Ecotrips Women</div>
+          <div class="bubble agency">${escapeHtml(msg.reponse)}</div>
+          <div class="msg-meta">${formatTime(msg.updated_at)}</div>
+        </div>` : `
+        <div class="pending-badge" style="padding-left:4px;">
+         
+        </div>`;
+
+      return divider + clientRow + agencyRow;
+    }).join('');
+
+    const area = document.getElementById('messagesArea');
+    area.scrollTop = area.scrollHeight;
+  }
+
+  async function sendMessage() {
+    const input = document.getElementById('newMsg');
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    input.disabled = true;
+    const res = await fetch('/api/client/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ message: msg })
+    });
+    const data = await res.json();
+    input.disabled = false;
+
+    if (data.success) {
+      input.value = '';
+      input.style.height = 'auto';
+      loadMessages();
+    } else {
+      alert('Erreur lors de l\'envoi');
+    }
+  }
+
+  loadMessages();
+</script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/client-panel.js"></script>
 </body>
 </html>

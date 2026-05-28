@@ -56,3 +56,49 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+function setActiveNavLink() {
+    const currentPage = window.location.pathname.split('/').pop(); // ex: "messagerie.html"
+    const navLinks = document.querySelectorAll('.nav-links a, .mobile-menu a');
+    
+    navLinks.forEach(link => {
+        const linkHref = link.getAttribute('href');
+        if (linkHref && linkHref === currentPage) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+}
+
+function setActiveNav() {
+    const currentPage = window.location.pathname.split('/').pop();
+    const links = document.querySelectorAll('.nav-links a');
+
+    links.forEach(link => {
+        const href = link.getAttribute('href');
+        
+        // Pour les pages normales (ex: web_site.html, catalogue.html, message.html)
+        if (href && href !== '#' && !href.startsWith('#')) {
+            if (href === currentPage) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        }
+        
+        // Pour Galerie et Contact (#galerie, #contact) : on ne met pas de classe active ici
+        // car ils sont sur la même page (web_site.html)
+        if (href === '#galerie' && currentPage === 'web_site.html') {
+            // optionnel : détecter l'ancre dans l'URL
+            if (window.location.hash === '#galerie') link.classList.add('active');
+        }
+        if (href === '#contact' && currentPage === 'web_site.html') {
+            if (window.location.hash === '#contact') link.classList.add('active');
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', setActiveNav);
+window.addEventListener('hashchange', setActiveNav);
+document.addEventListener('DOMContentLoaded', setActiveNavLink);

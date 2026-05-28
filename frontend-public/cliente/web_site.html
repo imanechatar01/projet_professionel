@@ -13,6 +13,8 @@
 <link rel="stylesheet" href="assets/css/design-system.css">
 <link rel="stylesheet" href="assets/css/components.css">
 <link rel="stylesheet" href="assets/css/pages/home.css">
+<link rel="stylesheet" href="assets/css/pages/chatbot.css">
+<link rel="stylesheet" href="assets/css/pages/client-panel.css">
 </head>
 
 <body>
@@ -33,6 +35,7 @@
         <a href="catalogue.html">Voyages</a>
         <a href="#galerie">Galerie</a>
         <a href="#contact">Contact</a>
+        <a href="message.html">messages</a>
         <a href="login.html" class="nav-cta">Réserver</a>
       </div>
 
@@ -52,6 +55,7 @@
     <a href="catalogue.html" onclick="closeMobileMenu()">Voyages</a>
     <a href="#galerie" onclick="closeMobileMenu()">Galerie</a>
     <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+    <a href="message.html" onclick="closeMobileMenu()">messages</a>
     <a href="login.html" onclick="closeMobileMenu()">Espace client</a>
     <button class="mob-cta" onclick="window.location.href='catalogue.html'">
       Voir les voyages
@@ -462,26 +466,26 @@
     </div>
 
     <div style="background:white;border-radius:var(--r);padding:2.5rem;box-shadow:var(--shadow-card);border:1px solid rgba(194,24,91,0.07);">
-      <form onsubmit="event.preventDefault(); showToast('Message préparé. Contacte-nous aussi sur WhatsApp pour une réponse rapide.');">
-        <div class="form-group">
-          <label for="contact-name">Nom</label>
-          <input type="text" id="contact-name" placeholder="Ton nom">
-        </div>
+     <form id="contactForm" class="contact-form" ; onsubmit="showToast('Message envoyé ! Nous te répondrons rapidement.')">
+  <div class="form-group">
+    <label for="contact-name">Nom</label>
+    <input type="text" id="contact-name" placeholder="Ton nom" required>
+  </div>
 
-        <div class="form-group">
-          <label for="contact-email">Email</label>
-          <input type="email" id="contact-email" placeholder="ton@email.com">
-        </div>
+  <div class="form-group">
+    <label for="contact-email">Email</label>
+    <input type="email" id="contact-email" placeholder="ton@email.com" required>
+  </div>
 
-        <div class="form-group">
-          <label for="contact-message">Message</label>
-          <textarea id="contact-message" rows="5" placeholder="Ta question..."></textarea>
-        </div>
+  <div class="form-group">
+    <label for="contact-message">Message</label>
+    <textarea id="contact-message" rows="5" placeholder="Ta question..." required></textarea>
+  </div>
 
-        <button type="submit" class="btn btn-pink btn-full">
-          Envoyer le message
-        </button>
-      </form>
+  <button type="submit" class="btn btn-pink btn-full" id="contactSubmitBtn">
+    Envoyer le message
+  </button>
+</form>
     </div>
   </section>
 
@@ -545,7 +549,91 @@
 
   <div class="toast" id="toast"></div>
 
+<!-- CHATBOT PUBLIC -->
+<div class="chatbot-widget">
+  <div class="chat-window" id="chat-window">
+    <div class="chat-header">
+      <div class="chat-header-avatar">🌸</div>
+
+      <div>
+        <div class="chat-name">Salma — Assistante</div>
+        <div class="chat-status">En ligne · Réponse rapide</div>
+      </div>
+    </div>
+
+    <div class="chat-messages" id="chat-messages">
+      <div class="chat-msg bot">
+        <div class="chat-bubble">
+          Salam ! Je suis Salma 🌸 Comment puis-je t'aider aujourd'hui ? Tu peux aussi nous joindre sur WhatsApp !
+        </div>
+      </div>
+    </div>
+
+    <div class="quick-chips">
+      <button
+        type="button"
+        class="chip"
+        onclick="sendQuickMsg('Quels voyages sont disponibles ?')"
+      >
+        Voyages dispo
+      </button>
+
+      <button
+        type="button"
+        class="chip"
+        onclick="sendQuickMsg('Quels sont les prix ?')"
+      >
+        Tarifs
+      </button>
+
+      <button
+        type="button"
+        class="chip"
+        onclick="sendQuickMsg('Comment réserver ?')"
+      >
+        Réserver
+      </button>
+    </div>
+
+    <div class="chat-input-area">
+      <input
+        type="text"
+        class="chat-input"
+        id="chat-input"
+        placeholder="Ta question..."
+        onkeydown="if(event.key === 'Enter') sendChat()"
+      />
+
+      <button
+        type="button"
+        class="chat-send"
+        onclick="sendChat()"
+      >
+        →
+      </button>
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="chat-toggle"
+    onclick="toggleChat()"
+    id="chat-toggle-btn"
+  >
+    💬
+  </button>
+</div>
+
 <script src="assets/js/config.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
 <script src="assets/js/ui.js"></script>
+<script src="assets/js/client-panel.js"></script>
+<script src="assets/js/chatbot.js"></script>
+<script src="assets/js/contact.js"></script>
+
+
+
 </body>
 </html>
+

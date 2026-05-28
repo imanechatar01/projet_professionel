@@ -12,7 +12,7 @@ window.APP_CONFIG = {
     CATALOGUE: "catalogue.html",
     LOGIN: "login.html",
     SIGNUP: "signup.html",
-    RESERVATION: "reservation.html"
+    RESERVATION: "reservation.html",
   },
 
   ENDPOINTS: {
@@ -20,7 +20,8 @@ window.APP_CONFIG = {
     CLIENT_REGISTER: "/client/register",
     CLIENT_PROFILE: "/client/me",
     EXCURSIONS: "/excursions",
-    RESERVATIONS: "/reservations"
+    RESERVATIONS: "/reservations",
+    AVIS: "/avis"
   },
 
   WHATSAPP_URL: "https://wa.me/212600368626"

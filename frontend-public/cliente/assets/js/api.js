@@ -11,7 +11,8 @@
         CLIENT_REGISTER: "/client/register",
         CLIENT_PROFILE: "/client/me",
         EXCURSIONS: "/excursions",
-        RESERVATIONS: "/reservations"
+        RESERVATIONS: "/reservations",
+        AVIS: "/avis"
       }
     };
   }
@@ -118,6 +119,42 @@
     });
   }
 
+  async function getEligibleReviewReservations() {
+    const config = getConfig();
+
+    return request(`${config.ENDPOINTS.AVIS}/eligible-reservations`, {
+      method: "GET",
+      auth: true
+    });
+  }
+
+  async function getMyAvis() {
+    const config = getConfig();
+
+    return request(`${config.ENDPOINTS.AVIS}/me`, {
+      method: "GET",
+      auth: true
+    });
+  }
+
+  async function createAvis(payload) {
+    const config = getConfig();
+
+    return request(config.ENDPOINTS.AVIS, {
+      method: "POST",
+      auth: true,
+      body: payload
+    });
+  }
+
+  async function getPublicAvisByExcursion(excursionId) {
+    const config = getConfig();
+
+    return request(`${config.ENDPOINTS.AVIS}/excursion/${excursionId}`, {
+      method: "GET"
+    });
+  }
+
   window.ApiClient = {
     request,
     loginClient,
@@ -125,6 +162,10 @@
     getExcursions,
     getExcursionById,
     createReservation,
-    getClientProfile
+    getClientProfile,
+    getEligibleReviewReservations,
+    getMyAvis,
+    createAvis,
+    getPublicAvisByExcursion
   };
 })();

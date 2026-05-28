@@ -13,11 +13,13 @@
 <link rel="stylesheet" href="assets/css/design-system.css">
 <link rel="stylesheet" href="assets/css/components.css">
 <link rel="stylesheet" href="assets/css/pages/catalogue.css">
+<link rel="stylesheet" href="assets/css/pages/chatbot.css">
+<link rel="stylesheet" href="assets/css/pages/client-panel.css">
 </head>
 
 <body>
 
-  <!-- NAV -->
+ <!-- NAV -->
   <nav>
     <div class="nav-inner">
       <a class="logo" href="web_site.html">
@@ -30,9 +32,10 @@
 
       <div class="nav-links">
         <a href="web_site.html">Accueil</a>
-        <a href="catalogue.html" class="nav-active">Voyages</a>
+        <a href="catalogue.html" class="nav-active" >Voyages</a>
         <a href="web_site.html#galerie">Galerie</a>
         <a href="web_site.html#contact">Contact</a>
+        <a href="message.html" >messages</a>
         <a href="login.html" class="nav-cta">Réserver</a>
       </div>
 
@@ -49,12 +52,14 @@
   <!-- MOBILE MENU -->
   <div class="mobile-menu" id="mobile-menu">
     <a href="web_site.html" onclick="closeMobileMenu()">Accueil</a>
-    <a href="catalogue.html" onclick="closeMobileMenu()">Voyages</a>
+    <a href="catalogue.html" class="nav-active" onclick="closeMobileMenu()">Voyages</a>
     <a href="web_site.html#galerie" onclick="closeMobileMenu()">Galerie</a>
     <a href="web_site.html#contact" onclick="closeMobileMenu()">Contact</a>
+       <a href="message.html" class="nav-active">messages</a>
     <a href="login.html" onclick="closeMobileMenu()">Espace Client</a>
     <button class="mob-cta" onclick="window.location.href='login.html'">Réserver maintenant</button>
   </div>
+
 
   <!-- VUE LISTE -->
   <main id="view-list">
@@ -268,5 +273,8 @@
 <script src="assets/js/api.js"></script>
 <script src="assets/js/ui.js"></script>
 <script src="assets/js/catalogue.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/client-panel.js"></script>
+<script src="assets/js/chatbot.js"></script>
 </body>
 </html>

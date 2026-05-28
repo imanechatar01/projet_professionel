@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestion Chatbot FAQ</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'forest-green': '#166534',
+            'rose-pink': '#DE94A4',
+            'soft-rose': '#FCE7F3',
+            'warm-beige': '#F8F5F2',
+            'sidebar-bg': '#B65C7A',
+          },
+          fontFamily: {
+            'playfair': ['Playfair Display', 'serif'],
+            'jakarta': ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          borderRadius: {
+            'xl-20': '20px',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* Personnalisation supplémentaire */
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      margin-bottom: 25px;
+    }
+
+    .faq-item {
+      border: 1px solid #eee;
+      padding: 18px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      background: #fff;
+    }
+
+    .faq-question {
+      font-size: 18px;
+      font-weight: bold;
+      color: #c2185b;
+      margin-bottom: 8px;
+    }
+
+    .faq-answer {
+      color: #444;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    .faq-meta {
+      font-size: 13px;
+      color: #777;
+      margin-bottom: 12px;
+    }
+
+    .btn-primary {
+      background: #c2185b;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-primary:hover {
+      background: #a3144c;
+    }
+
+    .btn-secondary {
+      background: #777;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-edit {
+      background: #1976d2;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-right: 8px;
+    }
+
+    .btn-delete {
+      background: #d32f2f;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .status-active {
+      color: green;
+      font-weight: bold;
+    }
+
+    .status-inactive {
+      color: red;
+      font-weight: bold;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-family: inherit;
+    }
+  </style>
+</head>
+
+<body class="font-jakarta bg-warm-beige text-gray-800 flex min-h-screen">
+
+  <!-- Sidebar (identique à la page Messages) -->
+  <aside class="w-72 bg-sidebar-bg text-white p-6 fixed h-screen flex flex-col z-50 overflow-y-auto">
+    <div class="font-playfair text-3xl font-bold mb-10 text-warm-beige tracking-tight">
+      EcoTrips<span class="text-rose-pink">Women</span>
+    </div>
+
+    <nav>
+      <ul class="space-y-2">
+        <li><a href="../dashboard.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-th-large mr-3 w-5 text-center"></i> Dashboard</a></li>
+        <li><a href="../excursions/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-map-marked-alt mr-3 w-5 text-center"></i> Excursions</a></li>
+        <li><a href="../reservations/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-calendar-check mr-3 w-5 text-center"></i> Réservations</a></li>
+        <li><a href="../clientes/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-users mr-3 w-5 text-center"></i> Clientes</a></li>
+        <li><a href="../messages/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-envelope mr-3 w-5 text-center"></i> Messages</a></li>
+        <li><a href="../avis/avis.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-star mr-3 w-5 text-center"></i> Avis clientes</a></li>
+        <li><a href="chatbot.html" class="flex items-center p-3 text-white bg-rose-pink rounded-xl transition-all duration-300"><i class="fas fa-comments mr-3 w-5 text-center"></i> Chatbot FAQ</a></li>
+        <li><a href="../galerie/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-images mr-3 w-5 text-center"></i> Galerie</a></li>
+        <li><a href="../analyses.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-chart-line mr-3 w-5 text-center"></i> Analyses</a></li>
+        <li class="pt-8"><a href="../../login.html" id="logoutBtn" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i> Déconnexion</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content (décalée à droite) -->
+  <main class="flex-1 ml-72 p-8">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl font-bold text-rose-pink mb-2">Gestion du Chatbot FAQ</h1>
+      <p class="text-gray-500 mb-6">Ici, l’admin peut ajouter, modifier ou supprimer les réponses utilisées par le chatbot public.</p>
+
+      <!-- Formulaire -->
+      <div class="card">
+        <h2 id="form-title" class="text-xl font-semibold mb-4">Ajouter une FAQ</h2>
+        <form id="faq-form">
+          <input type="hidden" id="faq-id" />
+
+          <label class="block font-semibold mb-1">Question</label>
+          <input type="text" id="question" placeholder="Exemple : Quels sont les prix ?" required />
+
+          <label class="block font-semibold mb-1 mt-3">Réponse</label>
+          <textarea id="reponse" placeholder="Réponse que le chatbot va afficher..." rows="3" required></textarea>
+
+          <label class="block font-semibold mb-1 mt-3">Mots-clés</label>
+          <input type="text" id="keywords" placeholder="prix, tarif, réservation, voyage..." />
+
+          <label class="block font-semibold mb-1 mt-3">Catégorie</label>
+          <select id="categorie">
+            <option value="general">Général</option>
+            <option value="tarifs">Tarifs</option>
+            <option value="reservation">Réservation</option>
+            <option value="voyages">Voyages</option>
+            <option value="contact">Contact</option>
+          </select>
+
+          <label class="block font-semibold mb-1 mt-3">Statut</label>
+          <select id="actif">
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+          </select>
+
+          <div class="mt-4">
+            <button type="submit" class="btn-primary" id="submit-btn">Ajouter</button>
+            <button type="button" class="btn-secondary" onclick="resetForm()">Annuler</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Liste des FAQ -->
+      <div class="card">
+        <h2 class="text-xl font-semibold mb-4">Liste des FAQ</h2>
+        <div id="faq-list">Chargement...</div>
+      </div>
+    </div>
+  </main>
+
+  <script src="chatbot.js"></script>
+  <script>
+    // Déconnexion
+    document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('token');
+      localStorage.removeItem('admin');
+      window.location.href = '../../login.html';
+    });
+  </script>
+</body>
+</html>

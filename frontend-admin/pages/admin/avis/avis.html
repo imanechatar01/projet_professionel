@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Avis clientes | EcoTrips Women Admin</title>
+
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' http://localhost:5000;">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'forest-green': '#166534',
+                        'rose-pink': '#DE94A4',
+                        'soft-rose': '#FCE7F3',
+                        'warm-beige': '#F8F5F2',
+                        'sidebar-bg': '#B65C7A',
+                    },
+                    fontFamily: {
+                        'playfair': ['Playfair Display', 'serif'],
+                        'jakarta': ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'xl-20': '20px',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <style>
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #E91E63; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #166534; }
+    </style>
+</head>
+
+<body class="font-jakarta bg-warm-beige text-gray-800 flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-72 bg-sidebar-bg text-white p-6 fixed h-screen flex flex-col z-50">
+        <div class="font-playfair text-3xl font-bold mb-10 text-warm-beige tracking-tight">
+            EcoTrips<span class="text-rose-pink">Women</span>
+        </div>
+
+        <nav>
+            <ul class="space-y-2">
+                <!-- Dashboard active -->
+                <li>
+                    <a href="../dashboard.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-star mr-3 w-5 text-center"></i>
+                        Dashboard
+                    </a>
+                </li>
+
+                <!-- Excursions -->
+                <li>
+                    <a href="../excursions/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-map-marked-alt mr-3 w-5 text-center"></i>
+                        Excursions
+                    </a>
+                </li>
+
+                <!-- Réservations -->
+                <li>
+                    <a href="../reservations/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-calendar-check mr-3 w-5 text-center"></i>
+                        Réservations
+                    </a>
+                </li>
+
+                <!-- Clientes -->
+                <li>
+                    <a href="../clientes/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-users mr-3 w-5 text-center"></i>
+                        Clientes
+                    </a>
+                </li>
+
+                <!-- Messages -->
+                <li>
+                    <a href="../messages/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-envelope mr-3 w-5 text-center"></i>
+                        Messages
+                    </a>
+                </li>
+
+                <!-- Avis clientes -->
+                <li>
+                    
+                    <a href="../avis/avis.html" class="flex items-center p-3 text-white bg-rose-pink rounded-xl transition-all duration-300">
+                        <i class="fas fa-th-large mr-3 w-5 text-center"></i>
+                         Avis clientes
+                    </a>
+                </li>
+
+                <!-- Chatbot FAQ -->
+                <li>
+                    <a href="../chatbot/chatbot.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-comments mr-3 w-5 text-center"></i>
+                        Chatbot FAQ
+                    </a>
+                </li>
+
+                <!-- Galerie -->
+                <li>
+                    <a href="../galerie/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-images mr-3 w-5 text-center"></i>
+                        Galerie
+                    </a>
+                </li>
+
+                <!-- Analyses -->
+                <li>
+                    <a href="../analyses.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-chart-line mr-3 w-5 text-center"></i>
+                        Analyses
+                    </a>
+                </li>
+
+                <!-- Déconnexion -->
+                <li class="pt-8">
+                    <a href="../login.html" onclick="Dashboard.logout(); return false;" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
+                        Déconnexion
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+  <!-- Main -->
+  <main class="flex-1 ml-72 p-10">
+    <header class="flex justify-between items-center mb-10">
+      <div>
+        <h1 class="font-playfair text-4xl font-bold text-gray-900 tracking-tight">
+          Avis clientes
+        </h1>
+        <p class="text-gray-500 mt-1 font-medium">
+          Validez, rejetez ou supprimez les avis envoyés par les clientes.
+        </p>
+      </div>
+
+      <button id="refreshBtn" class="bg-forest-green hover:bg-green-700 text-white px-5 py-3 rounded-xl font-semibold shadow-md transition-all flex items-center gap-2">
+        <i class="fas fa-rotate-right"></i>
+        Actualiser
+      </button>
+    </header>
+
+    <!-- Stats -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-gray-500 font-semibold uppercase tracking-wider">En attente</p>
+            <h2 class="text-4xl font-bold text-amber-500 mt-2" id="pendingCount">0</h2>
+          </div>
+          <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center text-2xl">
+            <i class="fas fa-hourglass-half"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-gray-500 font-semibold uppercase tracking-wider">Publiés</p>
+            <h2 class="text-4xl font-bold text-green-600 mt-2" id="publishedCount">0</h2>
+          </div>
+          <div class="w-14 h-14 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center text-2xl">
+            <i class="fas fa-check-circle"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-gray-500 font-semibold uppercase tracking-wider">Rejetés</p>
+            <h2 class="text-4xl font-bold text-red-500 mt-2" id="rejectedCount">0</h2>
+          </div>
+          <div class="w-14 h-14 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center text-2xl">
+            <i class="fas fa-times-circle"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- List -->
+    <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <div>
+          <h2 class="font-playfair text-2xl font-bold text-gray-900">
+            Liste des avis
+          </h2>
+          <p class="text-gray-500 text-sm mt-1">
+            Les avis publiés seront visibles dans l’onglet Avis du voyage sur le site public.
+          </p>
+        </div>
+
+        <select id="statusFilter" class="border border-gray-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-rose-pink bg-white">
+          <option value="">Tous les statuts</option>
+          <option value="en_attente">En attente</option>
+          <option value="publie">Publiés</option>
+          <option value="rejete">Rejetés</option>
+        </select>
+      </div>
+
+      <div id="avisList" class="space-y-4">
+        Chargement...
+      </div>
+    </section>
+  </main>
+
+  <script src="avis.js"></script>
+</body>
+</html>
