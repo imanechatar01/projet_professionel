@@ -47,6 +47,40 @@ function closeLightbox() {
   }
 }
 
+function setActiveNav() {
+  const currentPage = window.location.pathname.split("/").pop() || "web_site.html";
+  const currentHash = window.location.hash;
+  const navLinks = document.querySelectorAll(".nav-links a, .mobile-menu a");
+
+  navLinks.forEach((link) => {
+    const href = link.getAttribute("href");
+
+    if (!href) return;
+
+    link.classList.remove("active");
+    link.classList.remove("nav-active");
+
+    if (link.classList.contains("nav-cta")) return;
+
+    const [linkPageRaw, linkHashRaw] = href.split("#");
+    const linkPage = linkPageRaw || "web_site.html";
+    const linkHash = linkHashRaw ? `#${linkHashRaw}` : "";
+
+    if (linkHash) {
+      if (currentPage === linkPage && currentHash === linkHash) {
+        link.classList.add("active");
+        link.classList.add("nav-active");
+      }
+      return;
+    }
+
+    if (href === currentPage || linkPage === currentPage) {
+      link.classList.add("active");
+      link.classList.add("nav-active");
+    }
+  });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const scrollTopBtn = document.getElementById("scroll-top");
 
@@ -55,4 +89,8 @@ document.addEventListener("DOMContentLoaded", function () {
       scrollTopBtn.classList.toggle("visible", window.scrollY > 400);
     });
   }
+
+  setActiveNav();
 });
+
+window.addEventListener("hashchange", setActiveNav);

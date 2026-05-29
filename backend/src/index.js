@@ -15,7 +15,7 @@ const rawCorsOrigins =
   process.env.ALLOWED_ORIGINS ||
   "http://127.0.0.1:5500,http://localhost:3000,http://localhost:5173";
 
-const allowedOrigins = rawCorsOrigins.split(",").map((s) => s.trim());
+const allowedOrigins = rawCorsOrigins.split(",").map((origin) => origin.trim());
 
 app.use(
   cors({
@@ -59,10 +59,8 @@ const galerieRoutes = require("./routes/galerie");
 const excursionRoutes = require("./routes/excursions");
 const chatbotRoutes = require("./routes/chatbotRoutes");
 const avisRoutes = require("./routes/avisRoutes");
-
-// Paiement : garde ta configuration actuelle.
-// Si tu as déjà un fichier routes/paiement.js fonctionnel, on pourra le réactiver après.
-// const paiementRoutes = require("./routes/paiement");
+const contactRoutes = require("./routes/contact");
+const paiementRoutes = require("./routes/paiement");
 
 /* =========================
    IMPORT CONTROLLERS
@@ -84,9 +82,8 @@ app.use("/api/galerie", galerieRoutes);
 app.use("/api/excursions", excursionRoutes);
 app.use("/api/chatbot", chatbotRoutes);
 app.use("/api/avis", avisRoutes);
-
-// Paiement désactivé temporairement pour ne pas toucher à ta partie paiement maintenant.
-// app.use("/api/paiement", paiementRoutes);
+app.use("/api/contact", contactRoutes);
+app.use("/api/paiement", paiementRoutes);
 
 /* =========================
    TEST ROUTE

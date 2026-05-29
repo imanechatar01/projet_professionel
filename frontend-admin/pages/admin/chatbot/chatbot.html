@@ -5,129 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gestion Chatbot FAQ</title>
 
-  <!-- Icons -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' http://localhost:5000;">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'forest-green': '#166534',
+            'rose-pink': '#DE94A4',
+            'soft-rose': '#FCE7F3',
+            'warm-beige': '#F8F5F2',
+            'sidebar-bg': '#B65C7A',
+          },
+          fontFamily: {
+            'playfair': ['Playfair Display', 'serif'],
+            'jakarta': ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          borderRadius: {
+            'xl-20': '20px',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
   <style>
-    :root {
-      --primary: #c2185b;
-      --rose-pink: #DE94A4;
-      --sidebar-bg: #B65C7A;
-      --warm-beige: #F8F5F2;
-      --bg-body: #f7f2f5;
-      --text-dark: #222;
-      --text-gray: #666;
-      --border: #eee;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: "Plus Jakarta Sans", Arial, sans-serif;
-      background: var(--bg-body);
-      margin: 0;
-      color: var(--text-dark);
-      min-height: 100vh;
-    }
-
-    /* SIDEBAR */
-    .sidebar {
-      width: 288px;
-      background: var(--sidebar-bg);
-      color: white;
-      padding: 24px;
-      position: fixed;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      z-index: 50;
-      left: 0;
-      top: 0;
-    }
-
-    .logo {
-      font-family: "Playfair Display", serif;
-      font-size: 30px;
-      font-weight: 700;
-      margin-bottom: 40px;
-      color: var(--warm-beige);
-      letter-spacing: -0.5px;
-    }
-
-    .logo span {
-      color: var(--rose-pink);
-    }
-
-    .sidebar nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .sidebar nav ul li {
-      margin-bottom: 8px;
-    }
-
-    .sidebar a {
-      display: flex;
-      align-items: center;
-      padding: 12px;
-      color: rgba(255, 255, 255, 0.75);
-      text-decoration: none;
-      border-radius: 12px;
-      transition: all 0.3s ease;
-      font-size: 15px;
-      font-weight: 500;
-    }
-
-    .sidebar a:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-    }
-
-    .sidebar a.active {
-      background: var(--rose-pink);
-      color: white;
-    }
-
-    .sidebar i {
-      margin-right: 12px;
-      width: 20px;
-      text-align: center;
-    }
-
-    .logout-item {
-      margin-top: 32px;
-      padding-top: 20px;
-    }
-
-    /* MAIN CONTENT */
-    .main-content {
-      margin-left: 288px;
-      padding: 30px;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: auto;
-    }
-
-    h1 {
-      color: var(--primary);
-      margin-bottom: 10px;
-      font-size: 32px;
-    }
-
-    .subtitle {
-      color: var(--text-gray);
-      margin-bottom: 30px;
-      line-height: 1.6;
-    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #E91E63; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #166534; }
 
     .card {
       background: white;
@@ -137,73 +51,8 @@
       margin-bottom: 25px;
     }
 
-    h2 {
-      margin-top: 0;
-      margin-bottom: 20px;
-      color: #333;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
-      color: #444;
-    }
-
-    input,
-    textarea,
-    select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      font-size: 14px;
-      box-sizing: border-box;
-      font-family: inherit;
-    }
-
-    textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    button {
-      border: none;
-      padding: 11px 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      margin-right: 8px;
-      font-family: inherit;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: #a3144c;
-    }
-
-    .btn-secondary {
-      background: #777;
-      color: white;
-    }
-
-    .btn-edit {
-      background: #1976d2;
-      color: white;
-    }
-
-    .btn-delete {
-      background: #d32f2f;
-      color: white;
-    }
-
     .faq-item {
-      border: 1px solid var(--border);
+      border: 1px solid #eee;
       padding: 18px;
       border-radius: 12px;
       margin-bottom: 15px;
@@ -213,7 +62,7 @@
     .faq-question {
       font-size: 18px;
       font-weight: bold;
-      color: var(--primary);
+      color: #c2185b;
       margin-bottom: 8px;
     }
 
@@ -229,6 +78,53 @@
       margin-bottom: 12px;
     }
 
+    .btn-primary {
+      background: #c2185b;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+
+    .btn-primary:hover {
+      background: #a3144c;
+    }
+
+    .btn-secondary {
+      background: #777;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+
+    .btn-edit {
+      background: #1976d2;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-right: 8px;
+      font-weight: bold;
+    }
+
+    .btn-delete {
+      background: #d32f2f;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
     .status-active {
       color: green;
       font-weight: bold;
@@ -239,121 +135,138 @@
       font-weight: bold;
     }
 
-    @media (max-width: 900px) {
-      .sidebar {
-        position: static;
-        width: 100%;
-        height: auto;
-      }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-family: inherit;
+      outline: none;
+    }
 
-      .main-content {
-        margin-left: 0;
-      }
+    input:focus, textarea:focus, select:focus {
+      border-color: #c2185b;
+      box-shadow: 0 0 0 2px rgba(194, 24, 91, 0.12);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
     }
   </style>
 </head>
 
-<body>
+<body class="font-jakarta bg-warm-beige text-gray-800 flex min-h-screen">
 
-<!-- Sidebar -->
-<aside class="sidebar">
-  <div class="logo">
-    EcoTrips<span>Women</span>
-  </div>
+  <!-- Sidebar -->
+  <aside class="w-72 bg-sidebar-bg text-white p-6 fixed h-screen flex flex-col z-50 overflow-y-auto">
+    <div class="font-playfair text-3xl font-bold mb-10 text-warm-beige tracking-tight">
+      EcoTrips<span class="text-rose-pink">Women</span>
+    </div>
 
-  <nav>
-    <ul>
-      <!-- Dashboard -->
-      <li>
-        <a href="../dashboard.html">
-          <i class="fas fa-th-large"></i>
-          Dashboard
-        </a>
-      </li>
+    <nav>
+      <ul class="space-y-2">
+        <!-- Dashboard -->
+        <li>
+          <a href="../dashboard.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-th-large mr-3 w-5 text-center"></i>
+            Dashboard
+          </a>
+        </li>
 
-      <!-- Excursions -->
-      <li>
-        <a href="../excursions/index.html">
-          <i class="fas fa-map-marked-alt"></i>
-          Excursions
-        </a>
-      </li>
+        <!-- Excursions -->
+        <li>
+          <a href="../excursions/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-map-marked-alt mr-3 w-5 text-center"></i>
+            Excursions
+          </a>
+        </li>
 
-      <!-- Réservations -->
-      <li>
-        <a href="../reservations/index.html">
-          <i class="fas fa-calendar-check"></i>
-          Réservations
-        </a>
-      </li>
+        <!-- Réservations -->
+        <li>
+          <a href="../reservations/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-calendar-check mr-3 w-5 text-center"></i>
+            Réservations
+          </a>
+        </li>
 
-      <!-- Clientes -->
-      <li>
-        <a href="../clientes/index.html">
-          <i class="fas fa-users"></i>
-          Clientes
-        </a>
-      </li>
+        <!-- Clientes -->
+        <li>
+          <a href="../clientes/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-users mr-3 w-5 text-center"></i>
+            Clientes
+          </a>
+        </li>
 
-      <!-- Messages -->
-      <li>
-        <a href="../messages/index.html">
-          <i class="fas fa-envelope"></i>
-          Messages
-        </a>
-      </li>
+        <!-- Messages -->
+        <li>
+          <a href="../messages/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-envelope mr-3 w-5 text-center"></i>
+            Messages
+          </a>
+        </li>
 
-      <!-- Avis clientes -->
-      <li>
-        <a href="../avis/avis.html">
-          <i class="fas fa-star"></i>
-          Avis clientes
-        </a>
-      </li>
+        <!-- Avis clientes -->
+        <li>
+          <a href="../avis/avis.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-star mr-3 w-5 text-center"></i>
+            Avis clientes
+          </a>
+        </li>
 
-      <!-- Chatbot FAQ active -->
-      <li>
-        <a href="chatbot.html" class="active">
-          <i class="fas fa-comments"></i>
-          Chatbot FAQ
-        </a>
-      </li>
+        <!-- Chatbot FAQ active -->
+        <li>
+          <a href="chatbot.html" class="flex items-center p-3 text-white bg-rose-pink rounded-xl transition-all duration-300">
+            <i class="fas fa-comments mr-3 w-5 text-center"></i>
+            Chatbot FAQ
+          </a>
+        </li>
 
-      <!-- Galerie -->
-      <li>
-        <a href="../galerie/index.html">
-          <i class="fas fa-images"></i>
-          Galerie
-        </a>
-      </li>
+        <!-- Galerie -->
+        <li>
+          <a href="../galerie/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-images mr-3 w-5 text-center"></i>
+            Galerie
+          </a>
+        </li>
 
-      <!-- Déconnexion -->
-      <li class="logout-item">
-        <a href="../../login.html" id="logoutBtn">
-          <i class="fas fa-sign-out-alt"></i>
-          Déconnexion
-        </a>
-      </li>
-    </ul>
-  </nav>
-</aside>
+        <!-- Site public -->
+        <li>
+          <a href="../../../../frontend-public/cliente/web_site.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-globe mr-3 w-5 text-center"></i>
+            Site public
+          </a>
+        </li>
+
+        <!-- Déconnexion -->
+        <li class="pt-8">
+          <a href="../../login.html" id="logoutBtn" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
+            Déconnexion
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
 
   <!-- Main Content -->
-  <main class="main-content">
-    <div class="container">
-      <h1>Gestion du Chatbot FAQ</h1>
+  <main class="flex-1 ml-72 p-8">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl font-bold text-rose-pink mb-2">Gestion du Chatbot FAQ</h1>
 
-      <p class="subtitle">
+      <p class="text-gray-500 mb-6">
         Ici, l’admin peut ajouter, modifier ou supprimer les réponses utilisées par le chatbot public.
       </p>
 
+      <!-- Formulaire -->
       <div class="card">
-        <h2 id="form-title">Ajouter une FAQ</h2>
+        <h2 id="form-title" class="text-xl font-semibold mb-4">Ajouter une FAQ</h2>
 
         <form id="faq-form">
           <input type="hidden" id="faq-id" />
 
-          <label>Question</label>
+          <label class="block font-semibold mb-1">Question</label>
           <input
             type="text"
             id="question"
@@ -361,21 +274,22 @@
             required
           />
 
-          <label>Réponse</label>
+          <label class="block font-semibold mb-1 mt-3">Réponse</label>
           <textarea
             id="reponse"
             placeholder="Réponse que le chatbot va afficher..."
+            rows="3"
             required
           ></textarea>
 
-          <label>Mots-clés</label>
+          <label class="block font-semibold mb-1 mt-3">Mots-clés</label>
           <input
             type="text"
             id="keywords"
             placeholder="prix, tarif, réservation, voyage..."
           />
 
-          <label>Catégorie</label>
+          <label class="block font-semibold mb-1 mt-3">Catégorie</label>
           <select id="categorie">
             <option value="general">Général</option>
             <option value="tarifs">Tarifs</option>
@@ -384,24 +298,27 @@
             <option value="contact">Contact</option>
           </select>
 
-          <label>Statut</label>
+          <label class="block font-semibold mb-1 mt-3">Statut</label>
           <select id="actif">
             <option value="true">Active</option>
             <option value="false">Inactive</option>
           </select>
 
-          <button type="submit" class="btn-primary" id="submit-btn">
-            Ajouter
-          </button>
+          <div class="mt-4">
+            <button type="submit" class="btn-primary" id="submit-btn">
+              Ajouter
+            </button>
 
-          <button type="button" class="btn-secondary" onclick="resetForm()">
-            Annuler
-          </button>
+            <button type="button" class="btn-secondary" onclick="resetForm()">
+              Annuler
+            </button>
+          </div>
         </form>
       </div>
 
+      <!-- Liste des FAQ -->
       <div class="card">
-        <h2>Liste des FAQ</h2>
+        <h2 class="text-xl font-semibold mb-4">Liste des FAQ</h2>
 
         <div id="faq-list">
           Chargement...
@@ -411,5 +328,17 @@
   </main>
 
   <script src="chatbot.js"></script>
+
+  <script>
+    document.getElementById("logoutBtn")?.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("adminToken");
+      localStorage.removeItem("admin");
+
+      window.location.href = "../../login.html";
+    });
+  </script>
 </body>
 </html>

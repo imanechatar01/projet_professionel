@@ -135,6 +135,7 @@ const getMyReservations = async (req, res) => {
             reservations: reservations,
             count: reservations.length
         });
+        console.log(`Récupération des réservations pour client ${client_id} réussie. Nombre de réservations: ${reservations.length}`);
 
     } catch (error) {
         console.error('Erreur récupération réservations client:', error);

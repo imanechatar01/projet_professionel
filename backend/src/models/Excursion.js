@@ -16,6 +16,7 @@ class Excursion {
         return result.rows[0];
     }
 
+    
     static async create(data) {
         const { titre, description, destination, prix, duree, places_max, guide, categorie, images, statut = 'active' } = data;
         const result = await pool.query(

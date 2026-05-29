@@ -196,11 +196,21 @@ function getRegionFromDestination(value) {
     "laâyoune"
   ];
 
-  if (nord.some(city => text.includes(normalizeText(city)))) return "Nord Maroc";
-  if (centre.some(city => text.includes(normalizeText(city)))) return "Centre Maroc";
-  if (sud.some(city => text.includes(normalizeText(city)))) return "Sud Maroc";
+  if (nord.some((city) => text.includes(normalizeText(city)))) return "Nord Maroc";
+  if (centre.some((city) => text.includes(normalizeText(city)))) return "Centre Maroc";
+  if (sud.some((city) => text.includes(normalizeText(city)))) return "Sud Maroc";
 
   return "";
+}
+
+function getServerBaseUrl() {
+  const apiBase =
+    window.APP_CONFIG?.API_BASE_URL ||
+    window.APP_CONFIG?.API_URL ||
+    window.APP_CONFIG?.BASE_URL ||
+    "http://localhost:5000/api";
+
+  return String(apiBase).replace(/\/$/, "").replace(/\/api$/, "");
 }
 
 function buildImageUrl(raw) {
@@ -231,23 +241,25 @@ function buildImageUrl(raw) {
     return image;
   }
 
-  const apiBase =
-    window.APP_CONFIG?.API_BASE_URL ||
-    window.APP_CONFIG?.API_URL ||
-    window.APP_CONFIG?.BASE_URL ||
-    "";
+  const serverBase = getServerBaseUrl();
+
+  if (image.startsWith("/uploads/")) {
+    return `${serverBase}${image}`;
+  }
+
+  if (image.startsWith("uploads/")) {
+    return `${serverBase}/${image}`;
+  }
+
+  if (image.startsWith("assets/")) {
+    return image;
+  }
 
   if (image.startsWith("/")) {
-    return apiBase ? apiBase.replace(/\/$/, "") + image : image;
+    return `${serverBase}${image}`;
   }
 
-  if (image.startsWith("uploads/") || image.startsWith("assets/")) {
-    return apiBase && image.startsWith("uploads/")
-      ? apiBase.replace(/\/$/, "") + "/" + image
-      : image;
-  }
-
-  return image;
+  return `${serverBase}/uploads/${image}`;
 }
 
 function normalizeTrip(raw) {
@@ -278,7 +290,7 @@ function normalizeTrip(raw) {
     ? raw.tags
     : String(rawType)
         .split(",")
-        .map(tag => tag.trim())
+        .map((tag) => tag.trim())
         .filter(Boolean);
 
   const region =
@@ -427,7 +439,7 @@ async function loadTrips() {
   }
 
   let apiTrips = [];
-  let localTrips = getLocalStoredTrips();
+  const localTrips = getLocalStoredTrips();
 
   try {
     if (window.ApiClient && typeof window.ApiClient.getExcursions === "function") {
@@ -467,9 +479,9 @@ function renderTrips(list) {
     return `
       <div class="trip-card" data-trip-id="${escapeHtml(trip.id)}">
         <div class="trip-img">
-          <img 
-            src="${escapeHtml(trip.img)}" 
-            alt="${escapeHtml(trip.title)}" 
+          <img
+            src="${escapeHtml(trip.img)}"
+            alt="${escapeHtml(trip.title)}"
             loading="lazy"
             onerror="this.onerror=null;this.src='${DEFAULT_TRIP_IMAGE}';"
           >
@@ -826,7 +838,9 @@ function showDetail(id) {
   renderPublicAvis(trip.reviews || []);
   loadPublicAvisForTrip(trip);
 
-  const reserveLink = document.querySelector('.detail-sidebar a[href^="reservation.html"], .detail-sidebar a[href="#"]');
+  const reserveLink = document.querySelector(
+    '.detail-sidebar a[href^="reservation.html"], .detail-sidebar a[href="#"]'
+  );
 
   if (reserveLink) {
     reserveLink.href = "#";
@@ -838,10 +852,8 @@ function showDetail(id) {
 
   switchTab("overview");
 
-  document.getElementById("view-list").style.display = "block";
-  document.getElementById("view-detail").style.display = "block";
-
   document.getElementById("view-list").style.display = "none";
+  document.getElementById("view-detail").style.display = "block";
 
   window.scrollTo(0, 0);
 }

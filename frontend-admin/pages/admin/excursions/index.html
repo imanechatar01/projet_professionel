@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoTrips Women | Gestion des Voyages</title>
-    
-    <!-- Tailwind CSS -->
+
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: http://localhost:5000; connect-src 'self' http://localhost:5000;">
+
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
@@ -22,31 +23,23 @@
                     fontFamily: {
                         'playfair': ['Playfair Display', 'serif'],
                         'jakarta': ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'xl-20': '20px',
                     }
                 }
             }
         }
     </script>
 
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #DE94A4;
-            border-radius: 10px;
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #E91E63; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #166534; }
     </style>
 </head>
 
@@ -123,9 +116,28 @@
                         Galerie
                     </a>
                 </li>
+
+                <!-- Site public -->
+                <li>
+                    <a href="../../../../frontend-public/cliente/web_site.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-globe mr-3 w-5 text-center"></i>
+                        Site public
+                    </a>
+                </li>
+
+                <!-- Analyses -->
+                <li>
+                    <a href="../analyses.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-chart-line mr-3 w-5 text-center"></i>
+                        Analyses
+                    </a>
+                </li>
+
                 <!-- Déconnexion -->
                 <li class="pt-8">
-                    <a href="../../login.html" onclick="localStorage.clear(); window.location.href='../login.html'; return false;" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                    <a href="../../login.html"
+                       onclick="localStorage.removeItem('token'); localStorage.removeItem('adminToken'); localStorage.removeItem('admin'); window.location.href='../../login.html'; return false;"
+                       class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
                         <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
                         Déconnexion
                     </a>

@@ -10,11 +10,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="assets/css/design-system.css">
-<link rel="stylesheet" href="assets/css/components.css">
-<link rel="stylesheet" href="assets/css/pages/catalogue.css">
-<link rel="stylesheet" href="assets/css/pages/chatbot.css">
-<link rel="stylesheet" href="assets/css/pages/client-panel.css">
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/pages/catalogue.css">
+  <link rel="stylesheet" href="assets/css/pages/chatbot.css">
+  <link rel="stylesheet" href="assets/css/pages/client-panel.css">
 </head>
 
 <body>
@@ -35,6 +35,7 @@
         <a href="catalogue.html" class="nav-active">Voyages</a>
         <a href="web_site.html#galerie">Galerie</a>
         <a href="web_site.html#contact">Contact</a>
+        <a href="message.html">Messages</a>
         <a href="login.html" class="nav-cta">Réserver</a>
       </div>
 
@@ -51,9 +52,10 @@
   <!-- MOBILE MENU -->
   <div class="mobile-menu" id="mobile-menu">
     <a href="web_site.html" onclick="closeMobileMenu()">Accueil</a>
-    <a href="catalogue.html" onclick="closeMobileMenu()">Voyages</a>
+    <a href="catalogue.html" class="nav-active" onclick="closeMobileMenu()">Voyages</a>
     <a href="web_site.html#galerie" onclick="closeMobileMenu()">Galerie</a>
     <a href="web_site.html#contact" onclick="closeMobileMenu()">Contact</a>
+    <a href="message.html" onclick="closeMobileMenu()">Messages</a>
     <a href="login.html" onclick="closeMobileMenu()">Espace Client</a>
     <button class="mob-cta" onclick="window.location.href='login.html'">Réserver maintenant</button>
   </div>
@@ -245,6 +247,7 @@
             <li><a href="web_site.html">Accueil</a></li>
             <li><a href="web_site.html#home-about">À propos</a></li>
             <li><a href="web_site.html#contact">Contact</a></li>
+            <li><a href="message.html">Messages</a></li>
             <li><a href="login.html">Espace client</a></li>
           </ul>
         </div>
@@ -271,12 +274,12 @@
 
   <div class="toast" id="toast"></div>
 
-<script src="assets/js/config.js"></script>
-<script src="assets/js/api.js"></script>
-<script src="assets/js/ui.js"></script>
-<script src="assets/js/catalogue.js"></script>
-<script src="assets/js/auth.js"></script>
-<script src="assets/js/client-panel.js"></script>
-<script src="assets/js/chatbot.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/catalogue.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/client-panel.js"></script>
+  <script src="assets/js/chatbot.js"></script>
 </body>
 </html>

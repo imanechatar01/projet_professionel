@@ -1,513 +1,1046 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Messages - Admin Ecotripswomen</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messages - Admin Ecotripswomen</title>
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'forest-green': '#166534',
-                        'rose-pink': '#DE94A4',
-                        'soft-rose': '#FCE7F3',
-                        'warm-beige': '#F8F5F2',
-                        'sidebar-bg': '#B65C7A',
-                    },
-                    fontFamily: {
-                        'playfair': ['Playfair Display', 'serif'],
-                        'jakarta': ['Plus Jakarta Sans', 'sans-serif'],
-                    },
-                    borderRadius: {
-                        'xl-20': '20px',
-                    }
-                }
-            }
-        }
-    </script>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'forest-green': '#166534',
+            'rose-pink': '#DE94A4',
+            'soft-rose': '#FCE7F3',
+            'warm-beige': '#F8F5F2',
+            'sidebar-bg': '#B65C7A',
+          },
+          fontFamily: {
+            'playfair': ['Playfair Display', 'serif'],
+            'jakarta': ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          borderRadius: {
+            'xl-20': '20px',
+          }
+        }
+      }
+    }
+  </script>
 
-    <style>
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-        ::-webkit-scrollbar-thumb {
-            background: #E91E63;
-            border-radius: 10px;
-        }
+  <style>
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #166534;
-        }
-        
-        .message-read {
-            opacity: 0.6;
-        }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
 
-        .message-unread {
-            font-weight: bold;
-            background: #fff0f3;
-        }
-        
-        .btn {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 0 2px;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
+    ::-webkit-scrollbar-thumb {
+      background: #E91E63;
+      border-radius: 10px;
+    }
 
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            width: 500px;
-            max-width: 90%;
-        }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #166534;
+    }
 
-        textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin: 10px 0;
-            resize: vertical;
-        }
-    </style>
+    .app-area {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      margin-left: 288px;
+      width: calc(100% - 288px);
+      height: 100vh;
+    }
+
+    .contacts-sidebar {
+      width: 300px;
+      flex-shrink: 0;
+      background: white;
+      border-right: 1px solid #f0e0e8;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .contacts-header {
+      padding: 18px 16px 12px;
+      border-bottom: 1px solid #f0e0e8;
+      flex-shrink: 0;
+    }
+
+    .contacts-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e1e2a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .unread-total-badge {
+      background: #c2185b;
+      color: white;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-left: auto;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #fdf6f8;
+      border: 1px solid #f0e0e8;
+      border-radius: 20px;
+      padding: 7px 14px;
+    }
+
+    .search-box input {
+      border: none;
+      background: transparent;
+      font-size: 13px;
+      color: #1e1e2a;
+      outline: none;
+      width: 100%;
+      font-family: inherit;
+    }
+
+    .search-box input::placeholder {
+      color: #bbb;
+    }
+
+    .contacts-list {
+      flex: 1;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 13px 16px;
+      border-bottom: 1px solid #fdf6f8;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .contact-item:hover {
+      background: #fdf6f8;
+    }
+
+    .contact-item.active {
+      background: #fce4ec;
+      border-left: 3px solid #c2185b;
+      padding-left: 13px;
+    }
+
+    .contact-item.active .contact-name {
+      font-weight: 600;
+      color: #c2185b;
+    }
+
+    .contact-item.unread .contact-name {
+      font-weight: 700;
+      color: #1e1e2a;
+    }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .contact-meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .contact-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .contact-name {
+      font-size: 14px;
+      color: #333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .contact-time {
+      font-size: 11px;
+      color: #bbb;
+      flex-shrink: 0;
+      margin-left: 4px;
+    }
+
+    .contact-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 3px;
+    }
+
+    .contact-preview {
+      font-size: 12px;
+      color: #aaa;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+
+    .unread-badge {
+      background: #c2185b;
+      color: white;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 50%;
+      min-width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 3px;
+      flex-shrink: 0;
+    }
+
+    .chat-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #fdf6f8;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #ccc;
+      gap: 12px;
+      font-size: 15px;
+    }
+
+    .empty-state i {
+      font-size: 42px;
+      color: #DE94A4;
+    }
+
+    .chat-header {
+      background: white;
+      border-bottom: 1px solid #f0e0e8;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .chat-header-info .name {
+      font-weight: 700;
+      color: #1e1e2a;
+      font-size: 15px;
+    }
+
+    .chat-header-info .email {
+      color: #888;
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .mark-read-btn {
+      margin-left: auto;
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+    }
+
+    .messages-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scroll-behavior: smooth;
+    }
+
+    .date-sep {
+      text-align: center;
+      font-size: 11px;
+      color: #bbb;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 4px 0;
+    }
+
+    .date-sep::before,
+    .date-sep::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #f0e0e8;
+    }
+
+    .msg-row.client {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .msg-row.admin-reply {
+      align-items: flex-end;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bubble {
+      max-width: 65%;
+      padding: 10px 15px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .bubble.client-bubble {
+      background: white;
+      color: #1e1e2a;
+      border: 1px solid #f0e0e8;
+      border-bottom-left-radius: 4px;
+    }
+
+    .bubble.admin-bubble {
+      background: #c2185b;
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg-time {
+      font-size: 11px;
+      color: #bbb;
+      padding: 0 4px;
+      margin-top: 3px;
+    }
+
+    .admin-label,
+    .sender-label {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 0 4px;
+      margin-bottom: 2px;
+    }
+
+    .admin-label {
+      color: #2c7a4d;
+    }
+
+    .sender-label {
+      color: #c2185b;
+    }
+
+    .no-reply {
+      color: #999;
+      font-size: 12px;
+      font-style: italic;
+      padding: 0 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .input-area {
+      background: white;
+      border-top: 1px solid #f0e0e8;
+      padding: 12px 16px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      flex-shrink: 0;
+    }
+
+    .input-area textarea {
+      flex: 1;
+      border: 1.5px solid #f0e0e8;
+      border-radius: 22px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: none;
+      max-height: 120px;
+      outline: none;
+      background: #fdf6f8;
+    }
+
+    .input-area textarea:focus {
+      border-color: #c2185b;
+    }
+
+    .send-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #c2185b;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+
+    .send-btn:hover {
+      background: #ad1457;
+    }
+
+    .send-btn i {
+      color: white;
+      font-size: 17px;
+    }
+
+    .send-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .msg-new {
+      animation: fadeIn 0.2s ease;
+    }
+  </style>
 </head>
 
 <body class="font-jakarta bg-warm-beige text-gray-800 flex min-h-screen">
 
-    <!-- Sidebar -->
-    <aside class="w-72 bg-sidebar-bg text-white p-6 fixed h-screen flex flex-col z-50">
-        <div class="font-playfair text-3xl font-bold mb-10 text-warm-beige tracking-tight">
-            EcoTrips<span class="text-rose-pink">Women</span>
-        </div>
-
-        <nav>
-            <ul class="space-y-2">
-                <!-- Dashboard -->
-                <li>
-                    <a href="../dashboard.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                        <i class="fas fa-th-large mr-3 w-5 text-center"></i>
-                        Dashboard
-                    </a>
-                </li>
-
-                <!-- Excursions -->
-                <li>
-                    <a href="../excursions/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                        <i class="fas fa-map-marked-alt mr-3 w-5 text-center"></i>
-                        Excursions
-                    </a>
-                </li>
-
-                <!-- Réservations -->
-                <li>
-                    <a href="../reservations/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                        <i class="fas fa-calendar-check mr-3 w-5 text-center"></i>
-                        Réservations
-                    </a>
-                </li>
-
-                <!-- Clientes -->
-                <li>
-                    <a href="../clientes/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                        <i class="fas fa-users mr-3 w-5 text-center"></i>
-                        Clientes
-                    </a>
-                </li>
-
-                <!-- Messages active -->
-                <li>
-                    <a href="index.html" class="flex items-center p-3 text-white bg-rose-pink rounded-xl transition-all duration-300">
-                        <i class="fas fa-envelope mr-3 w-5 text-center"></i>
-                        Messages
-                    </a>
-                </li>
-
-                <!-- Avis clientes -->
-                <li>
-                    <a href="../avis/avis.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                        <i class="fas fa-star mr-3 w-5 text-center"></i>
-                        Avis clientes
-                    </a>
-                </li>
-
-                <!-- Chatbot FAQ -->
-                <li>
-                    <a href="../chatbot/chatbot.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                        <i class="fas fa-comments mr-3 w-5 text-center"></i>
-                        Chatbot FAQ
-                    </a>
-                </li>
-
-                <!-- Galerie -->
-                <li>
-                    <a href="../galerie/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                        <i class="fas fa-images mr-3 w-5 text-center"></i>
-                        Galerie
-                    </a>
-                </li>
-
-<a href="#" onclick="logoutAdmin(event)">
-    <i class="fas fa-sign-out-alt"></i>
-    Déconnexion
-</a>
-            </ul>
-        </nav>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="flex-1 ml-72 p-8">
-        <div class="max-w-7xl mx-auto">
-            <!-- Header -->
-            <div class="flex justify-between items-center mb-8">
-                <div>
-                    <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-3">
-                        <i class="fas fa-envelope text-rose-pink"></i>
-                        Messages des clientes
-                    </h1>
-                    <p class="text-gray-500 mt-1">
-                        Consultez et répondez aux messages de vos clientes
-                    </p>
-                </div>
-
-                <div class="flex items-center gap-4">
-                    <div class="text-right">
-                        <p class="font-semibold text-gray-800" id="adminName">
-                            Administrateur
-                        </p>
-                        <p class="text-sm text-gray-500">
-                            Espace Admin
-                        </p>
-                    </div>
-
-                    <div class="w-10 h-10 bg-rose-pink rounded-full flex items-center justify-center text-white font-bold">
-                        A
-                    </div>
-                </div>
-            </div>
-
-            <!-- Stats Card -->
-            <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-soft-rose rounded-full flex items-center justify-center">
-                        <i class="fas fa-envelope-open-text text-rose-pink text-xl"></i>
-                    </div>
-
-                    <div>
-                        <span class="text-2xl font-bold" id="unreadCount">0</span>
-                        <span class="text-gray-500 ml-2">messages non lus</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Messages Table -->
-            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead class="bg-gray-50 border-b border-gray-200">
-                            <tr>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600">Date</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600">Nom</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600">Email</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600">Sujet</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600">Message</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600">Actions</th>
-                            </tr>
-                        </thead>
-
-                        <tbody id="messagesBody">
-                            <tr>
-                                <td colspan="6" class="text-center py-8 text-gray-400">
-                                    Chargement des messages...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Modal Réponse -->
-    <div id="replyModal" class="modal">
-        <div class="modal-content">
-            <h3 class="text-xl font-semibold mb-4">Répondre au message</h3>
-
-            <p>
-                <strong>De :</strong>
-                <span id="replyNom"></span>
-                (<span id="replyEmail"></span>)
-            </p>
-
-            <p class="mt-3">
-                <strong>Message :</strong>
-            </p>
-
-            <p id="replyMessage" style="background:#f5f5f5; padding:10px; border-radius:8px; margin:10px 0;"></p>
-
-            <textarea id="reponseText" rows="5" placeholder="Votre réponse..."></textarea>
-
-            <div class="flex gap-3 mt-4">
-                <button onclick="sendReply()" class="bg-rose-pink text-white px-4 py-2 rounded-lg hover:bg-[#c97e8e] transition">
-                    Envoyer la réponse
-                </button>
-
-                <button onclick="closeModal()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition">
-                    Annuler
-                </button>
-            </div>
-        </div>
+  <!-- Sidebar -->
+  <aside class="w-72 bg-sidebar-bg text-white p-6 fixed h-screen flex flex-col z-50 overflow-y-auto">
+    <div class="font-playfair text-3xl font-bold mb-10 text-warm-beige tracking-tight">
+      EcoTrips<span class="text-rose-pink">Women</span>
     </div>
 
-    <script>
-        const token =
-            localStorage.getItem('token') ||
-            localStorage.getItem('adminToken');
+    <nav>
+      <ul class="space-y-2">
+        <li>
+          <a href="../dashboard.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-th-large mr-3 w-5 text-center"></i>
+            Dashboard
+          </a>
+        </li>
 
-        let currentMessageId = null;
+        <li>
+          <a href="../excursions/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-map-marked-alt mr-3 w-5 text-center"></i>
+            Excursions
+          </a>
+        </li>
 
-        if (!token) {
-            window.location.href = '../login.html';
-        }
+        <li>
+          <a href="../reservations/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-calendar-check mr-3 w-5 text-center"></i>
+            Réservations
+          </a>
+        </li>
 
-        const adminData = localStorage.getItem('admin');
+        <li>
+          <a href="../clientes/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-users mr-3 w-5 text-center"></i>
+            Clientes
+          </a>
+        </li>
 
-        if (adminData) {
-            try {
-                const admin = JSON.parse(adminData);
+        <li>
+          <a href="index.html" class="flex items-center p-3 text-white bg-rose-pink rounded-xl transition-all duration-300">
+            <i class="fas fa-envelope mr-3 w-5 text-center"></i>
+            Messages
+          </a>
+        </li>
 
-                document.getElementById('adminName').textContent =
-                    admin.nom || admin.prenom || 'Administrateur';
-            } catch (error) {
-                document.getElementById('adminName').textContent = 'Administrateur';
-            }
-        }
+        <li>
+          <a href="../avis/avis.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-star mr-3 w-5 text-center"></i>
+            Avis clientes
+          </a>
+        </li>
 
-        async function loadMessages() {
-            try {
-                const response = await fetch('/api/messages', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+        <li>
+          <a href="../chatbot/chatbot.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-comments mr-3 w-5 text-center"></i>
+            Chatbot FAQ
+          </a>
+        </li>
 
-                const data = await response.json();
+        <li>
+          <a href="../galerie/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-images mr-3 w-5 text-center"></i>
+            Galerie
+          </a>
+        </li>
 
-                if (data.success) {
-                    document.getElementById('unreadCount').textContent =
-                        data.unreadCount || 0;
+        <li>
+          <a href="../../../../frontend-public/cliente/web_site.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-globe mr-3 w-5 text-center"></i>
+            Site public
+          </a>
+        </li>
 
-                    displayMessages(data.messages || []);
-                } else {
-                    throw new Error(data.message || 'Erreur de chargement');
-                }
-            } catch (error) {
-                console.error('Erreur:', error);
+        <li>
+          <a href="../analyses.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-chart-line mr-3 w-5 text-center"></i>
+            Analyses
+          </a>
+        </li>
 
-                document.getElementById('messagesBody').innerHTML = `
-                    <tr>
-                        <td colspan="6" class="text-center py-8 text-red-500">
-                            Erreur de chargement des messages
-                        </td>
-                    </tr>
-                `;
-            }
-        }
+        <li class="pt-8">
+          <a href="../../login.html" onclick="logoutAdmin(event)" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
+            Déconnexion
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
 
-        function displayMessages(messages) {
-            const tbody = document.getElementById('messagesBody');
+  <!-- Zone principale -->
+  <div class="app-area">
+    <!-- Contacts list -->
+    <div class="contacts-sidebar">
+      <div class="contacts-header">
+        <div class="contacts-title">
+          <i class="fas fa-comments" style="color:#c2185b;"></i>
+          Messages
+          <span class="unread-total-badge" id="unreadTotal" style="display:none;">0</span>
+        </div>
 
-            tbody.innerHTML = '';
+        <div class="search-box">
+          <i class="fas fa-search" style="font-size:13px;color:#bbb;"></i>
+          <input type="text" id="searchInput" placeholder="Rechercher une cliente..." oninput="filterContacts()">
+        </div>
+      </div>
 
-            if (!messages.length) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="text-center py-8 text-gray-400">
-                            Aucun message pour le moment
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
+      <div class="contacts-list" id="contactsList">
+        <div style="text-align:center;padding:2rem;color:#bbb;font-size:13px;">Chargement...</div>
+      </div>
+    </div>
 
-            messages.forEach(msg => {
-                const row = tbody.insertRow();
+    <!-- Chat area -->
+    <div class="chat-panel" id="chatPanel">
+      <div class="empty-state" id="emptyState">
+        <i class="fas fa-comments"></i>
+        Sélectionnez une conversation
+      </div>
 
-                row.className = msg.lu ? 'message-read' : 'message-unread';
+      <div id="chatContent" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
+        <div class="chat-header" id="chatHeader"></div>
 
-                row.insertCell(0).innerHTML = `
-                    <div class="px-6 py-4 text-sm text-gray-600">
-                        ${msg.created_at ? new Date(msg.created_at).toLocaleString('fr-FR') : '-'}
-                    </div>
-                `;
+        <div class="messages-area" id="messagesArea"></div>
 
-                row.insertCell(1).innerHTML = `
-                    <div class="px-6 py-4 font-medium text-gray-800">
-                        ${escapeHtml(msg.nom)}
-                    </div>
-                `;
+        <div class="input-area">
+          <textarea
+            id="replyInput"
+            rows="1"
+            placeholder="Écrire une réponse..."
+            oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"
+            onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendReply();}"
+          ></textarea>
 
-                row.insertCell(2).innerHTML = `
-                    <div class="px-6 py-4 text-sm text-gray-600">
-                        ${escapeHtml(msg.email)}
-                    </div>
-                `;
+          <button class="send-btn" onclick="sendReply()">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                row.insertCell(3).innerHTML = `
-                    <div class="px-6 py-4 text-sm text-gray-600">
-                        ${escapeHtml(msg.sujet || '-')}
-                    </div>
-                `;
+  <script>
+    const API_BASE = "http://localhost:5000/api";
 
-                row.insertCell(4).innerHTML = `
-                    <div class="px-6 py-4 text-sm text-gray-600">
-                        ${escapeHtml((msg.message || '').substring(0, 100))}
-                        ${(msg.message || '').length > 100 ? '...' : ''}
-                    </div>
-                `;
+    const token =
+      localStorage.getItem("token") ||
+      localStorage.getItem("adminToken");
 
-                const actions = document.createElement('td');
-                actions.className = 'px-6 py-4';
-                actions.style.whiteSpace = 'nowrap';
+    if (!token) {
+      window.location.href = "../../login.html";
+    }
 
-                if (!msg.lu) {
-                    const readBtn = document.createElement('button');
+    let allMessages = [];
+    let activeContact = null;
 
-                    readBtn.innerHTML = '<i class="fas fa-check-circle mr-1"></i> Marquer lu';
-                    readBtn.className = 'bg-green-500 text-white px-3 py-1.5 rounded-lg text-sm mr-2 hover:bg-green-600 transition';
-                    readBtn.onclick = () => markAsRead(msg.id);
+    const COLORS = [
+      "#c2185b",
+      "#7b1fa2",
+      "#0288d1",
+      "#00838f",
+      "#388e3c",
+      "#f57c00",
+      "#5d4037"
+    ];
 
-                    actions.appendChild(readBtn);
-                }
+    function logoutAdmin(event) {
+      if (event) event.preventDefault();
 
-                const replyBtn = document.createElement('button');
+      localStorage.removeItem("token");
+      localStorage.removeItem("adminToken");
+      localStorage.removeItem("admin");
 
-                replyBtn.innerHTML = '<i class="fas fa-reply mr-1"></i> Répondre';
-                replyBtn.className = 'bg-rose-pink text-white px-3 py-1.5 rounded-lg text-sm hover:bg-[#c97e8e] transition';
-                replyBtn.onclick = () => openReplyModal(msg);
+      window.location.href = "../../login.html";
+    }
 
-                actions.appendChild(replyBtn);
-                row.appendChild(actions);
-            });
-        }
+    function getColor(name) {
+      let h = 0;
 
-        function escapeHtml(text) {
-            if (!text) return '';
+      for (let c of String(name || "")) {
+        h = (h * 31 + c.charCodeAt(0)) % COLORS.length;
+      }
 
-            const div = document.createElement('div');
-            div.textContent = text;
+      return COLORS[h];
+    }
 
-            return div.innerHTML;
-        }
+    function initials(name) {
+      return String(name || "?")
+        .split(" ")
+        .map((word) => word[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2);
+    }
 
-        async function markAsRead(id) {
-            try {
-                const response = await fetch(`/api/messages/${id}/read`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+    function esc(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
 
-                if (!response.ok) {
-                    throw new Error('Erreur lors de la mise à jour');
-                }
+    function fmtTime(dateValue) {
+      return new Date(dateValue).toLocaleTimeString("fr-FR", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
 
-                loadMessages();
-            } catch (error) {
-                console.error(error);
-                alert('Erreur lors du marquage comme lu');
-            }
-        }
+    function fmtDate(dateValue) {
+      const date = new Date(dateValue);
+      const now = new Date();
 
-        function openReplyModal(message) {
-            currentMessageId = message.id;
+      if (date.toDateString() === now.toDateString()) {
+        return "Aujourd'hui";
+      }
 
-            document.getElementById('replyNom').textContent = message.nom || '';
-            document.getElementById('replyEmail').textContent = message.email || '';
-            document.getElementById('replyMessage').textContent = message.message || '';
-            document.getElementById('reponseText').value = '';
+      const yesterday = new Date(now);
+      yesterday.setDate(now.getDate() - 1);
 
-            document.getElementById('replyModal').style.display = 'flex';
-        }
+      if (date.toDateString() === yesterday.toDateString()) {
+        return "Hier";
+      }
 
-        function closeModal() {
-            document.getElementById('replyModal').style.display = 'none';
-        }
+      return date.toLocaleDateString("fr-FR", {
+        day: "numeric",
+        month: "long"
+      });
+    }
 
-        async function sendReply() {
-            const reponse = document.getElementById('reponseText').value.trim();
+    function fmtShort(dateValue) {
+      const date = new Date(dateValue);
+      const now = new Date();
 
-            if (!reponse) {
-                alert('Veuillez écrire une réponse');
-                return;
-            }
+      if (date.toDateString() === now.toDateString()) {
+        return fmtTime(dateValue);
+      }
 
-            try {
-                const response = await fetch(`/api/messages/${currentMessageId}/reply`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ reponse })
-                });
+      return date.toLocaleDateString("fr-FR", {
+        day: "numeric",
+        month: "short"
+      });
+    }
 
-                if (response.ok) {
-                    closeModal();
-                    loadMessages();
-                    alert('Réponse envoyée avec succès !');
-                } else {
-                    alert("Erreur lors de l'envoi");
-                }
-            } catch (error) {
-                console.error(error);
-                alert("Erreur lors de l'envoi");
-            }
-        }
-
-        document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
-            e.preventDefault();
-
-            localStorage.removeItem('token');
-            localStorage.removeItem('adminToken');
-            localStorage.removeItem('admin');
-
-            window.location.href = '../login.html';
+    async function loadMessages() {
+      try {
+        const response = await fetch(`${API_BASE}/messages`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         });
 
-        loadMessages();
-    </script>
+        const data = await response.json();
+
+        if (!data.success) {
+          throw new Error(data.message || "Erreur de chargement");
+        }
+
+        allMessages = Array.isArray(data.messages) ? data.messages : [];
+
+        renderContactList(allMessages);
+
+        if (activeContact) {
+          const groups = groupByContact(allMessages);
+          const updatedGroup = groups.find((group) => group.key === activeContact.key);
+
+          if (updatedGroup) {
+            openConversation(updatedGroup, false);
+          }
+        }
+      } catch (error) {
+        console.error("Erreur messages :", error);
+
+        document.getElementById("contactsList").innerHTML = `
+          <div style="text-align:center;padding:2rem;color:#e57373;font-size:13px;">
+            Erreur de chargement
+          </div>
+        `;
+      }
+    }
+
+    function groupByContact(messages) {
+      const map = {};
+
+      messages.forEach((message) => {
+        const key = message.client_id || message.email || message.id;
+        const nom = message.nom || message.client_nom || "Cliente";
+        const email = message.email || message.client_email || "";
+
+        if (!map[key]) {
+          map[key] = {
+            key: key,
+            nom: nom,
+            email: email,
+            lu: true,
+            messages: [],
+            lastDate: message.created_at || new Date().toISOString()
+          };
+        }
+
+        map[key].messages.push(message);
+
+        if (!message.lu) {
+          map[key].lu = false;
+        }
+
+        if (new Date(message.created_at) > new Date(map[key].lastDate)) {
+          map[key].lastDate = message.created_at;
+        }
+      });
+
+      return Object.values(map)
+        .map((group) => {
+          group.messages.sort((a, b) => {
+            return new Date(a.created_at) - new Date(b.created_at);
+          });
+
+          return group;
+        })
+        .sort((a, b) => new Date(b.lastDate) - new Date(a.lastDate));
+    }
+
+    function renderContactList(messages) {
+      const groups = groupByContact(messages);
+      const unreadGroups = groups.filter((group) => !group.lu);
+      const unreadTotal = document.getElementById("unreadTotal");
+      const list = document.getElementById("contactsList");
+
+      unreadTotal.textContent = unreadGroups.length;
+      unreadTotal.style.display = unreadGroups.length ? "" : "none";
+
+      list.innerHTML = "";
+
+      if (!groups.length) {
+        list.innerHTML = `
+          <div style="text-align:center;padding:2rem;color:#bbb;font-size:13px;">
+            Aucun message
+          </div>
+        `;
+        return;
+      }
+
+      groups.forEach((group) => {
+        const last = group.messages[group.messages.length - 1];
+        const unread = group.messages.filter((message) => !message.lu).length;
+        const div = document.createElement("div");
+
+        div.className =
+          "contact-item" +
+          (activeContact && activeContact.key === group.key ? " active" : "") +
+          (!group.lu ? " unread" : "");
+
+        div.innerHTML = `
+          <div class="avatar" style="background:${getColor(group.nom)}">
+            ${initials(group.nom)}
+          </div>
+
+          <div class="contact-meta">
+            <div class="contact-top">
+              <span class="contact-name">${esc(group.nom)}</span>
+              <span class="contact-time">${fmtShort(group.lastDate)}</span>
+            </div>
+
+            <div class="contact-bottom">
+              <span class="contact-preview">
+                ${esc(String(last.message || "").slice(0, 45))}
+                ${String(last.message || "").length > 45 ? "..." : ""}
+              </span>
+
+              ${unread > 0 ? `<span class="unread-badge">${unread}</span>` : ""}
+            </div>
+          </div>
+        `;
+
+        div.onclick = () => openConversation(group);
+
+        list.appendChild(div);
+      });
+    }
+
+    function openConversation(group, rerenderList = true) {
+      activeContact = group;
+
+      document.getElementById("emptyState").style.display = "none";
+
+      const chatContent = document.getElementById("chatContent");
+      chatContent.style.display = "flex";
+
+      const hasUnread = group.messages.some((message) => !message.lu);
+
+      document.getElementById("chatHeader").innerHTML = `
+        <div class="avatar" style="background:${getColor(group.nom)};width:38px;height:38px;font-size:14px;">
+          ${initials(group.nom)}
+        </div>
+
+        <div class="chat-header-info">
+          <div class="name">${esc(group.nom)}</div>
+          <div class="email">${esc(group.email)}</div>
+        </div>
+
+        ${
+          hasUnread
+            ? `<button class="mark-read-btn" onclick="markAllRead()">
+                <i class="fas fa-check-circle"></i>
+                Marquer lu
+              </button>`
+            : ""
+        }
+      `;
+
+      renderMessages(group);
+
+      if (rerenderList) {
+        renderContactList(allMessages);
+      }
+    }
+
+    function renderMessages(group) {
+      const area = document.getElementById("messagesArea");
+
+      area.innerHTML = "";
+
+      let lastDate = "";
+
+      group.messages.forEach((message) => {
+        const dateText = fmtDate(message.created_at);
+
+        if (dateText !== lastDate) {
+          const sep = document.createElement("div");
+
+          sep.className = "date-sep";
+          sep.textContent = dateText;
+
+          area.appendChild(sep);
+
+          lastDate = dateText;
+        }
+
+        const clientRow = document.createElement("div");
+
+        clientRow.className = "msg-row client";
+        clientRow.innerHTML = `
+          <div class="sender-label">${esc(group.nom)}</div>
+          <div class="bubble client-bubble">${esc(message.message)}</div>
+          <div class="msg-time">${fmtTime(message.created_at)}</div>
+        `;
+
+        area.appendChild(clientRow);
+
+        if (message.reponse) {
+          const adminRow = document.createElement("div");
+
+          adminRow.className = "msg-row admin-reply";
+          adminRow.innerHTML = `
+            <div class="admin-label">Vous (admin)</div>
+            <div class="bubble admin-bubble">${esc(message.reponse)}</div>
+            <div class="msg-time">${fmtTime(message.updated_at || message.created_at)}</div>
+          `;
+
+          area.appendChild(adminRow);
+        } else {
+          const pending = document.createElement("div");
+
+          pending.className = "msg-row client";
+          pending.innerHTML = `
+            <div class="no-reply">
+              <i class="fas fa-clock" style="font-size:11px;"></i>
+              Sans réponse
+            </div>
+          `;
+
+          area.appendChild(pending);
+        }
+      });
+
+      area.scrollTop = area.scrollHeight;
+    }
+
+    async function markAllRead() {
+      if (!activeContact) return;
+
+      const unreadMessages = activeContact.messages.filter((message) => !message.lu);
+
+      try {
+        await Promise.all(
+          unreadMessages.map((message) => {
+            return fetch(`${API_BASE}/messages/${message.id}/read`, {
+              method: "PUT",
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            });
+          })
+        );
+
+        await loadMessages();
+      } catch (error) {
+        console.error("Erreur marquage lu :", error);
+      }
+    }
+
+    async function sendReply() {
+      const input = document.getElementById("replyInput");
+      const text = input.value.trim();
+
+      if (!text || !activeContact) return;
+
+      const unreplied = activeContact.messages.find((message) => !message.reponse);
+
+      if (!unreplied) return;
+
+      input.value = "";
+      input.style.height = "auto";
+
+      const btn = document.querySelector(".send-btn");
+
+      if (btn) btn.disabled = true;
+
+      const area = document.getElementById("messagesArea");
+      const pendingRows = [...area.querySelectorAll(".no-reply")]
+        .map((el) => el.closest(".msg-row"));
+
+      pendingRows.forEach((row) => {
+        if (row) row.remove();
+      });
+
+      const now = new Date().toISOString();
+      const adminRow = document.createElement("div");
+
+      adminRow.className = "msg-row admin-reply msg-new";
+      adminRow.innerHTML = `
+        <div class="admin-label">Vous (admin)</div>
+        <div class="bubble admin-bubble">${esc(text)}</div>
+        <div class="msg-time">${fmtTime(now)}</div>
+      `;
+
+      area.appendChild(adminRow);
+      area.scrollTop = area.scrollHeight;
+
+      unreplied.reponse = text;
+      unreplied.updated_at = now;
+      activeContact.lu = true;
+
+      renderContactList(allMessages);
+
+      try {
+        const response = await fetch(`${API_BASE}/messages/${unreplied.id}/reply`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            reponse: text
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error("Erreur lors de l'envoi");
+        }
+
+        await loadMessages();
+      } catch (error) {
+        console.error("Erreur envoi :", error);
+      } finally {
+        if (btn) btn.disabled = false;
+        input.focus();
+      }
+    }
+
+    function filterContacts() {
+      const q = document.getElementById("searchInput").value.toLowerCase();
+
+      const filtered = allMessages.filter((message) => {
+        return (
+          String(message.nom || "").toLowerCase().includes(q) ||
+          String(message.email || "").toLowerCase().includes(q)
+        );
+      });
+
+      renderContactList(filtered);
+    }
+
+    loadMessages();
+  </script>
 </body>
 </html>

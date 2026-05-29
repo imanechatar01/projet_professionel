@@ -724,7 +724,6 @@ footer {
 .scroll-top:hover {
   transform: translateY(-2px);
 }
-
 /* RESPONSIVE */
 @media (max-width: 960px) {
   .footer-top {
@@ -770,4 +769,19 @@ footer {
   .footer-top {
     grid-template-columns: 1fr;
   }
+}
+
+/* Lien actif ajouté par ui.js */
+.nav-links a.active,
+.mobile-menu a.active {
+  color: var(--fuchsia);
+  opacity: 1;
+  font-weight: 600;
+}
+
+/* Garder le bouton Réserver avec son style spécial */
+.nav-links a.nav-cta.active,
+.nav-links a.nav-cta.nav-active {
+  background: var(--charcoal) !important;
+  color: var(--cream) !important;
 }

@@ -118,8 +118,6 @@
           >
             Mes avis
           </button>
-
-
         </div>
 
         <section class="client-panel-section active" id="client-tab-reservations">
@@ -229,24 +227,6 @@
                 Envoyer l’avis
               </button>
             </form>
-          </div>
-        </section>
-
-        <section class="client-panel-section" id="client-tab-documents">
-          <div class="client-mini-card client-document-row">
-            <div>
-              <div class="client-card-title">Confirmation de réservation</div>
-              <p>Disponible après confirmation.</p>
-            </div>
-            <button type="button" class="btn btn-outline-dark">Bientôt</button>
-          </div>
-
-          <div class="client-mini-card client-document-row">
-            <div>
-              <div class="client-card-title">Guide pratique</div>
-              <p>Programme, horaires et conseils.</p>
-            </div>
-            <button type="button" class="btn btn-outline-dark">Bientôt</button>
           </div>
         </section>
 
