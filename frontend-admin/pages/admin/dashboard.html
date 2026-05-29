@@ -119,14 +119,14 @@
                     </a>
                 </li>
 
-                <!-- Analyses -->
-                <li>
-                    <a href="analyses.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                        <i class="fas fa-chart-line mr-3 w-5 text-center"></i>
-                        Analyses
-                    </a>
-                </li>
-
+<!-- Site public -->
+<li>
+    <a href="../../../frontend-public/cliente/web_site.html"
+       class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+        <i class="fas fa-globe mr-3 w-5 text-center"></i>
+        Site public
+    </a>
+</li>
                 <!-- Déconnexion -->
                 <li class="pt-8">
                     <a href="../login.html" onclick="Dashboard.logout(); return false;" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
@@ -134,6 +134,7 @@
                         Déconnexion
                     </a>
                 </li>
+
             </ul>
         </nav>
     </aside>
@@ -395,12 +396,12 @@ if (!this.token) {
                 }
             },
 
-           logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('admin');
+logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("admin");
 
-    window.location.href = '../login.html';
+    window.location.href = "../../../frontend-public/cliente/web_site.html";
 },
 
             async fetch(params = {}) {

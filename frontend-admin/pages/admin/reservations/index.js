@@ -13,13 +13,12 @@ if (!token) {
 function logoutAdmin(event) {
     if (event) event.preventDefault();
 
-    localStorage.removeItem('token');
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('admin');
+    localStorage.removeItem("token");
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("admin");
 
-    window.location.href = '../../login.html';
+    window.location.href = "../../../../frontend-public/cliente/web_site.html";
 }
-
 window.logoutAdmin = logoutAdmin;
 
 const state = {

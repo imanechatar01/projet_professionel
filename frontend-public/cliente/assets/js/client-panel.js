@@ -119,9 +119,7 @@
             Mes avis
           </button>
 
-          <button type="button" class="client-tab-btn" data-client-tab="documents">
-            Mes documents
-          </button>
+
         </div>
 
         <section class="client-panel-section active" id="client-tab-reservations">

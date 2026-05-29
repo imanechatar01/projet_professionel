@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const upload = require('../middleware/upload');
-const { verifyClientToken } = require('../middleware/auth');
+const { verifyAdminToken } = require('../controllers/authController');
 
 const {
     addImage,
@@ -11,16 +11,16 @@ const {
     deleteImage
 } = require('../controllers/galerieController');
 
-// Ajouter une image
-router.post('/add', verifyClientToken, upload.single('image'), addImage);
-
-// Afficher toutes les images
+// Afficher toutes les images : public
 router.get('/', getAllImages);
 
-// Modifier une image
-router.put('/:id', verifyClientToken, upload.single('image'), updateImage);
+// Ajouter une image : admin seulement
+router.post('/add', verifyAdminToken, upload.single('image'), addImage);
 
-// Supprimer une image
-router.delete('/:id', verifyClientToken, deleteImage);
+// Modifier une image : admin seulement
+router.put('/:id', verifyAdminToken, upload.single('image'), updateImage);
+
+// Supprimer une image : admin seulement
+router.delete('/:id', verifyAdminToken, deleteImage);
 
 module.exports = router;

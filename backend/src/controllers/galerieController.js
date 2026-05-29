@@ -16,15 +16,22 @@ const addImage = async (req, res) => {
 
         const image_url = req.file.filename;
 
+        const createdBy =
+            req.adminId ||
+            req.userId ||
+            req.user?.id ||
+            req.admin?.id ||
+            null;
+
         const result = await pool.query(
             `INSERT INTO galerie (titre, description, image_url, created_by, categorie)
              VALUES ($1, $2, $3, $4, $5)
              RETURNING *`,
             [
                 titre,
-                description,
+                description || '',
                 image_url,
-                req.clientId || null,
+                createdBy,
                 categorie || 'principale'
             ]
         );
@@ -36,6 +43,8 @@ const addImage = async (req, res) => {
         });
 
     } catch (err) {
+        console.error("Erreur addImage galerie :", err);
+
         res.status(500).json({
             success: false,
             error: err.message
@@ -62,8 +71,8 @@ const getAllImages = async (req, res) => {
 
         const offset = (page - 1) * limit;
 
-        let queryParams = [];
-        let conditions = [];
+        const queryParams = [];
+        const conditions = [];
 
         let queryStr = 'SELECT * FROM galerie';
         let countQueryStr = 'SELECT COUNT(*) FROM galerie';
@@ -113,6 +122,8 @@ const getAllImages = async (req, res) => {
         });
 
     } catch (err) {
+        console.error("Erreur getAllImages galerie :", err);
+
         res.status(500).json({
             success: false,
             error: err.message
@@ -161,7 +172,7 @@ const updateImage = async (req, res) => {
              RETURNING *`,
             [
                 titre,
-                description,
+                description || '',
                 categorie || 'principale',
                 image_url,
                 id
@@ -175,6 +186,8 @@ const updateImage = async (req, res) => {
         });
 
     } catch (err) {
+        console.error("Erreur updateImage galerie :", err);
+
         res.status(500).json({
             success: false,
             error: err.message
@@ -217,6 +230,8 @@ const deleteImage = async (req, res) => {
         });
 
     } catch (err) {
+        console.error("Erreur deleteImage galerie :", err);
+
         res.status(500).json({
             success: false,
             error: err.message
