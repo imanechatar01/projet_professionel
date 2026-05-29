@@ -53,28 +53,27 @@
 
         <nav>
             <ul class="space-y-2">
-                <!-- Dashboard active -->
-                 <li>
+                <!-- Dashboard -->
+                <li>
                     <a href="../dashboard.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                        <i class="fas fa-map-marked-alt mr-3 w-5 text-center"></i>
-                         Dashboard
+                        <i class="fas fa-th-large mr-3 w-5 text-center"></i>
+                        Dashboard
                     </a>
                 </li>
+
+                <!-- Excursions -->
                 <li>
-                    
                     <a href="../excursions/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                        <i class="fas fa-calendar-check mr-3 w-5 text-center"></i>
+                        <i class="fas fa-map-marked-alt mr-3 w-5 text-center"></i>
                         Excursions
                     </a>
                 </li>
-                <!-- Excursions -->
-               
 
-                <!-- Réservations -->
+                <!-- Réservations active -->
                 <li>
                     <a href="../reservations/index.html" class="flex items-center p-3 text-white bg-rose-pink rounded-xl transition-all duration-300">
-                        <i class="fas fa-th-large mr-3 w-5 text-center"></i>
-                        Reservations
+                        <i class="fas fa-calendar-check mr-3 w-5 text-center"></i>
+                        Réservations
                     </a>
                 </li>
 
@@ -118,17 +117,19 @@
                     </a>
                 </li>
 
-                <!-- Analyses -->
+                <!-- Site public -->
                 <li>
-                    <a href="../analyses.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                        <i class="fas fa-chart-line mr-3 w-5 text-center"></i>
-                        Analyses
+                    <a href="../../../../frontend-public/cliente/web_site.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-globe mr-3 w-5 text-center"></i>
+                        Site public
                     </a>
                 </li>
 
+
+
                 <!-- Déconnexion -->
                 <li class="pt-8">
-                    <a href="../login.html" onclick="Dashboard.logout(); return false;" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                    <a href="../../login.html" onclick="logoutAdmin(event)" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
                         <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
                         Déconnexion
                     </a>
@@ -160,11 +161,11 @@
 
                 <!--Logout button-->
                 <div class="pl-4 border-l border-gray-200">
-<button onclick="logoutAdmin(event)" 
-        title="Se déconnecter"
-        class="w-12 h-12 bg-white flex items-center justify-center rounded-xl border border-gray-100 shadow-sm cursor-pointer hover:bg-rose-50 hover:border-rose-100 group transition-all duration-300">
-    <i class="fas fa-sign-out-alt text-gray-400 group-hover:text-rose-pink transition-colors text-lg"></i>
-</button>
+                    <button onclick="logoutAdmin(event)" 
+                            title="Se déconnecter"
+                            class="w-12 h-12 bg-white flex items-center justify-center rounded-xl border border-gray-100 shadow-sm cursor-pointer hover:bg-rose-50 hover:border-rose-100 group transition-all duration-300">
+                        <i class="fas fa-sign-out-alt text-gray-400 group-hover:text-rose-pink transition-colors text-lg"></i>
+                    </button>
                 </div>
             </div>
         </header>
@@ -249,7 +250,6 @@
                     </button>
                 </div>
                 
-
                 <div id="modalBody" class="bg-white overflow-hidden">
                     
                 </div>
@@ -259,7 +259,6 @@
 
     <div id="toastContainer" class="fixed bottom-8 right-8 z-[70] flex flex-col gap-4"></div>
 
-    
     <div id="confirmOverlay" class="fixed inset-0 z-[80] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4">
         <div class="w-full max-w-sm rounded-[32px] bg-white shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
             <div class="p-8 text-center">

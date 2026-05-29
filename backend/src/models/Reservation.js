@@ -14,6 +14,7 @@ class Reservation {
     static async createReservation(data) {
         console.log('Données reçues pour la création de réservation:', data);
         console.log('Client ID pour la réservation:', data.client_id);
+
         const {
             client_id,
             excursion_id,
@@ -22,60 +23,85 @@ class Reservation {
             demande_speciale,
             statut = 'En attente'
         } = data;
-        console.log(excursion_id);
 
         const result = await pool.query(
             `INSERT INTO reservations 
              (client_id, excursion_id, nb_personnes, montant_total, demande_speciale, statut) 
              VALUES ($1, $2, $3, $4, $5, $6)
              RETURNING *`,
-            [client_id, excursion_id || null, nb_personnes, montant_total, demande_speciale || null,statut]
-
-            
+            [
+                client_id,
+                excursion_id || null,
+                nb_personnes,
+                montant_total,
+                demande_speciale || null,
+                statut
+            ]
         );
-        
+
         return result.rows[0];
     }
 
     // Récupérer les réservations d'un client
     static async findByClientId(clientId) {
         const result = await pool.query(
-            `SELECT r.*, e.titre as excursion_titre, e.prix as excursion_prix, r.created_at as excursion_date, c.nom as client_nom, c.prenom as client_prenom, c.email as client_email
+            `SELECT 
+                r.*, 
+                e.titre as excursion_titre, 
+                e.prix as excursion_prix, 
+                r.created_at as excursion_date, 
+                c.nom as client_nom, 
+                c.prenom as client_prenom, 
+                c.email as client_email
              FROM reservations r
-            
              LEFT JOIN clientes c ON r.client_id = c.id
              LEFT JOIN excursions e ON r.excursion_id = e.id
-             
              WHERE r.client_id = $1 
              ORDER BY r.created_at DESC`,
             [clientId]
         );
+
         return result.rows;
     }
 
     // Récupérer une réservation par ID
     static async findById(id) {
         const result = await pool.query(
-            `SELECT r.*, e.titre as excursion_titre, e.prix as excursion_prix, r.created_at as excursion_date, c.nom as client_nom, c.email as client_email, c.prenom as client_prenom
+            `SELECT 
+                r.*, 
+                e.titre as excursion_titre, 
+                e.prix as excursion_prix, 
+                r.created_at as excursion_date, 
+                c.nom as client_nom, 
+                c.email as client_email, 
+                c.prenom as client_prenom
              FROM reservations r
              LEFT JOIN clientes c ON r.client_id = c.id
-             
              LEFT JOIN excursions e ON r.excursion_id = e.id
              WHERE r.id = $1`,
             [id]
         );
+
         return result.rows[0];
     }
 
-    // Récupérer toutes les réservations (admin)
+    // Récupérer toutes les réservations admin
     static async findAll() {
         const result = await pool.query(
-            `SELECT r.*, e.titre as excursion_titre, e.prix as excursion_prix, r.created_at as excursion_date, c.nom as client_nom, c.email as client_email, c.prenom as client_prenom
+            `SELECT 
+                r.*, 
+                e.titre as excursion_titre, 
+                e.prix as excursion_prix, 
+                r.created_at as excursion_date, 
+                c.nom as client_nom, 
+                c.email as client_email, 
+                c.prenom as client_prenom
              FROM reservations r
              LEFT JOIN clientes c ON r.client_id = c.id
-             LEFT JOIN public.excursions e ON r.excursion_id = e.id
+             LEFT JOIN excursions e ON r.excursion_id = e.id
              ORDER BY r.created_at DESC`
         );
+
         return result.rows;
     }
 
@@ -88,6 +114,7 @@ class Reservation {
              RETURNING *`,
             [statut, id]
         );
+
         return result.rows[0];
     }
 
@@ -95,14 +122,16 @@ class Reservation {
     static async cancel(id) {
         const result = await pool.query(
             `UPDATE reservations 
-             SET statut = 'annulee' 
+             SET statut = 'Annulée' 
              WHERE id = $1 
              RETURNING *`,
             [id]
         );
+
         return result.rows[0];
     }
 
+    // Supprimer une réservation
     static async delete(id) {
         const result = await pool.query(
             `DELETE FROM reservations
@@ -110,6 +139,7 @@ class Reservation {
              RETURNING *`,
             [id]
         );
+
         return result.rows[0];
     }
 
@@ -125,6 +155,7 @@ class Reservation {
                 COALESCE(SUM(montant_total), 0) as chiffre_affaires
             FROM reservations
         `);
+
         return result.rows[0];
     }
 }

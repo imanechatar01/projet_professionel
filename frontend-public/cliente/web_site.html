@@ -35,7 +35,7 @@
         <a href="catalogue.html">Voyages</a>
         <a href="#galerie">Galerie</a>
         <a href="#contact">Contact</a>
-        <a href="message.html">messages</a>
+        <a href="message.html">Messages</a>
         <a href="login.html" class="nav-cta">Réserver</a>
       </div>
 
@@ -55,7 +55,7 @@
     <a href="catalogue.html" onclick="closeMobileMenu()">Voyages</a>
     <a href="#galerie" onclick="closeMobileMenu()">Galerie</a>
     <a href="#contact" onclick="closeMobileMenu()">Contact</a>
-    <a href="message.html" onclick="closeMobileMenu()">messages</a>
+    <a href="message.html" onclick="closeMobileMenu()">Messages</a>
     <a href="login.html" onclick="closeMobileMenu()">Espace client</a>
     <button class="mob-cta" onclick="window.location.href='catalogue.html'">
       Voir les voyages
@@ -91,50 +91,51 @@
       <div class="hero-right">
         <div class="hero-2col">
           <div class="hero-card">
-            <div class="hero-card-num">26 400+</div>
-            <div class="hero-card-label">Abonnées Instagram</div>
+            <div class="hero-card-num" id="homeActiveTrips">--</div>
+            <div class="hero-card-label">Voyages actifs</div>
           </div>
 
           <div class="hero-card">
-            <div class="hero-card-num">100%</div>
-            <div class="hero-card-label">Voyages féminins</div>
+            <div class="hero-card-num" id="homeRemainingPlaces">--</div>
+            <div class="hero-card-label">Places restantes</div>
           </div>
         </div>
 
         <div class="hero-card">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;">
             <div>
-              <div style="font-family:var(--font-h);font-size:1.15rem;font-weight:700;color:var(--dark);">
-                Cathédrale Imsfrane + Rafting
+              <div id="homeNextTripTitle" style="font-family:var(--font-h);font-size:1.15rem;font-weight:700;color:var(--dark);">
+                Prochain voyage
               </div>
-              <div style="font-size:0.8rem;color:#7a4a5a;margin-top:0.2rem;font-weight:500;">
-                Prochain départ · 12–13 Juin
+
+              <div id="homeNextTripDate" style="font-size:0.8rem;color:#7a4a5a;margin-top:0.2rem;font-weight:500;">
+                Chargement...
               </div>
             </div>
 
-            <div style="background:var(--fuchsia-lt);color:var(--fuchsia);padding:0.3rem 0.7rem;border-radius:var(--r-pill);font-size:0.75rem;font-weight:700;">
-              Places limitées
+            <div id="homeNextTripPlaces" style="background:var(--fuchsia-lt);color:var(--fuchsia);padding:0.3rem 0.7rem;border-radius:var(--r-pill);font-size:0.75rem;font-weight:700;">
+              Places
             </div>
           </div>
 
           <div style="margin-top:1rem;background:rgba(194,24,91,0.12);border-radius:6px;height:5px;">
-            <div style="width:75%;height:100%;background:linear-gradient(90deg,var(--fuchsia),#F07060);border-radius:6px;"></div>
+            <div id="homeProgressBar" style="width:0%;height:100%;background:linear-gradient(90deg,var(--fuchsia),#F07060);border-radius:6px;"></div>
           </div>
 
-          <div style="font-size:0.73rem;color:#7a4a5a;margin-top:0.35rem;font-weight:600;">
-            Réservations en cours
+          <div id="homeOccupancyText" style="font-size:0.73rem;color:#7a4a5a;margin-top:0.35rem;font-weight:600;">
+            Chargement des réservations...
           </div>
         </div>
 
         <div class="hero-2col">
           <div class="hero-card">
-            <div class="hero-card-num">6+</div>
-            <div class="hero-card-label">Destinations actives</div>
+            <div class="hero-card-num" id="homeBookedPlaces">--</div>
+            <div class="hero-card-label">Places réservées</div>
           </div>
 
           <div class="hero-card">
-            <div class="hero-card-num">24h</div>
-            <div class="hero-card-label">Réponse WhatsApp</div>
+            <div class="hero-card-num" id="homeTotalPlaces">--</div>
+            <div class="hero-card-label">Places totales</div>
           </div>
         </div>
       </div>
@@ -306,36 +307,13 @@
         </p>
       </div>
 
-      <div class="gallery-grid">
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="https://images.unsplash.com/photo-1548018560-c7196548e84d?w=900&q=80" alt="Voyage au Maroc">
-          <div class="gallery-overlay"><span class="gallery-zoom">+</span></div>
-        </div>
-
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80" alt="Montagne et nature">
-          <div class="gallery-overlay"><span class="gallery-zoom">+</span></div>
-        </div>
-
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=900&q=80" alt="Route et aventure">
-          <div class="gallery-overlay"><span class="gallery-zoom">+</span></div>
-        </div>
-
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="https://images.unsplash.com/photo-1542621334-a254cf47733d?w=900&q=80" alt="Marrakech et désert">
-          <div class="gallery-overlay"><span class="gallery-zoom">+</span></div>
-        </div>
-
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="https://images.unsplash.com/photo-1542401886-65d6c61db217?w=900&q=80" alt="Mer et plongée">
-          <div class="gallery-overlay"><span class="gallery-zoom">+</span></div>
-        </div>
-
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=900&q=80" alt="Cascade et nature">
-          <div class="gallery-overlay"><span class="gallery-zoom">+</span></div>
-        </div>
+      <div class="gallery-grid" id="homeGalleryGrid">
+  <div class="gallery-item" style="grid-column: 1 / -1; padding: 2rem; text-align: center;">
+    <p style="color:#7a4a5a;font-weight:600;">
+      Chargement de la galerie...
+    </p>
+  </div>
+</div>
       </div>
     </div>
   </section>
@@ -352,49 +330,21 @@
         <div class="eyebrow">Avis</div>
         <h2 class="section-title">Elles ont voyagé <em>avec nous</em></h2>
         <p class="section-sub">
-          Des retours simples et sincères de participantes qui ont vécu l’expérience.
+          Les avis affichés ici sont uniquement les avis validés et publiés par l’admin.
         </p>
       </div>
 
-      <div class="testimonials-grid">
+      <div class="testimonials-grid" id="homeTestimonialsGrid">
         <div class="testimonial-card">
           <div class="testimonial-stars">★★★★★</div>
           <p class="testimonial-text">
-            “Organisation très claire, ambiance agréable et voyage bien encadré. J’ai beaucoup aimé l’expérience.”
+            Chargement des avis publiés...
           </p>
           <div class="testimonial-author">
-            <div class="testimonial-avatar">FZ</div>
+            <div class="testimonial-avatar">EW</div>
             <div>
-              <div class="testimonial-name">Fatima Zahra</div>
-              <div class="testimonial-loc">Tanger</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-card">
-          <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">
-            “J’ai découvert de nouveaux endroits et rencontré des filles très gentilles. Une très belle énergie.”
-          </p>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">ME</div>
-            <div>
-              <div class="testimonial-name">Meriem</div>
-              <div class="testimonial-loc">Tétouan</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-card">
-          <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">
-            “Le programme était bien préparé et la communication rapide. Je recommande pour voyager en groupe.”
-          </p>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">SA</div>
-            <div>
-              <div class="testimonial-name">Sara</div>
-              <div class="testimonial-loc">Rabat</div>
+              <div class="testimonial-name">EcoTrips Women</div>
+              <div class="testimonial-loc">Avis clientes</div>
             </div>
           </div>
         </div>
@@ -466,26 +416,26 @@
     </div>
 
     <div style="background:white;border-radius:var(--r);padding:2.5rem;box-shadow:var(--shadow-card);border:1px solid rgba(194,24,91,0.07);">
-     <form id="contactForm" class="contact-form" ; onsubmit="showToast('Message envoyé ! Nous te répondrons rapidement.')">
-  <div class="form-group">
-    <label for="contact-name">Nom</label>
-    <input type="text" id="contact-name" placeholder="Ton nom" required>
-  </div>
+      <form id="contactForm" class="contact-form">
+        <div class="form-group">
+          <label for="contact-name">Nom</label>
+          <input type="text" id="contact-name" placeholder="Ton nom" required>
+        </div>
 
-  <div class="form-group">
-    <label for="contact-email">Email</label>
-    <input type="email" id="contact-email" placeholder="ton@email.com" required>
-  </div>
+        <div class="form-group">
+          <label for="contact-email">Email</label>
+          <input type="email" id="contact-email" placeholder="ton@email.com" required>
+        </div>
 
-  <div class="form-group">
-    <label for="contact-message">Message</label>
-    <textarea id="contact-message" rows="5" placeholder="Ta question..." required></textarea>
-  </div>
+        <div class="form-group">
+          <label for="contact-message">Message</label>
+          <textarea id="contact-message" rows="5" placeholder="Ta question..." required></textarea>
+        </div>
 
-  <button type="submit" class="btn btn-pink btn-full" id="contactSubmitBtn">
-    Envoyer le message
-  </button>
-</form>
+        <button type="submit" class="btn btn-pink btn-full" id="contactSubmitBtn">
+          Envoyer le message
+        </button>
+      </form>
     </div>
   </section>
 
@@ -630,10 +580,7 @@
 <script src="assets/js/ui.js"></script>
 <script src="assets/js/client-panel.js"></script>
 <script src="assets/js/chatbot.js"></script>
+<script src="assets/js/home-dynamic.js"></script>
 <script src="assets/js/contact.js"></script>
-
-
-
 </body>
 </html>
-

@@ -119,13 +119,16 @@
                     </a>
                 </li>
 
-                <!-- Analyses -->
+                <!-- Site public -->
                 <li>
-                    <a href="analyses.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                        <i class="fas fa-chart-line mr-3 w-5 text-center"></i>
-                        Analyses
+                    <a href="../../../frontend-public/cliente/web_site.html"
+                       class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-globe mr-3 w-5 text-center"></i>
+                        Site public
                     </a>
                 </li>
+
+
 
                 <!-- Déconnexion -->
                 <li class="pt-8">
@@ -383,10 +386,11 @@
             async init() {
                 this.setupProfile();
 
-if (!this.token) {
-    window.location.href = '../login.html';
-    return;
-}
+                if (!this.token) {
+                    window.location.href = '../login.html';
+                    return;
+                }
+
                 try {
                     await this.refresh();
                     await this.loadAvisAnalytics();
@@ -395,13 +399,13 @@ if (!this.token) {
                 }
             },
 
-           logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('admin');
+            logout() {
+                localStorage.removeItem("token");
+                localStorage.removeItem("adminToken");
+                localStorage.removeItem("admin");
 
-    window.location.href = '../login.html';
-},
+                window.location.href = "../login.html";
+            },
 
             async fetch(params = {}) {
                 const query = new URLSearchParams(params).toString();
@@ -756,7 +760,7 @@ if (!this.token) {
                             </div>
 
                             <div class="text-yellow-400 mt-3">
-                                ${"★".repeat(note)}${"☆".repeat(5 - note)}
+                                ${"★".repeat(note)}${"☆".repeat(Math.max(0, 5 - note))}
                             </div>
 
                             <p class="text-gray-600 text-sm mt-2">

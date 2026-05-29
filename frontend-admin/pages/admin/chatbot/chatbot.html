@@ -5,8 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gestion Chatbot FAQ</title>
 
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' http://localhost:5000;">
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+
   <script>
     tailwind.config = {
       theme: {
@@ -30,12 +33,16 @@
     }
   </script>
 
-  <!-- Google Fonts -->
+  <!-- Fonts & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
-    /* Personnalisation supplémentaire */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #E91E63; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #166534; }
+
     .card {
       background: white;
       padding: 25px;
@@ -79,6 +86,7 @@
       border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
+      margin-right: 8px;
     }
 
     .btn-primary:hover {
@@ -93,6 +101,7 @@
       border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
+      margin-right: 8px;
     }
 
     .btn-edit {
@@ -103,6 +112,7 @@
       border-radius: 6px;
       cursor: pointer;
       margin-right: 8px;
+      font-weight: bold;
     }
 
     .btn-delete {
@@ -112,6 +122,7 @@
       padding: 6px 12px;
       border-radius: 6px;
       cursor: pointer;
+      font-weight: bold;
     }
 
     .status-active {
@@ -131,13 +142,24 @@
       border-radius: 8px;
       margin-bottom: 15px;
       font-family: inherit;
+      outline: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #c2185b;
+      box-shadow: 0 0 0 2px rgba(194, 24, 91, 0.12);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
     }
   </style>
 </head>
 
 <body class="font-jakarta bg-warm-beige text-gray-800 flex min-h-screen">
 
-  <!-- Sidebar (identique à la page Messages) -->
+  <!-- Sidebar -->
   <aside class="w-72 bg-sidebar-bg text-white p-6 fixed h-screen flex flex-col z-50 overflow-y-auto">
     <div class="font-playfair text-3xl font-bold mb-10 text-warm-beige tracking-tight">
       EcoTrips<span class="text-rose-pink">Women</span>
@@ -145,40 +167,127 @@
 
     <nav>
       <ul class="space-y-2">
-        <li><a href="../dashboard.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-th-large mr-3 w-5 text-center"></i> Dashboard</a></li>
-        <li><a href="../excursions/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-map-marked-alt mr-3 w-5 text-center"></i> Excursions</a></li>
-        <li><a href="../reservations/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-calendar-check mr-3 w-5 text-center"></i> Réservations</a></li>
-        <li><a href="../clientes/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-users mr-3 w-5 text-center"></i> Clientes</a></li>
-        <li><a href="../messages/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-envelope mr-3 w-5 text-center"></i> Messages</a></li>
-        <li><a href="../avis/avis.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-star mr-3 w-5 text-center"></i> Avis clientes</a></li>
-        <li><a href="chatbot.html" class="flex items-center p-3 text-white bg-rose-pink rounded-xl transition-all duration-300"><i class="fas fa-comments mr-3 w-5 text-center"></i> Chatbot FAQ</a></li>
-        <li><a href="../galerie/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-images mr-3 w-5 text-center"></i> Galerie</a></li>
-        <li><a href="../analyses.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-chart-line mr-3 w-5 text-center"></i> Analyses</a></li>
-        <li class="pt-8"><a href="../../login.html" id="logoutBtn" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300"><i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i> Déconnexion</a></li>
+        <!-- Dashboard -->
+        <li>
+          <a href="../dashboard.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-th-large mr-3 w-5 text-center"></i>
+            Dashboard
+          </a>
+        </li>
+
+        <!-- Excursions -->
+        <li>
+          <a href="../excursions/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-map-marked-alt mr-3 w-5 text-center"></i>
+            Excursions
+          </a>
+        </li>
+
+        <!-- Réservations -->
+        <li>
+          <a href="../reservations/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-calendar-check mr-3 w-5 text-center"></i>
+            Réservations
+          </a>
+        </li>
+
+        <!-- Clientes -->
+        <li>
+          <a href="../clientes/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-users mr-3 w-5 text-center"></i>
+            Clientes
+          </a>
+        </li>
+
+        <!-- Messages -->
+        <li>
+          <a href="../messages/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-envelope mr-3 w-5 text-center"></i>
+            Messages
+          </a>
+        </li>
+
+        <!-- Avis clientes -->
+        <li>
+          <a href="../avis/avis.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-star mr-3 w-5 text-center"></i>
+            Avis clientes
+          </a>
+        </li>
+
+        <!-- Chatbot FAQ active -->
+        <li>
+          <a href="chatbot.html" class="flex items-center p-3 text-white bg-rose-pink rounded-xl transition-all duration-300">
+            <i class="fas fa-comments mr-3 w-5 text-center"></i>
+            Chatbot FAQ
+          </a>
+        </li>
+
+        <!-- Galerie -->
+        <li>
+          <a href="../galerie/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-images mr-3 w-5 text-center"></i>
+            Galerie
+          </a>
+        </li>
+
+        <!-- Site public -->
+        <li>
+          <a href="../../../../frontend-public/cliente/web_site.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-globe mr-3 w-5 text-center"></i>
+            Site public
+          </a>
+        </li>
+
+        <!-- Déconnexion -->
+        <li class="pt-8">
+          <a href="../../login.html" id="logoutBtn" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+            <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
+            Déconnexion
+          </a>
+        </li>
       </ul>
     </nav>
   </aside>
 
-  <!-- Main Content (décalée à droite) -->
+  <!-- Main Content -->
   <main class="flex-1 ml-72 p-8">
     <div class="max-w-4xl mx-auto">
       <h1 class="text-3xl font-bold text-rose-pink mb-2">Gestion du Chatbot FAQ</h1>
-      <p class="text-gray-500 mb-6">Ici, l’admin peut ajouter, modifier ou supprimer les réponses utilisées par le chatbot public.</p>
+
+      <p class="text-gray-500 mb-6">
+        Ici, l’admin peut ajouter, modifier ou supprimer les réponses utilisées par le chatbot public.
+      </p>
 
       <!-- Formulaire -->
       <div class="card">
         <h2 id="form-title" class="text-xl font-semibold mb-4">Ajouter une FAQ</h2>
+
         <form id="faq-form">
           <input type="hidden" id="faq-id" />
 
           <label class="block font-semibold mb-1">Question</label>
-          <input type="text" id="question" placeholder="Exemple : Quels sont les prix ?" required />
+          <input
+            type="text"
+            id="question"
+            placeholder="Exemple : Quels sont les prix ?"
+            required
+          />
 
           <label class="block font-semibold mb-1 mt-3">Réponse</label>
-          <textarea id="reponse" placeholder="Réponse que le chatbot va afficher..." rows="3" required></textarea>
+          <textarea
+            id="reponse"
+            placeholder="Réponse que le chatbot va afficher..."
+            rows="3"
+            required
+          ></textarea>
 
           <label class="block font-semibold mb-1 mt-3">Mots-clés</label>
-          <input type="text" id="keywords" placeholder="prix, tarif, réservation, voyage..." />
+          <input
+            type="text"
+            id="keywords"
+            placeholder="prix, tarif, réservation, voyage..."
+          />
 
           <label class="block font-semibold mb-1 mt-3">Catégorie</label>
           <select id="categorie">
@@ -196,8 +305,13 @@
           </select>
 
           <div class="mt-4">
-            <button type="submit" class="btn-primary" id="submit-btn">Ajouter</button>
-            <button type="button" class="btn-secondary" onclick="resetForm()">Annuler</button>
+            <button type="submit" class="btn-primary" id="submit-btn">
+              Ajouter
+            </button>
+
+            <button type="button" class="btn-secondary" onclick="resetForm()">
+              Annuler
+            </button>
           </div>
         </form>
       </div>
@@ -205,19 +319,25 @@
       <!-- Liste des FAQ -->
       <div class="card">
         <h2 class="text-xl font-semibold mb-4">Liste des FAQ</h2>
-        <div id="faq-list">Chargement...</div>
+
+        <div id="faq-list">
+          Chargement...
+        </div>
       </div>
     </div>
   </main>
 
   <script src="chatbot.js"></script>
+
   <script>
-    // Déconnexion
-    document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
+    document.getElementById("logoutBtn")?.addEventListener("click", (e) => {
       e.preventDefault();
-      localStorage.removeItem('token');
-      localStorage.removeItem('admin');
-      window.location.href = '../../login.html';
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("adminToken");
+      localStorage.removeItem("admin");
+
+      window.location.href = "../../login.html";
     });
   </script>
 </body>

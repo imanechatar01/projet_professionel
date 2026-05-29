@@ -26,8 +26,6 @@
             }
         }
     </script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -172,10 +170,6 @@
         }
 
         @media (max-width: 900px) {
-            .admin-layout {
-                flex-direction: column;
-            }
-
             .admin-sidebar-mobile {
                 position: static;
                 width: 100%;
@@ -189,62 +183,30 @@
     </style>
 </head>
 
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' http://localhost:5000;">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'forest-green': '#166534',
-                        'rose-pink': '#DE94A4',
-                        'soft-rose': '#FCE7F3',
-                        'warm-beige': '#F8F5F2',
-                        'sidebar-bg': '#B65C7A',
-                    },
-                    fontFamily: {
-                        'playfair': ['Playfair Display', 'serif'],
-                        'jakarta': ['Plus Jakarta Sans', 'sans-serif'],
-                    },
-                    borderRadius: {
-                        'xl-20': '20px',
-                    }
-                }
-            }
-        }
-    </script>
-
-   
-
-    <style>
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #E91E63; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #166534; }
-    </style>
-</head>
-
-<body class="font-jakarta bg-warm-beige text-gray-800 flex min-h-screen">
+<body class="font-jakarta bg-warm-beige text-gray-800 min-h-screen">
 
     <!-- Sidebar -->
-    <aside class="w-72 bg-sidebar-bg text-white p-6 fixed h-screen flex flex-col z-50">
+    <aside class="admin-sidebar-mobile w-72 bg-sidebar-bg text-white p-6 fixed h-screen flex flex-col z-50">
         <div class="font-playfair text-3xl font-bold mb-10 text-warm-beige tracking-tight">
             EcoTrips<span class="text-rose-pink">Women</span>
         </div>
 
-       <nav>
+        <nav>
             <ul class="space-y-2">
-                <!-- Dashboard active -->
                 <li>
                     <a href="../dashboard.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                        <i class="fas fa-comments mr-3 w-5 text-center"></i>
+                        <i class="fas fa-th-large mr-3 w-5 text-center"></i>
                         Dashboard
                     </a>
                 </li>
 
-                <!-- Excursions -->
+                <li>
+                    <a href="../../../../frontend-public/cliente/web_site.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                        <i class="fas fa-globe mr-3 w-5 text-center"></i>
+                        Site public
+                    </a>
+                </li>
+
                 <li>
                     <a href="../excursions/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
                         <i class="fas fa-map-marked-alt mr-3 w-5 text-center"></i>
@@ -252,7 +214,6 @@
                     </a>
                 </li>
 
-                <!-- Réservations -->
                 <li>
                     <a href="../reservations/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
                         <i class="fas fa-calendar-check mr-3 w-5 text-center"></i>
@@ -260,7 +221,6 @@
                     </a>
                 </li>
 
-                <!-- Clientes -->
                 <li>
                     <a href="../clientes/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
                         <i class="fas fa-users mr-3 w-5 text-center"></i>
@@ -268,7 +228,6 @@
                     </a>
                 </li>
 
-                <!-- Messages -->
                 <li>
                     <a href="../messages/index.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
                         <i class="fas fa-envelope mr-3 w-5 text-center"></i>
@@ -276,7 +235,6 @@
                     </a>
                 </li>
 
-                <!-- Avis clientes -->
                 <li>
                     <a href="../avis/avis.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
                         <i class="fas fa-star mr-3 w-5 text-center"></i>
@@ -284,7 +242,6 @@
                     </a>
                 </li>
 
-                <!-- Chatbot FAQ -->
                 <li>
                     <a href="../chatbot/chatbot.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
                         <i class="fas fa-comments mr-3 w-5 text-center"></i>
@@ -292,25 +249,15 @@
                     </a>
                 </li>
 
-                <!-- Galerie -->
                 <li>
-                    <a href="../galerie/index.html" class="flex items-center p-3 text-white bg-rose-pink rounded-xl transition-all duration-300">
-                        <i class="fas fa-th-large mr-3 w-5 text-center"></i>
+                    <a href="index.html" class="flex items-center p-3 text-white bg-rose-pink rounded-xl transition-all duration-300">
+                        <i class="fas fa-images mr-3 w-5 text-center"></i>
                         Galerie
                     </a>
                 </li>
 
-                <!-- Analyses -->
-                <li>
-                    <a href="../analyses.html" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
-                        <i class="fas fa-chart-line mr-3 w-5 text-center"></i>
-                        Analyses
-                    </a>
-                </li>
-
-                <!-- Déconnexion -->
                 <li class="pt-8">
-                    <a href="../login.html" onclick="Dashboard.logout(); return false;" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
+                    <a href="#" onclick="logoutAdmin(event)" class="flex items-center p-3 text-white/75 hover:bg-white/10 rounded-xl transition-all duration-300">
                         <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
                         Déconnexion
                     </a>
@@ -383,13 +330,11 @@
 
                     <div>
                         <label for="categorie" class="block text-sm font-bold text-gray-600 mb-2">
-                            Catégorie / Excursion
+                            Catégorie / Emplacement
                         </label>
                         <select id="categorie" class="form-control" required>
-                            <option value="principale">Page Principale de l'Agence</option>
-                            <option value="excursion_sahara">Excursion Sahara</option>
-                            <option value="excursion_atlas">Excursion Haut-Atlas</option>
-                            <option value="excursion_dakhla">Excursion Dakhla</option>
+                            <option value="principale">Galerie du site</option>
+                            <option value="background_accueil">Background Accueil</option>
                         </select>
                     </div>
 
@@ -414,11 +359,9 @@
 
                     <div class="flex flex-col sm:flex-row gap-3">
                         <select id="filterCategorie" class="form-control sm:w-56">
-                            <option value="toutes">Toutes les galeries</option>
-                            <option value="principale">Page Principale</option>
-                            <option value="excursion_sahara">Excursion Sahara</option>
-                            <option value="excursion_atlas">Excursion Haut-Atlas</option>
-                            <option value="excursion_dakhla">Excursion Dakhla</option>
+                            <option value="toutes">Toutes les images</option>
+                            <option value="principale">Galerie du site</option>
+                            <option value="background_accueil">Background Accueil</option>
                         </select>
 
                         <input type="text" id="searchInput" class="form-control sm:w-64" placeholder="Rechercher par titre...">
@@ -449,6 +392,18 @@
             </section>
         </div>
     </main>
+
+    <script>
+        function logoutAdmin(event) {
+            if (event) event.preventDefault();
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("adminToken");
+            localStorage.removeItem("admin");
+
+            window.location.href = "../../../../frontend-public/cliente/web_site.html";
+        }
+    </script>
 
     <script src="index.js"></script>
 </body>

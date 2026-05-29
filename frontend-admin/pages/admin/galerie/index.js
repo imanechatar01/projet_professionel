@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.getItem("adminToken");
 
     if (!token) {
-        window.location.href = "../login.html";
+        window.location.href = "../../login.html";
         return;
     }
 
@@ -98,7 +98,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const responseData = await res.json();
-            const images = responseData.data || responseData.images || responseData || [];
+
+            const images =
+                responseData.data ||
+                responseData.images ||
+                responseData.galerie ||
+                responseData.results ||
+                responseData ||
+                [];
 
             if (!Array.isArray(images) || images.length === 0) {
                 galleryContainer.innerHTML = `
@@ -111,9 +118,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
             } else {
                 galleryContainer.innerHTML = images.map((img) => {
+                    const imageUrl = getImageUrl(img.image_url || img.image || img.url);
+
                     return `
                         <article class="gallery-item">
-                            <img src="${getImageUrl(img.image_url)}" alt="${escapeHtml(img.titre)}">
+                            <img src="${imageUrl}" alt="${escapeHtml(img.titre || "Photo")}">
 
                             <div class="gallery-info">
                                 <div class="gallery-title">
@@ -122,6 +131,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
                                 <div class="gallery-desc">
                                     ${escapeHtml(img.description || "Sans description.")}
+                                </div>
+
+                                <div class="text-xs font-bold text-rose-pink mb-3">
+                                    ${escapeHtml(img.categorie || "principale")}
                                 </div>
 
                                 <button class="delete-btn" onclick="deleteImage(${img.id})">
@@ -226,6 +239,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (!imageFile) {
                 showMessage("Veuillez choisir une image.", "error");
+                return;
+            }
+
+            if (!categorie) {
+                showMessage("Veuillez choisir une catégorie.", "error");
                 return;
             }
 

@@ -1,6 +1,9 @@
 let trips = [];
 let currentTrip = null;
 
+const DEFAULT_TRIP_IMAGE =
+  "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200&q=80";
+
 const FALLBACK_TRIPS = [
   {
     id: 1,
@@ -102,6 +105,14 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function normalizeText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+}
+
 function formatApiDate(value) {
   if (!value) return "";
 
@@ -139,27 +150,196 @@ function formatPrice(value) {
   return number.toLocaleString("fr-MA") + " dhs";
 }
 
+function getRegionFromDestination(value) {
+  const text = normalizeText(value);
+
+  const nord = [
+    "tanger",
+    "tetouan",
+    "tétouan",
+    "chefchaouen",
+    "akchour",
+    "asilah",
+    "martil",
+    "hoceima",
+    "oued laou",
+    "larache"
+  ];
+
+  const centre = [
+    "casablanca",
+    "mohammedia",
+    "rabat",
+    "fes",
+    "fès",
+    "meknes",
+    "meknès",
+    "ifrane",
+    "azrou",
+    "beni mellal",
+    "benimellal",
+    "khouribga"
+  ];
+
+  const sud = [
+    "marrakech",
+    "agafay",
+    "imlil",
+    "essaouira",
+    "agadir",
+    "taghazout",
+    "merzouga",
+    "ouarzazate",
+    "zagora",
+    "dakhla",
+    "laayoune",
+    "laâyoune"
+  ];
+
+  if (nord.some((city) => text.includes(normalizeText(city)))) return "Nord Maroc";
+  if (centre.some((city) => text.includes(normalizeText(city)))) return "Centre Maroc";
+  if (sud.some((city) => text.includes(normalizeText(city)))) return "Sud Maroc";
+
+  return "";
+}
+
+function getServerBaseUrl() {
+  const apiBase =
+    window.APP_CONFIG?.API_BASE_URL ||
+    window.APP_CONFIG?.API_URL ||
+    window.APP_CONFIG?.BASE_URL ||
+    "http://localhost:5000/api";
+
+  return String(apiBase).replace(/\/$/, "").replace(/\/api$/, "");
+}
+
+function buildImageUrl(raw) {
+  let image =
+    raw.img ||
+    raw.image ||
+    raw.image_url ||
+    raw.imageUrl ||
+    raw.photo ||
+    raw.photo_url ||
+    raw.photoUrl ||
+    raw.image_path ||
+    raw.imagePath ||
+    raw.cover ||
+    raw.coverImage ||
+    "";
+
+  if (!image) return DEFAULT_TRIP_IMAGE;
+
+  image = String(image).trim();
+
+  if (
+    image.startsWith("http://") ||
+    image.startsWith("https://") ||
+    image.startsWith("data:image") ||
+    image.startsWith("blob:")
+  ) {
+    return image;
+  }
+
+  const serverBase = getServerBaseUrl();
+
+  if (image.startsWith("/uploads/")) {
+    return `${serverBase}${image}`;
+  }
+
+  if (image.startsWith("uploads/")) {
+    return `${serverBase}/${image}`;
+  }
+
+  if (image.startsWith("assets/")) {
+    return image;
+  }
+
+  if (image.startsWith("/")) {
+    return `${serverBase}${image}`;
+  }
+
+  return `${serverBase}/uploads/${image}`;
+}
+
 function normalizeTrip(raw) {
   const programmeText = raw.programme || raw.program || "";
 
+  const destination =
+    raw.destination ||
+    raw.ville_destination ||
+    raw.villeDestination ||
+    "";
+
+  const villeDepart =
+    raw.ville_depart ||
+    raw.villeDepart ||
+    raw.depart ||
+    raw.ville_de_depart ||
+    "";
+
+  const rawType =
+    raw.type ||
+    raw.categorie ||
+    raw.category ||
+    raw.style ||
+    raw.theme ||
+    "Voyage";
+
+  const tags = Array.isArray(raw.tags)
+    ? raw.tags
+    : String(rawType)
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter(Boolean);
+
+  const region =
+    raw.region ||
+    raw.zone ||
+    getRegionFromDestination(destination) ||
+    getRegionFromDestination(raw.location) ||
+    "";
+
+  let location = raw.location || raw.lieu || "";
+
+  if (!location) {
+    if (villeDepart && destination) {
+      location = `${villeDepart} → ${destination}`;
+    } else {
+      location = villeDepart || destination || "Maroc";
+    }
+  }
+
   return {
-    id: raw.id || raw._id,
-    title: raw.title || raw.titre || raw.nom || "Excursion",
-    location: raw.location || raw.lieu || raw.depart || raw.destination || "Maroc",
-    date: raw.date || raw.date_depart || formatDateRange(raw.date_debut, raw.date_fin),
-    duration: raw.duration || raw.duree || "Durée à confirmer",
+    id: raw.id || raw._id || raw.uuid || Date.now() + Math.random(),
+    title: raw.title || raw.titre || raw.nom || raw.name || "Excursion",
+    location: location,
+    destination: destination,
+    villeDepart: villeDepart,
+    date:
+      raw.date ||
+      raw.date_depart ||
+      raw.dateDepart ||
+      formatDateRange(
+        raw.date_debut || raw.dateDebut || raw.startDate,
+        raw.date_fin || raw.dateFin || raw.endDate
+      ),
+    duration:
+      raw.duration ||
+      raw.duree ||
+      raw.duree_calculee ||
+      raw.dureeCalculee ||
+      "Durée à confirmer",
     price: raw.price || formatPrice(raw.prix || raw.tarif),
     rawPrice: raw.prix || raw.tarif || raw.price || "",
-    img:
-      raw.img ||
-      raw.image ||
-      raw.image_url ||
-      raw.photo ||
-      "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200&q=80",
-    tags: Array.isArray(raw.tags) ? raw.tags : raw.type ? [raw.type] : ["Voyage"],
-    region: raw.region || raw.destination || "Nord Maroc",
-    type: raw.type || "Aventure",
-    desc: raw.desc || raw.description || "Une expérience féminine unique organisée par ecotrips_women.",
+    img: buildImageUrl(raw),
+    tags: tags.length ? tags : ["Voyage"],
+    region: region,
+    type: String(rawType).trim(),
+    desc:
+      raw.desc ||
+      raw.description ||
+      "Une expérience féminine unique organisée par ecotrips_women.",
     includesIcons: raw.includesIcons || raw.includes_icons || [
       "Transport",
       "Encadrement",
@@ -189,10 +369,66 @@ function normalizeTrip(raw) {
 function extractArrayFromApiResponse(data) {
   if (Array.isArray(data)) return data;
   if (Array.isArray(data.excursions)) return data.excursions;
+  if (Array.isArray(data.voyages)) return data.voyages;
+  if (Array.isArray(data.trips)) return data.trips;
   if (Array.isArray(data.data)) return data.data;
   if (Array.isArray(data.results)) return data.results;
 
   return [];
+}
+
+function getLocalStoredTrips() {
+  const keys = [
+    "excursions",
+    "voyages",
+    "trips",
+    "adminExcursions",
+    "ecoTripsExcursions",
+    "ecotrips_excursions",
+    window.APP_CONFIG?.STORAGE_KEYS?.EXCURSIONS
+  ].filter(Boolean);
+
+  let localTrips = [];
+
+  keys.forEach(function (key) {
+    try {
+      const stored = localStorage.getItem(key);
+      if (!stored) return;
+
+      const parsed = JSON.parse(stored);
+      const arr = extractArrayFromApiResponse(parsed);
+
+      if (arr.length > 0) {
+        localTrips = localTrips.concat(arr);
+      }
+    } catch (error) {
+      console.warn("Impossible de lire localStorage:", key, error.message);
+    }
+  });
+
+  return localTrips;
+}
+
+function mergeTrips(apiTrips, localTrips) {
+  const allTrips = [...apiTrips, ...localTrips];
+  const seen = new Set();
+  const merged = [];
+
+  allTrips.forEach(function (trip) {
+    const key = String(
+      trip.id ||
+      trip._id ||
+      trip.uuid ||
+      `${trip.title || trip.titre || trip.nom}-${trip.date || trip.date_debut || ""}`
+    );
+
+    if (!seen.has(key)) {
+      seen.add(key);
+      merged.push(trip);
+    }
+  });
+
+  return merged;
 }
 
 async function loadTrips() {
@@ -202,17 +438,23 @@ async function loadTrips() {
     container.innerHTML = '<div class="loading-state">Chargement des voyages...</div>';
   }
 
-  try {
-    const data = await window.ApiClient.getExcursions();
-    const apiTrips = extractArrayFromApiResponse(data);
+  let apiTrips = [];
+  const localTrips = getLocalStoredTrips();
 
-    if (apiTrips.length > 0) {
-      trips = apiTrips.map(normalizeTrip);
-    } else {
-      trips = FALLBACK_TRIPS;
+  try {
+    if (window.ApiClient && typeof window.ApiClient.getExcursions === "function") {
+      const data = await window.ApiClient.getExcursions();
+      apiTrips = extractArrayFromApiResponse(data);
     }
   } catch (error) {
-    console.warn("Backend excursions indisponible, fallback utilisé :", error.message);
+    console.warn("Backend excursions indisponible :", error.message);
+  }
+
+  const allTrips = mergeTrips(apiTrips, localTrips);
+
+  if (allTrips.length > 0) {
+    trips = allTrips.map(normalizeTrip);
+  } else {
     trips = FALLBACK_TRIPS;
   }
 
@@ -235,9 +477,15 @@ function renderTrips(list) {
 
   container.innerHTML = list.map(function (trip) {
     return `
-      <div class="trip-card" onclick="showDetail('${trip.id}')">
+      <div class="trip-card" data-trip-id="${escapeHtml(trip.id)}">
         <div class="trip-img">
-          <img src="${escapeHtml(trip.img)}" alt="${escapeHtml(trip.title)}" loading="lazy">
+          <img
+            src="${escapeHtml(trip.img)}"
+            alt="${escapeHtml(trip.title)}"
+            loading="lazy"
+            onerror="this.onerror=null;this.src='${DEFAULT_TRIP_IMAGE}';"
+          >
+
           <div class="trip-price">${escapeHtml(trip.price)}</div>
 
           <div class="trip-tags">
@@ -267,21 +515,52 @@ function renderTrips(list) {
       </div>
     `;
   }).join("");
+
+  document.querySelectorAll(".trip-card").forEach(function (card) {
+    card.addEventListener("click", function () {
+      showDetail(card.dataset.tripId);
+    });
+  });
 }
 
 function filterTrips() {
-  const searchValue = (document.getElementById("catalogue-search")?.value || "").toLowerCase();
-  const selectedRegion = document.getElementById("filter-region")?.value || "";
-  const selectedType = document.getElementById("filter-type")?.value || "";
+  const searchValue = normalizeText(
+    document.getElementById("catalogue-search")?.value || ""
+  );
+
+  const selectedRegion =
+    document.getElementById("filter-region")?.value || "";
+
+  const selectedType =
+    document.getElementById("filter-type")?.value || "";
 
   const filtered = trips.filter(function (trip) {
-    const searchableText = `${trip.title} ${trip.location} ${trip.tags.join(" ")}`.toLowerCase();
+    const searchableText = normalizeText(`
+      ${trip.title}
+      ${trip.location}
+      ${trip.destination}
+      ${trip.villeDepart}
+      ${trip.region}
+      ${trip.type}
+      ${trip.tags.join(" ")}
+      ${trip.desc}
+    `);
 
-    return (
-      (!searchValue || searchableText.includes(searchValue)) &&
-      (!selectedRegion || trip.region === selectedRegion) &&
-      (!selectedType || trip.type === selectedType)
-    );
+    const tripTypeText = normalizeText(`
+      ${trip.type}
+      ${trip.tags.join(" ")}
+    `);
+
+    const matchSearch =
+      !searchValue || searchableText.includes(searchValue);
+
+    const matchRegion =
+      !selectedRegion || trip.region === selectedRegion;
+
+    const matchType =
+      !selectedType || tripTypeText.includes(normalizeText(selectedType));
+
+    return matchSearch && matchRegion && matchType;
   });
 
   renderTrips(filtered);
@@ -390,10 +669,10 @@ function showLoginRequiredModal(trip) {
 }
 
 function handleReserveTrip(trip) {
-  sessionStorage.setItem(
-    window.APP_CONFIG.STORAGE_KEYS.SELECTED_TRIP,
-    JSON.stringify(trip)
-  );
+  const selectedTripKey =
+    window.APP_CONFIG?.STORAGE_KEYS?.SELECTED_TRIP || "selectedTrip";
+
+  sessionStorage.setItem(selectedTripKey, JSON.stringify(trip));
 
   if (!isClientLoggedIn()) {
     showLoginRequiredModal(trip);
@@ -403,7 +682,7 @@ function handleReserveTrip(trip) {
   if (window.openReservationPanel) {
     window.openReservationPanel(trip);
   } else {
-    console.warn("openReservationPanel n'est pas encore chargé.");
+    window.location.href = "reservation.html";
   }
 }
 
@@ -443,7 +722,7 @@ function renderPublicAvis(avisList) {
   }
 
   container.innerHTML = avisList.map(function (avis, index) {
-    const note = Number(avis.note || avis.rating || 5);
+    const note = Math.max(1, Math.min(5, Number(avis.note || avis.rating || 5)));
     const name = getPublicAvisName(avis);
     const commentaire = avis.commentaire || avis.comment || avis.text || "";
     const date = avis.created_at || avis.date || "";
@@ -483,13 +762,18 @@ async function loadPublicAvisForTrip(trip) {
   `;
 
   try {
-    const data = await window.ApiClient.getPublicAvisByExcursion(trip.id);
-    const avis = extractPublicAvisArray(data);
-
-    renderPublicAvis(avis);
+    if (
+      window.ApiClient &&
+      typeof window.ApiClient.getPublicAvisByExcursion === "function"
+    ) {
+      const data = await window.ApiClient.getPublicAvisByExcursion(trip.id);
+      const avis = extractPublicAvisArray(data);
+      renderPublicAvis(avis);
+    } else {
+      renderPublicAvis(trip.reviews || []);
+    }
   } catch (error) {
     console.warn("Avis publics indisponibles :", error.message);
-
     renderPublicAvis(trip.reviews || []);
   }
 }
@@ -503,12 +787,12 @@ function showDetail(id) {
 
   currentTrip = trip;
 
-  sessionStorage.setItem(
-    window.APP_CONFIG.STORAGE_KEYS.SELECTED_TRIP,
-    JSON.stringify(trip)
-  );
+  const selectedTripKey =
+    window.APP_CONFIG?.STORAGE_KEYS?.SELECTED_TRIP || "selectedTrip";
 
-  document.getElementById("detail-img").src = trip.img;
+  sessionStorage.setItem(selectedTripKey, JSON.stringify(trip));
+
+  document.getElementById("detail-img").src = trip.img || DEFAULT_TRIP_IMAGE;
   document.getElementById("detail-img").alt = trip.title;
   document.getElementById("detail-title").textContent = trip.title;
   document.getElementById("detail-subtitle").textContent = `${trip.location} — ${trip.date}`;
@@ -536,25 +820,27 @@ function showDetail(id) {
 
   document.getElementById("detail-itinerary").innerHTML = trip.itinerary.length
     ? trip.itinerary.map(function (day) {
-      return `
-        <div style="display:flex;gap:1.5rem;align-items:flex-start;">
-          <div style="background:var(--fuchsia);color:white;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;margin-top:0.2rem;">
-            ${escapeHtml(day.day)}
-          </div>
+        return `
+          <div style="display:flex;gap:1.5rem;align-items:flex-start;">
+            <div style="background:var(--fuchsia);color:white;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;margin-top:0.2rem;">
+              ${escapeHtml(day.day)}
+            </div>
 
-          <div>
-            <strong>${escapeHtml(day.title)}</strong>
-            <p style="color:var(--gray);font-size:0.87rem;margin-top:0.25rem;">${escapeHtml(day.body)}</p>
+            <div>
+              <strong>${escapeHtml(day.title)}</strong>
+              <p style="color:var(--gray);font-size:0.87rem;margin-top:0.25rem;">${escapeHtml(day.body)}</p>
+            </div>
           </div>
-        </div>
-      `;
-    }).join("")
+        `;
+      }).join("")
     : `<p style="color:var(--gray);">Programme bientôt disponible.</p>`;
 
   renderPublicAvis(trip.reviews || []);
   loadPublicAvisForTrip(trip);
 
-  const reserveLink = document.querySelector('.detail-sidebar a[href^="reservation.html"]');
+  const reserveLink = document.querySelector(
+    '.detail-sidebar a[href^="reservation.html"], .detail-sidebar a[href="#"]'
+  );
 
   if (reserveLink) {
     reserveLink.href = "#";
@@ -595,4 +881,15 @@ function switchTab(name) {
   });
 }
 
-document.addEventListener("DOMContentLoaded", loadTrips);
+document.addEventListener("DOMContentLoaded", function () {
+  const detailImg = document.getElementById("detail-img");
+
+  if (detailImg) {
+    detailImg.onerror = function () {
+      this.onerror = null;
+      this.src = DEFAULT_TRIP_IMAGE;
+    };
+  }
+
+  loadTrips();
+});

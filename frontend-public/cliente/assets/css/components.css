@@ -724,7 +724,6 @@ footer {
 .scroll-top:hover {
   transform: translateY(-2px);
 }
-
 /* RESPONSIVE */
 @media (max-width: 960px) {
   .footer-top {
@@ -772,31 +771,17 @@ footer {
   }
 }
 
-.nav-links a {
-    transition: all 0.2s ease;
-    padding: 0.5rem 1rem;
-    border-radius: 40px;
+/* Lien actif ajouté par ui.js */
+.nav-links a.active,
+.mobile-menu a.active {
+  color: var(--fuchsia);
+  opacity: 1;
+  font-weight: 600;
 }
 
-/* Survol de n'importe quel lien */
-.nav-links a:hover {
-    background: #fce4ec;
-    color: #c2185b;
-}
-
-/* Lien actif (Accueil, Messages, etc.) */
-.nav-links a.active {
-    background: #c2185b;
-    color: white;
-}
-
-/* Style spécial pour le bouton Réserver */
-.nav-links a.nav-cta {
-    background: #c2185b;
-    color: white;
-    padding: 0.5rem 1.2rem;
-    border-radius: 40px;
-}
-.nav-links a.nav-cta:hover {
-    background: #ad1457;
+/* Garder le bouton Réserver avec son style spécial */
+.nav-links a.nav-cta.active,
+.nav-links a.nav-cta.nav-active {
+  background: var(--charcoal) !important;
+  color: var(--cream) !important;
 }
