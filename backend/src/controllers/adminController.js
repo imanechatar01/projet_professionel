@@ -380,7 +380,7 @@ const deleteAdminExcursionRecursive = async (req, res) => {
         const clientsResult = await dbClient.query(`
             SELECT DISTINCT c.email, c.nom, c.prenom 
             FROM clientes c
-            JOIN reservations r ON c.id = r.cliente_id
+            JOIN reservations r ON c.id = r.client_id
             WHERE r.excursion_id = $1
         `, [id]);
 
