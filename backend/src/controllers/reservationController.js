@@ -1,5 +1,8 @@
 const Reservation = require('../models/reservation');
+const emailService = require('../services/emailService');
 
+
+emailService.initTransporter();
 const normalizeStatus = (value) => (value || '')
     .toString()
     .normalize('NFD')
@@ -27,6 +30,7 @@ const canonicalStatus = (value) => {
     
     return exactMatches[value] || value;
 };
+
 
 // ============================================
 // 1. CRÉER UNE RÉSERVATION (client connecté)
@@ -206,60 +210,84 @@ const updateReservationStatus = async (req, res) => {
     const { id } = req.params;
     const statut = canonicalStatus(req.body.statut);
 
-    const validStatuts = ['En attente', 'Confirmée', 'Annulée', 'Terminée'];
-    
-    if (!statut) {
-        return res.status(400).json({
-            success: false,
-            message: 'Le statut est requis'
-        });
-    }
-
-    if (!validStatuts.includes(statut)) {
-        return res.status(400).json({
-            success: false,
-            message: `Statut invalide. Valeurs acceptées : ${validStatuts.join(', ')}`
-        });
-    }
-
     try {
-        console.log(`Tentative de mise à jour réservation ${id} vers statut: ${statut}`);
         const reservation = await Reservation.updateStatus(id, statut);
-        
+
         if (!reservation) {
-            console.error(`Réservation ${id} non trouvée dans la base`);
             return res.status(404).json({
                 success: false,
                 message: 'Réservation non trouvée'
             });
         }
 
-        console.log(`Mise à jour réussie pour réservation ${id}`);
-        res.json({
+        // Envoi email si nécessaire
+        if (statut === 'Annulée') {
+
+            const reservationDetails = await Reservation.findById(id);
+
+            if (emailService.isEmailConfigured()) {
+                await emailService.sendCancellationEmail(
+                    reservationDetails.client_email,
+                    reservationDetails.client_nom,
+                    {
+                        numero_reservation: reservationDetails.numero_reservation,
+                        excursion_titre: reservationDetails.excursion_titre,
+                        nb_personnes: reservationDetails.nb_personnes,
+                        montant_total: reservationDetails.montant_total
+                    }
+                );
+            }
+        }
+
+        if (statut === 'Confirmée') {
+
+            const reservationDetails = await Reservation.findById(id);
+
+            if (emailService.isEmailConfigured()) {
+                await emailService.sendConfirmationEmail(
+                    reservationDetails.client_email,
+                    reservationDetails.client_nom,
+                    {
+                        numero_reservation: reservationDetails.numero_reservation,
+                        excursion_titre: reservationDetails.excursion_titre,
+                        nb_personnes: reservationDetails.nb_personnes,
+                        montant_total: reservationDetails.montant_total
+                    }
+                );
+            }
+        }
+
+        // UNE SEULE réponse
+        return res.json({
             success: true,
             message: `Statut mis à jour : ${statut}`,
             reservation
         });
 
     } catch (error) {
-        console.error('ERREUR CRITIQUE mise à jour statut:', error);
-        res.status(500).json({
+        console.error(error);
+        return res.status(500).json({
             success: false,
-            message: 'Erreur serveur : ' + error.message
+            message: error.message
         });
     }
 };
-
 // ============================================
 // 6. ANNULER UNE RÉSERVATION (client propriétaire ou admin)
 // ============================================
+
+
+
+
 const cancelReservation = async (req, res) => {
+    console.log("ANNULATION APPELÉE");
     const { id } = req.params;
     const client_id = req.clientId;
     const isAdmin = req.user?.role === 'admin';
 
     try {
         const reservation = await Reservation.findById(id);
+        console.log("Client email =", reservation.client_email);
         
         if (!reservation) {
             return res.status(404).json({
@@ -291,11 +319,38 @@ const cancelReservation = async (req, res) => {
             });
         }
 
+        // Mettre à jour le statut
         const updatedReservation = await Reservation.updateStatus(id, 'annulee');
+
+        // ============================================
+        // ENVOI D'EMAIL AU CLIENT
+        // ============================================
+        if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+            try {
+                await emailService.sendCancellationEmail(
+    reservation.client_email,
+    reservation.client_nom,
+    {
+        numero_reservation: reservation.numero_reservation,
+        excursion_titre: reservation.excursion_titre,
+        nb_personnes: reservation.nb_personnes,
+        montant_total: reservation.montant_total
+    }
+);
+
+                console.log(`📧 Email d'annulation envoyé à ${reservation.client_email}`);
+
+            } catch (emailError) {
+                console.error('❌ Erreur envoi email:', emailError);
+                // On continue même si l'email échoue
+            }
+        } else {
+            console.log('⚠️ Email non configuré. Aucun email envoyé.');
+        }
 
         res.json({
             success: true,
-            message: 'Réservation annulée avec succès',
+            message: 'Réservation annulée avec succès. Un email a été envoyé à la cliente.',
             reservation: updatedReservation
         });
 
@@ -307,6 +362,61 @@ const cancelReservation = async (req, res) => {
         });
     }
 };
+// Exemple : confirmation de réservation (après paiement)
+const confirmReservation = async (req, res) => {
+    const { id } = req.params;
+    const isAdmin = req.user?.role === 'admin';
+
+    if (!isAdmin) {
+        return res.status(403).json({
+            success: false,
+            message: 'Accès non autorisé'
+        });
+    }
+
+    try {
+        const reservation = await Reservation.findById(id);
+        console.log("Client email =", reservation.client_email);
+        
+        if (!reservation) {
+            return res.status(404).json({
+                success: false,
+                message: 'Réservation non trouvée'
+            });
+        }
+
+        const updatedReservation = await Reservation.updateStatus(id, 'confirmee');
+
+        // Envoyer un email de confirmation
+        if (emailService.isEmailConfigured()) {
+            console.log("Client email =", reservation.client_email);
+            await emailService.sendConfirmationEmail(
+                reservation.client_email,
+                reservation.client_nom,
+                {
+                    
+                    excursion_titre: reservation.excursion_titre,
+                    nb_personnes: reservation.nb_personnes,
+                    montant_total: reservation.montant_total
+                }
+            );
+        }
+
+        res.json({
+            success: true,
+            message: 'Réservation confirmée. Un email a été envoyé à la cliente.',
+            reservation: updatedReservation
+        });
+
+    } catch (error) {
+        console.error('Erreur confirmation réservation:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Erreur serveur'
+        });
+    }
+};
+
 
 // ============================================
 // 7. STATISTIQUES DES RÉSERVATIONS (admin uniquement)
@@ -339,5 +449,6 @@ module.exports = {
     getAllReservations,
     updateReservationStatus,
     cancelReservation,
+    confirmReservation,  // Ajouter cette fonction
     getReservationStats
 };

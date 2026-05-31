@@ -7,7 +7,10 @@ const {
     createReservation,
     getMyReservations,
     getAllReservations,
-    updateReservationStatus
+    updateReservationStatus,
+    cancelReservation,
+    confirmReservation,
+    getReservationStats
 } = require('../controllers/reservationController');
 
 const { verifyClientToken } = require('../middleware/auth');
@@ -20,5 +23,7 @@ router.get('/me', verifyClientToken, getMyReservations);
 // Routes admin
 router.get('/', verifyAdminToken, getAllReservations);
 router.put('/:id/status', verifyAdminToken, updateReservationStatus);
-
+router.delete('/:id', verifyAdminToken, cancelReservation);
+router.put('/:id/confirm', verifyAdminToken, confirmReservation);
+router.get('/stats', verifyAdminToken, getReservationStats);
 module.exports = router;

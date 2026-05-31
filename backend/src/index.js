@@ -68,7 +68,9 @@ const paiementRoutes = require("./routes/paiement");
 
 const { getDashboardStats } = require("./controllers/adminController");
 const { verifyAdminToken } = require("./controllers/authController");
-
+const emailService = require('./services/emailService');
+emailService.initTransporter();
+console.log('📧 Service email initialisé');
 /* =========================
    API ROUTES
 ========================= */
